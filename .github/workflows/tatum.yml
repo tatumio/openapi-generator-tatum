@@ -33,9 +33,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        source-url: https://nuget.pkg.github.com/tatumio/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}   
+    - name: Add package source
+      run: dotnet nuget add source --username tatumio --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/tatumio/index.json"
     - name: Restore dependencies
       run: dotnet restore ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj
     - name: Build
@@ -43,5 +42,5 @@ jobs:
     - name: Pack
       run: dotnet pack ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj --no-build --no-restore --configuration Release /p:Version=${{ needs.Build_Version.outputs.version }} --output .
     - name: Push to Github Packages
-      run: dotnet nuget push "./Tatum.CSharp.Core.${{ needs.Build_Version.outputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.ACTIONS_PACKAGE_SOURCE_PAT }}
+      run: dotnet nuget push "./Tatum.CSharp.Core.${{ needs.Build_Version.outputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.ACTIONS_PACKAGE_SOURCE_PAT }} --source "github"
 
