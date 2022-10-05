@@ -1,0 +1,3412 @@
+{
+  "openapi": "3.0.0",
+  "security": [
+    {
+      "X-API-Key": []
+    }
+  ],
+  "info": {
+    "title": "Tatum API Reference",
+    "version": "3.15.0",
+    "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
+    "x-logo": {
+      "url": "https://tatum.io/images/Light.svg",
+      "altText": "Tatum"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api-eu1.tatum.io"
+    },
+    {
+      "url": "https://api-us-west1.tatum.io"
+    }
+  ],
+  "tags": [
+    {
+      "description": "<p>Interact with the blockchain directly by connecting to the blockchain node and communicating with it through JSON-RPC.</p>\n<p>Each node-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Node RPC"
+    },
+    {
+      "description": "<p>A Tatum Account is the primary building block of Tatum-powered applications. It is an envelope that holds essential information about balances, the state of the account or customer, and to whom the account belongs.<br/><br/>\nAccounts in Tatum are stored within Tatum Private Ledger. Tatum Private Ledger contains information about accounts, the customers that own the accounts, transactions that affect the accounts or virtual currencies present in the ledger.<br/><br/>\nBy default, the private ledger is not connected to any blockchain. It is possible to create an application on it without any blockchain at all. Using Tatum Private Ledger and the building blocks included within it, it is possible to quickly swap the whole application from the ledger to any blockchain supported by Tatum. All of the API calls will remain the same, the only thing that changes is the blockchain the application lives on.<br/><br/>\nMost blockchains do not have any compliance layer at all. It is not possible to freeze funds at a blockchain address or deactivate an address. The Tatum Account has built-in compliance, and it is possible to block funds in the account, freeze outgoing transactions from the account or even completely deactivate the account.\n</p>\n",
+      "name": "Account"
+    },
+    {
+      "description": "<p>An endpoint used to create and list transactions within Tatum Private Ledger. A transaction is performed between 2 accounts with the same currency. To perform an exchange operation between accounts with different currencies, API calls from <a href=\"#tag/Order-BookLedger-Order-Book\">Order Book</a> sections are available. Transactions in the ledger are instant, with a settlement time of below 200ms.<br/>\nTatum Private Ledger supports microtransactions - a transaction of an amount as little as 1e-30 (30 decimal places). Transactions are atomic.<br/>\nWhen there is an insufficient balance in the sender account, or recipient account cannot receive funds, the transaction is not settled.</p>\n",
+      "name": "Transaction"
+    },
+    {
+      "description": "<p>An endpoint used to handle customer operations, like updating customer information, enabling/disabling etc.\nWithin Tatum API, a customer represents a client of the entity that communicates with Tatum.<br/>\nCustomers cannot be created via any other operation than Create Ledger Account.<br/>\nDue to compliance restrictions, it is recommended to enter the country of residence of the customer and the country of the provider. The Tatum compliance engine operates based on this information.\n</p>\n",
+      "name": "Customer"
+    },
+    {
+      "description": "<p>Register and use Tatum Private Ledger's virtual currencies. You can create your own virtual currency and distribute it amongst your customers.<br/>\nVirtual currencies are used to support FIAT currencies. When a virtual currency is created with basePair of the FIAT currency, it is possible to perform transactions in the private ledger in FIAT.\n</p>\n",
+      "name": "Virtual Currency"
+    },
+    {
+      "description": "<p>Endpoints to handle subscriptions to the Tatum Platform. Subscriptions allow users to enable some additional features or reports that are not enabled by default,\nlike outgoing off-chain transaction scanning, accounts with balances above the limit, etc.</p>\n",
+      "name": "Notification subscriptions"
+    },
+    {
+      "description": "<p>Endpoint to handle Order book operations like creating BID / ASK trades between Tatum Private Virtual accounts, obtaining trade histories, creating futures etc. It is possible to build an exchange based on the Ledger Accounts.</p>",
+      "name": "Order Book"
+    },
+    {
+      "description": "<p><a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System</a> (KMS) is a comprehensive solution for building custodial applications. KMS runs locally on your server and provides security for generating wallets, addresses, and private keys, and for signing transactions.</p>\n<p>KMS builds a list of pending transaction to sign and provides the options to complete a transaction after it has been signed and to obtain transaction details with the result of the blockchain operation via the transaction ID.</p>\n<p>In KMS, each managed wallet or private key is assigned a unique signature ID (<code>signatureId</code>) that represents that wallet or private key. This signature ID is then used in an API request to identify the wallet.</p>\n<p>Depending on the API, you can use the signature ID in an API call request in the following ways:</p>\n<ul>\n<li>\nTo represent the <b>mnemonic</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/BtcTransfer\" target=\"_blank\">API for sending BTC from a virtual account to the blockchain</a> (see the <code>transferBtcKMS</code> request schema).</li>\n<li>To represent the <b>privateKey</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Bitcoin#operation/BtcTransferBlockchain\" target=\"_blank\">API for sending BTC to a blockchain address</a> (see the <code>BtcTransactionFromAddressKMS</code> and <code>BtcTransactionFromUTXOKMS</code> request schemas).</li>\n<li>To represent the <b>mnemonic</b> and <b>index</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/EthTransfer\" target=\"_blank\">API for sending ETH from a virtual account to the blockchain</a> (see the <code>transferEthKMS</code> request schema).<br />In this case, the index of the specific private key generated from the mnemonic must be used in addition to the signature ID.</li>\n</ul>\n<p>You can run KMS on the following operating systems:</p>\n<ul>\n<li><b>macOS:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>Unix:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>MS Windows:</b> Only via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n</ul>\n<p>For more information about KMS, see the <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">KMS GitHub repository</a> and the <a href=\"https://docs.tatum.io/private-key-management/private-key-management\" target=\"_blank\">user documentation</a>.</p>\n</ul></p>\n",
+      "name": "Key Management System"
+    },
+    {
+      "description": "<p>An endpoint to check if the blockchain address is safe to work with or not.</p>\n",
+      "name": "Malicious address"
+    },
+    {
+      "description": "<p>Manage deposit addresses associated with your virtual account.</p>\n<p>Depending on how virtual accounts are connected to the blockchain, the virtual accounts can be:</p>\n<ul>\n<li><b>Virtual accounts with associated deposit addresses</b>\n<br/>Customers can send funds to and receive funds from other blockchain addresses.</li>\n<li><b>Virtual accounts with no deposit addresses</b>\n<br/>These accounts have a cryptocurrency assigned but do not have any associated deposit addresses. The customers can send funds to and receive funds from another virtual accounts and can send funds to blockchain addresses. However, the customers cannot receive funds from blockchain addresses.</li>\n</ul>\n",
+      "name": "Blockchain addresses"
+    },
+    {
+      "description": "<p>An endpoint to handle operations between Tatum Private Ledger and the blockchain, e.g. to create blockchain transactions from ledger accounts,\ncreate custom Ethereum ERC20 tokens, Stellar XLM, or Ripple XRP custom assets and register them as regular currency into the Tatum Private Ledger.</p>\n",
+      "name": "Blockchain operations"
+    },
+    {
+      "description": "<p>An endpoint used to create, cancel, or complete withdrawals by customers from Tatum to supported blockchains.\nWithdrawals are always multi-step operations that consist of the following steps:\n<ul>\n<li><b>create withdrawal</b></li>\n<li><b>perform blockchain transaction</b></li>\n<li><b>complete withdrawal</b></li>\n<li><b>cancel withdrawal</b>, when any of the previous operations fail</li>\n</ul>\n</p>\n",
+      "name": "Withdrawals"
+    },
+    {
+      "description": "<p>Bitcoin Blockchain enables access to the most commonly used Bitcoin methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet3 - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.mempool.co/\">https://testnet-faucet.mempool.co/</a></li></ul><br/>\n",
+      "name": "Bitcoin"
+    },
+    {
+      "description": "<p><a href=\"https://ethereum.org/\" target=\"_blank\">Ethereum</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Ethereum methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports the following Ethereum networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Sepolia</b>, a proof-of-work testnet and the default testnet for Ethereum. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, <a target=\"_blank\" href=\"https://fauceth.komputing.org/\">FaucETH</a>).</li>\n</ul>\n",
+      "name": "Ethereum"
+    },
+    {
+      "description": "<p>IPFS is a distributed file storage. You can store data to IPFS and read from them.</p>\n",
+      "name": "IPFS"
+    },
+    {
+      "description": "<p>Bitcoin Cash Blockchain enables access to the most commonly used Bitcoin Cash methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://faucet.fullstack.cash/\">https://faucet.fullstack.cash/</a></li></ul>\n  </ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Bitcoin Cash"
+    },
+    {
+      "description": "<p>Build a peer-to-peer NFT marketplace and allow your customers to sell and buy assets. When an asset is sold, the creator is automatically paid, the asset is instantly transferred to the buyer, and you as the owner of the marketplace automatically receive a percentage of the transaction.</p>\n<p>Each marketplace-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Marketplace"
+    },
+    {
+      "description": "<p>Endpoints for leveraging some native blockchain features like transaction fee estimation, custodial onchain wallet for paying gas on behalf of customers or other ready made smart contracts.</p>\n",
+      "name": "Blockchain utils"
+    },
+    {
+      "description": "<p>Litecoin Blockchain enables access to the most commonly used Litecoin methods. These methods bring a small level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"http://testnet.litecointools.com/\">http://testnet.litecointools.com/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Litecoin"
+    },
+    {
+      "description": "<p>Dogecoin Blockchain enables access to the most commonly used Dogecoin methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.com/doge-testnet/\">https://testnet-faucet.com/doge-testnet/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Dogecoin"
+    },
+    {
+      "description": "<p>Flow Blockchain enables access to the most commonly used Flow methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports FLOW and FUSD stable coin.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.onflow.org/\">https://testnet-faucet.onflow.org/</a>\n<br/>To obtain FUSD on testnet, you can swap them using <a target=\"_blank\" href=\"https://swap-testnet.blocto.app/#/swap\">https://swap-testnet.blocto.app/#/swap</a></li></ul>\nTo create accounts or mint NFTs on <b>mainnet</b>, you have to have paid API Key. Tatum covers the transaction fees on FLOW blockchain out of the box, so mainnet operations are available only on the paid API Key.<br/>\nTatum handles automatically proposal key management - we internally rotate the proposal keys for you, so you don't have to take care of that and can easily scale your transaction troughput.<br/>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.<br/>\nIt's not possible to pregenrate addresses on the Flow blockchain. You can generate only public keys, which are used to generate address using a create account transaction to the Flow blockchain.\nYou have to have existing account on the Flow to initialize new address creation. Transactions on the Flow blockchain are free.</p>\n",
+      "name": "Flow"
+    },
+    {
+      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
+      "name": "XRP"
+    },
+    {
+      "description": "<p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li> Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://friendbot.stellar.org/?addr=address\" target=\"_blank\">https://friendbot.stellar.org/?addr=address</a>.</li></ul>\n<br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>\n",
+      "name": "Stellar"
+    },
+    {
+      "description": "<p>The Record section enables the storing of records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever. Tatum supports storing data on the following blockchains:</p>\n<ul>\n<li>Ethereum</li>\n</ul>\n",
+      "name": "Blockchain storage"
+    },
+    {
+      "description": "<p>Binance Blockchain enables access to most commonly used Binance methods.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://www.binance.com/en/dex/testnet/address\">https://www.binance.com/en/dex/testnet/address</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "BNB Beacon Chain"
+    },
+    {
+      "description": "<p>VeChain Blockchain enables access to the most commonly used VeChain methods. Tatum does not support off-chain capabilities for the VET blockchain.\nTatum KMS is not supported for VET transactions. VET supports 2 native assets - VET and VTHO. VTHO is used for paying transaction fees.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a test chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.vecha.in/\">https://faucet.vecha.in/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "VeChain"
+    },
+    {
+      "description": "<p><b>Support for Cardano is deprecated.</b></p>\n<s><p><b>Cardano is in maintenance mode.</b></p>\n<p><a href=\"https://cardano.org/\" target=\"_blank\">Cardano</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Cardano methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports only the Cardano mainnet.</p></s>\n",
+      "name": "Cardano"
+    },
+    {
+      "description": "<p>Custodial API is a set of operatinos, which allows you to work with managed blockchain addresses without having its private key.\nYou can easily create new managed address and export its details - with private key as well - once required.<br/>\nThis features are currently in <b>Alpha version</b>.</p>\n",
+      "name": "Custodial managed wallets"
+    },
+    {
+      "description": "<p>\"NFT\" stands for \"Non-Fungible Token\", which means that each token is unique and irreplaceable. NFTs are described by the ERC-721 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>NFTs can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> NFTs can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> NFTs can be used to create rare and unique collectible digital releases. Similarly, NFTs can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as NFTs.</li>\n</ul>\n<p>Each NFT-related operation API its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "NFT (ERC-721 or compatible)"
+    },
+    {
+      "description": "<p>Fungible tokens are interchangeable and are used as a blockchain representation of the currency. Fungible tokens are described by the ERC-20 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>Each operation related to fungible tokens supports its own set of the blockchains. The list of the supported blockchains is provided in the operation description further in this section.</p>\n",
+      "name": "Fungible Tokens (ERC-20 or compatible)"
+    },
+    {
+      "description": "<p>A Multi Token combines characteristics of fungible and non-fungible tokens. A single Multi Token smart contract allows you to mint fungible, non-fungible, and semi-fungible tokens and process different types of the tokens in a single transaction. Multi Tokens are described by the ERC-1155 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.<p/>\n<p>Multi Tokens can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> Multi Tokens can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> Multi Tokens can be used to create rare and unique collectible digital releases. Similarly, Multi Tokens can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as Multi Tokens.</li>\n</ul>\n<p>Each Multi Token-related operation API its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Multi Tokens (ERC-1155 or compatible)"
+    },
+    {
+      "description": "<p>Solana is a blockchain network focused on fast transactions and high throughput. It uses a unique method of ordering transactions to improve its speed. Users can pay their transaction fees and interact with smart contracts with SOL, the network's native cryptocurrency.<br/>\n<b>For now, Solana is in <b>BETA</b> and there is a rate limitation applied for all projects for Solana to 40 req/s on the platform.</b><br/>\nTatum supports 2 chains:\n<ul><li>Mainnet BETA - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://solfaucet.com/\">https://solfaucet.com/</a></li></ul></p>\n",
+      "name": "Solana"
+    },
+    {
+      "description": "<p>Binance Smart Chain is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://testnet.binance.org/faucet-smart\">https://testnet.binance.org/faucet-smart</a></li></ul></p>\n",
+      "name": "BNB Smart Chain"
+    },
+    {
+      "description": "<p>Polygon (Matic) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.matic.network/\">https://faucet.matic.network/</a></li></ul></p>\n",
+      "name": "Polygon"
+    },
+    {
+      "description": "<p>Celo is fork of Celo with more than 1000 tps and possibility to pay for\ntransactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.\nThese methods bring small level of abstraction,\n       and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n       to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>\n      Tatum supports 2 chains:\n      <ul><li>Mainnet - regular live chain\n      <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\n      Faucet, e.g. <a target=\"_blank\" href=\"https://celo.org/developers/faucet\">https://celo.org/developers/faucet</a></li></ul><br/>\n      Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Celo"
+    },
+    {
+      "description": "<p>Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://r3d4.fr/elrond/devnet/index.php\">https://r3d4.fr/elrond/devnet/</a></li></ul></p>\n",
+      "name": "Elrond"
+    },
+    {
+      "description": "<p>Algorand is a decentralized blockchain technology network. Algorand is enabling the simple creation of next generation financial products, protocols and exchange of value across defi, financial institutions and governments.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://bank.testnet.algorand.network/\">https://bank.testnet.algorand.network/</a></li></ul></p>\n",
+      "name": "Algorand"
+    },
+    {
+      "description": "<p>Tron Blockchain enables access to most commonly used Tron methods. It's possible to generate TRON account, send TRX, TRC10 and TRC20 assets. It's also possible to generate custom TRC10 or TRC20 tokens using API.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - regular live chain\n<li>Shasta Testnet - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\nFaucet, e.g. <a target=\"_blank\" href=\"https://www.trongrid.io/shasta/\">https://www.trongrid.io/shasta/</a></li></ul>\n",
+      "name": "Tron"
+    },
+    {
+      "description": "<p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Baobab Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://baobab.wallet.klaytn.com/access?next=faucet\">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>\n",
+      "name": "Klaytn"
+    },
+    {
+      "description": "<p>Harmony.ONE is an Oneeum L2 scaling solution 100% EVM compatible, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.pops.one/\">https://faucet.pops.one/</a></li></ul></p>\n",
+      "name": "Harmony"
+    },
+    {
+      "description": "<p>XDC Network (XinFin) is enterprise ready hybrid blockchain for global trade and finance, combining the power of Public & Private blockchains with interoperable Smart Contracts.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://apothem.network/#getTestXDC\">https://apothem.network/#getTestXDC</a></li></ul></p>\n",
+      "name": "XinFin"
+    },
+    {
+      "description": "<p>Kcs (KCS) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet-testnet.kcc.network/\">https://faucet-testnet.kcc.network/</a></li></ul></p>\n",
+      "name": "KuCoin"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Blockchain",
+      "tags": [
+        "Node RPC",
+        "Algorand",
+        "Bitcoin",
+        "Bitcoin Cash",
+        "BNB Smart Chain",
+        "BNB Beacon Chain",
+        "Cardano",
+        "Celo",
+        "Dogecoin",
+        "Elrond",
+        "Ethereum",
+        "Flow",
+        "Harmony",
+        "Klaytn",
+        "KuCoin",
+        "Litecoin",
+        "Polygon",
+        "Solana",
+        "Stellar",
+        "Tron",
+        "VeChain",
+        "XinFin",
+        "XRP"
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "tags": [
+        "Notification subscriptions"
+      ]
+    },
+    {
+      "name": "Fee estimation",
+      "tags": [
+        "Blockchain fees",
+        "Virtual account blockchain fees"
+      ]
+    },
+    {
+      "name": "Smart Contracts",
+      "tags": [
+        "NFT (ERC-721 or compatible)",
+        "Fungible Tokens (ERC-20 or compatible)",
+        "Multi Tokens (ERC-1155 or compatible)",
+        "Gas pump",
+        "Marketplace",
+        "Auction"
+      ]
+    },
+    {
+      "name": "Security",
+      "tags": [
+        "Key Management System",
+        "Malicious address",
+        "Custodial managed wallets"
+      ]
+    },
+    {
+      "name": "Storage",
+      "tags": [
+        "IPFS",
+        "Blockchain storage"
+      ]
+    },
+    {
+      "name": "Virtual Accounts",
+      "tags": [
+        "Account",
+        "Transaction",
+        "Customer",
+        "Virtual Currency",
+        "Order Book",
+        "Withdrawal",
+        "Blockchain addresses",
+        "Blockchain operations",
+        "Deposit"
+      ]
+    },
+    {
+      "name": "Utils",
+      "tags": [
+        "Blockchain utils",
+        "Exchange rate",
+        "Service utils"
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/ethereum/gas": {
+      "post": {
+        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state. The <b>fast</b> one is used by default.\n</p>\n",
+        "operationId": "EthEstimateGas",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EthEstimateGas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "headers": {
+              "x-current-block": {
+                "schema": {
+                  "type": "number"
+                },
+                "description": "Current block of the blockchain."
+              },
+              "x-current-block-time": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-11-11T11:54:49Z"
+                },
+                "description": "Current block time."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthGasEstimation"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "403": {
+            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasCalculation"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate Ethereum transaction fees",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
+    "/v3/ethereum/gas/batch": {
+      "post": {
+        "description": "<h4>10 credits per API call + 10 credits per each gas estimation.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state.\nThe <b>fast</b> one is used by default.<br/>\nResult is calculated  in the order of the request array items.\n</p>\n",
+        "operationId": "EthEstimateGasBatch",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EthEstimateGasArray"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "headers": {
+              "x-current-block": {
+                "schema": {
+                  "type": "number"
+                },
+                "description": "Current block of the blockchain."
+              },
+              "x-current-block-time": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-11-11T11:54:49Z"
+                },
+                "description": "Current block time."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthGasEstimationBatch"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "403": {
+            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasCalculation"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate multiple Ethereum transaction fees",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
+    "/v3/ethereum/wallet": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. A mnemonic phrase consists of 24 special words in a defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value which should never be revealed</li><li>Public Key - a public address to be published</li><li>Derivation index - an index of generated address</li></ul></p><p>Tatum follows the BIP44 specification and generates for Ethereum wallets with the derivation path m/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerates a BIP44 compatible Ethereum wallet.</p>\n",
+        "operationId": "EthGenerateWallet",
+        "parameters": [
+          {
+            "description": "Mnemonic to use for generating extended public and private keys.",
+            "in": "query",
+            "name": "mnemonic",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 500
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Ethereum wallet",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/address/{xpub}/{index}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Generates an Ethereum account deposit address from an Extended public key. The deposit address is generated for the specific index - each extended public key can generate\nup to 2^31 addresses starting from index 0 until 2^31 - 1.</p>\n",
+        "operationId": "EthGenerateAddress",
+        "parameters": [
+          {
+            "description": "Extended public key of wallet.",
+            "in": "path",
+            "name": "xpub",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid"
+            }
+          },
+          {
+            "description": "Derivation index of the address to be generated.",
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddress"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Ethereum account address from Extended public key",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/wallet/priv": {
+      "post": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Generates the private key of an address from a mnemonic for a given derivation path index. The private key is generated for the specific index - each mnemonic\ncan generate up to 2^32 private keys starting from index 0 until 2^31 - 1.</p>\n",
+        "operationId": "EthGenerateAddressPrivateKey",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivKey"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Ethereum private key",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/web3/{xApiKey}": {
+      "post": {
+        "deprecated": true,
+        "description": "<p><b>2 credits per API call</b></p>\n<p><b>This endpoint is deprecated. Use the <a href=\"https://apidoc.tatum.io/tag/Node-RPC\" target=\"_blank\">HTTP-based JSON RPC driver</a> instead.</b></p><br/>\n<p>Use this endpoint URL as an http-based web3 driver to connect directly to the Ethereum node provided by Tatum.\nTo learn more about Ethereum Web3, visit the <a href=\"https://ethereum.org/en/developers/\" target=\"_blank\">Ethereum developers' guide</a>.</p>\n",
+        "operationId": "EthWeb3Driver",
+        "parameters": [
+          {
+            "description": "Tatum X-API-Key used for authorization.",
+            "in": "path",
+            "name": "xApiKey",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "asdlkfjnqunalkwjfnq2oi303294857k"
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "query",
+            "name": "testnetType",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid Web3 method content body.",
+                "example": {
+                  "jsonrpc": "2.0",
+                  "method": "web3_clientVersion",
+                  "params": [],
+                  "id": 2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid Web3 response.",
+                  "example": {
+                    "jsonrpc": "2.0",
+                    "id": 2,
+                    "result": "Geth/v1.9.9-omnibus-e320ae4c-20191206/linux-amd64/go1.13.4"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "Web3 HTTP driver",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/block/current": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Gets the current Ethereum block number. This is the number of the latest block in the blockchain.</p>",
+        "operationId": "EthGetCurrentBlock",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "description": "Current block number",
+                  "example": 6491272
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get current block number",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/block/{hash}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Gets an Ethereum block-by-block hash or block number.</p>",
+        "operationId": "EthGetBlock",
+        "parameters": [
+          {
+            "description": "Block hash or block number",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6470657"
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthBlock"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Ethereum block by hash",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/account/balance/{address}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Gets an Ethereum account balance in ETH. This method does not display the balance of ERC20 or ERC721 tokens in the account.</p>",
+        "operationId": "EthGetBalance",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthBalance"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Ethereum account balance",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/transaction/{hash}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Get Ethereum transaction by transaction hash.</p>",
+        "operationId": "EthGetTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthTx"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "404": {
+            "description": "Transaction not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error404TxNotFound"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Ethereum Transaction",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/transaction/count/{address}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Get a number of outgoing Ethereum transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,\nwhich are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents\nthe order of the transaction in the list of outgoing transactions.</p>\n",
+        "operationId": "EthGetTransactionCount",
+        "parameters": [
+          {
+            "description": "address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 42,
+              "minLength": 42,
+              "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "example": 5,
+                  "description": "Number of transactions, that were made from this address. Can be used as a nonce parameter in send transaction calls."
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get count of outgoing Ethereum transactions",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/account/transaction/{address}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Get Ethereum transactions by address. This includes incoming and outgoing transactions for the address.</p>",
+        "operationId": "EthGetTransactionByAddress",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x8ce4e40889a13971681391aad29e88efaf91f784"
+            }
+          },
+          {
+            "description": "Max number of items per page is 50.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "maximum": 50,
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "description": "Offset to obtain next page of the data.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          },
+          {
+            "description": "Transactions from this block onwords will be included.",
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "example": 1087623
+            }
+          },
+          {
+            "description": "Transactions up to this block will be included.",
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "number",
+              "minimum": 1,
+              "example": 1087823
+            }
+          },
+          {
+            "description": "Sorting of the data. ASC - oldest first, DESC - newest first.",
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "default": "DESC",
+              "example": "ASC",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EthTx"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Ethereum transactions by address",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/transaction": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Send Ethereum or Tatum supported ERC20 token from account to account.<br/><br/>\n<p><b>Signing a transaction</b></p>\n<p>When sending ETH, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "EthBlockchainTransfer",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferEthBlockchain"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferEthBlockchainKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "403": {
+            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error403EthBroadcast"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasPrice"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasCalculation"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxSign"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send Ethereum / ERC20 from account to account",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/smartcontract": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Invoke a method in an existing smart contract on Ethereum.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Signing a transaction</b></p>\n<p>When invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "EthBlockchainSmartContractInvocation",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CallSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallReadSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallSmartContractMethodKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Data"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "403": {
+            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error403EthBroadcast"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasPrice"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthScBody"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthGasCalculation"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error403EthTxSign"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Invoke a method in a smart contract on Ethereum",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/account/transaction/erc20/internal/{address}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Get Ethereum internal transactions by address.<br/></p>\n",
+        "operationId": "EthGetInternalTransactionByAddress",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x8ce4e40889a13971681391aad29e88efaf91f784"
+            }
+          },
+          {
+            "description": "Max number of items per page is 50.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "maximum": 50,
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "description": "Offset to obtain next page of the data.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          },
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EthTxInternal"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Ethereum internal transactions by address",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    },
+    "/v3/ethereum/broadcast": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcast signed transaction to Ethereum blockchain. This method is used internally from Tatum KMS, Tatum Middleware or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchian.</p>\n",
+        "operationId": "EthBroadcast",
+        "parameters": [
+          {
+            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastKMS"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHash"
+                }
+              }
+            },
+            "description": "OK"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error400"
+                }
+              }
+            },
+            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error401NotActive"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error401Invalid"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
+          },
+          "403": {
+            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error403EthBroadcast"
+                }
+              }
+            }
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error500"
+                }
+              }
+            },
+            "description": "Internal server error. There was an error on the server while processing the request."
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast signed Ethereum transaction",
+        "tags": [
+          "Ethereum"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BroadcastKMS": {
+        "properties": {
+          "txData": {
+            "description": "Raw signed transaction to be published to network.",
+            "example": "62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D",
+            "maxLength": 500000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "signatureId": {
+            "description": "ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txData"
+        ],
+        "type": "object"
+      },
+      "EthBlock": {
+        "type": "object",
+        "properties": {
+          "difficulty": {
+            "description": "Difficulty for this block.",
+            "type": "string",
+            "example": "3296820833"
+          },
+          "extraData": {
+            "description": "The 'extra data' field of this block.",
+            "type": "string",
+            "example": "0x"
+          },
+          "gasLimit": {
+            "description": "The maximum gas allowed in this block.",
+            "type": "number",
+            "example": 8000000
+          },
+          "gasUsed": {
+            "description": "The total used gas by all transactions in this block.",
+            "type": "number",
+            "example": 7985124
+          },
+          "hash": {
+            "description": "Hash of the block. 'null' when its pending block.",
+            "type": "string",
+            "example": "0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc"
+          },
+          "logsBloom": {
+            "description": "The bloom filter for the logs of the block. 'null' when its pending block.",
+            "type": "string",
+            "example": "0x042080004210492080800001610060ad9600005bc81502020800000043e302020381a404000100409102040240300641108004000400007000008000c049558055a800000a0001800748900806502004200400108205005418c0218802281a0408060000533210462021050470810a010140102809011814018281115020090201068401847000a04010000c00084062000485640d00020220181150020008589105a41c0880001112034100010882545410240011402a3480050104004c310204000002009490d0012022a040c20c20011020401020140250805100410060008280200008181a220114102800001648640828200c00a94c1003a2060e001000"
+          },
+          "miner": {
+            "description": "The address of the beneficiary to whom the mining rewards were given.",
+            "type": "string",
+            "example": "0xD8869d9E3d497323561Fbca2319a9FC3F6f10c4B"
+          },
+          "mixHash": {
+            "description": "",
+            "type": "string",
+            "example": "0x7a44a1f56f12ae825fdc04550d7c3af2344daab987691771c06235f25fafcaa6"
+          },
+          "nonce": {
+            "description": "Hash of the generated proof-of-work. 'null' when its pending block.",
+            "type": "string",
+            "example": "0xfa1692f52a7ac672"
+          },
+          "number": {
+            "description": "The block number. 'null' when its pending block.",
+            "type": "number",
+            "example": 6470657
+          },
+          "parentHash": {
+            "description": "Hash of the parent block.",
+            "type": "string",
+            "example": "0xd34aab8a455027086ac54034e68608c84d984401a883b7b5d91f9ae0bbefda15"
+          },
+          "receiptsRoot": {
+            "description": "",
+            "type": "string",
+            "example": "0x4a496b6b7f2a1c5850bf9eebbea7193807be0067b1c06f17b9dde4eef7b2f960"
+          },
+          "sha3Uncles": {
+            "description": "SHA3 of the uncles data in the block.",
+            "type": "string",
+            "example": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
+          },
+          "size": {
+            "description": "The size of this block in bytes.",
+            "type": "number",
+            "example": 15296
+          },
+          "stateRoot": {
+            "description": "The root of the final state trie of the block.",
+            "type": "string",
+            "example": "0x32757c92f10c6c5a106c6fb4b9ca3ff301e413a59ca3d0513b4bf98c72efddba"
+          },
+          "timestamp": {
+            "description": "The unix timestamp for when the block was collated.",
+            "type": "number",
+            "example": 1569600592
+          },
+          "totalDifficulty": {
+            "description": "Total difficulty of the chain until this block.",
+            "type": "string",
+            "example": "23329673338013873"
+          },
+          "transactions": {
+            "description": "Array of transactions.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EthTx"
+            }
+          },
+          "transactionsRoot": {
+            "description": "The root of the transaction trie of the block.",
+            "type": "string",
+            "example": "0x5990081ef8515d561b50255af03c5d505f7725ddef27405dc67d23bfd0f47704"
+          }
+        }
+      },
+      "EthTx": {
+        "type": "object",
+        "properties": {
+          "blockHash": {
+            "description": "Hash of the block where this transaction was in.",
+            "type": "string",
+            "example": "0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "from": {
+            "type": "string",
+            "description": "Address of the sender.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "gas": {
+            "type": "number",
+            "description": "Gas provided by the sender.",
+            "example": 21000
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price provided by the sender in wei.",
+            "example": "1000000000"
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          },
+          "input": {
+            "type": "string",
+            "description": "The data sent along with the transaction.",
+            "example": "0x"
+          },
+          "nonce": {
+            "type": "number",
+            "description": "The number of transactions made by the sender prior to this one.",
+            "example": 26836405
+          },
+          "to": {
+            "type": "string",
+            "description": "Address of the receiver. 'null' when its a contract creation transaction.",
+            "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transactions index position in the block.",
+            "example": 3
+          },
+          "value": {
+            "type": "string",
+            "description": "Value transferred in wei.",
+            "example": "1000000000000000000"
+          },
+          "gasUsed": {
+            "type": "number",
+            "description": "The amount of gas used by this specific transaction alone.",
+            "example": 21000
+          },
+          "cumulativeGasUsed": {
+            "type": "number",
+            "description": "The total amount of gas used when this transaction was executed in the block.",
+            "example": 314159
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "The contract address created, if the transaction was a contract creation, otherwise null.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "logs": {
+            "type": "array",
+            "description": "Log events, that happened in this transaction.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "From which this event originated from.",
+                  "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+                },
+                "topics": {
+                  "type": "array",
+                  "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
+                  "items": {
+                    "type": "string",
+                    "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
+                  }
+                },
+                "data": {
+                  "type": "string",
+                  "description": "The data containing non-indexed log parameter."
+                },
+                "logIndex": {
+                  "type": "number",
+                  "description": "Integer of the event index position in the block."
+                },
+                "transactionIndex": {
+                  "type": "number",
+                  "description": "Integer of the transaction’s index position, the event was created in."
+                },
+                "transactionHash": {
+                  "type": "string",
+                  "description": "Hash of the transaction this event was created in.",
+                  "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+                }
+              }
+            }
+          }
+        }
+      },
+      "EthTxInternal": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Address of the sender.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "to": {
+            "type": "string",
+            "description": "Address of the receiver. 'null' when its a contract creation transaction.",
+            "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
+          },
+          "value": {
+            "type": "string",
+            "description": "Value transferred in wei.",
+            "example": "1000000000000000000"
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "timeStamp": {
+            "type": "string",
+            "description": "Time of the transaction in seconds.",
+            "example": "1477837690"
+          },
+          "hash": {
+            "type": "string",
+            "description": "Hash of the transaction.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          },
+          "input": {
+            "type": "string",
+            "description": "The data sent along with the transaction.",
+            "example": ""
+          },
+          "traceId": {
+            "type": "string",
+            "description": "Trace ID.",
+            "example": "0"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the transaction.",
+            "example": "create"
+          },
+          "errCode": {
+            "type": "string",
+            "description": "Error code.",
+            "example": "Bad jump destination"
+          },
+          "gas": {
+            "type": "number",
+            "description": "Gas provided by the sender.",
+            "example": 21000
+          },
+          "isError": {
+            "type": "string",
+            "example": "0",
+            "description": "1 if the transaction was not successful, 0 otherwise."
+          },
+          "gasUsed": {
+            "type": "number",
+            "description": "The amount of gas used by this specific transaction alone.",
+            "example": 21000
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "The contract address created, if the transaction was a contract creation, otherwise null.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          }
+        }
+      },
+      "Error400": {
+        "properties": {
+          "errorCode": {
+            "example": "validation.failed",
+            "description": "validation.failed",
+            "type": "string"
+          },
+          "message": {
+            "example": "Request validation failed. Please see data for additional information.",
+            "description": "Request validation failed. Please see data for additional information.",
+            "type": "string"
+          },
+          "statusCode": {
+            "example": 400,
+            "description": "400",
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "target"
+              ],
+              "properties": {
+                "target": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "Request object present in the body of the HTTP request",
+                  "example": {
+                    "property": 12345
+                  }
+                },
+                "value": {
+                  "type": "number",
+                  "description": "Value of the target object which validation is wrong. Can be of any data type, example here is using type number.",
+                  "example": 12345
+                },
+                "property": {
+                  "type": "string",
+                  "description": "Property name of the target object which validation is wrong",
+                  "example": "property1"
+                },
+                "constraints": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "description": "Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.",
+                  "example": {
+                    "min": "property1 must not be less than 50000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode",
+          "data"
+        ],
+        "type": "object"
+      },
+      "Error401Invalid": {
+        "properties": {
+          "errorCode": {
+            "example": "subscription.invalid",
+            "description": "subscription.invalid",
+            "type": "string"
+          },
+          "message": {
+            "example": "Unable to find valid subscription for '${apiKey}'",
+            "description": "Unable to find valid subscription for '${apiKey}'",
+            "type": "string"
+          },
+          "statusCode": {
+            "example": 401,
+            "description": "401",
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error401NotActive": {
+        "properties": {
+          "errorCode": {
+            "example": "subscription.not.active",
+            "description": "subscription.not.active",
+            "type": "string"
+          },
+          "message": {
+            "example": "Subscription not active anymore.",
+            "description": "Subscription not active anymore.",
+            "type": "string"
+          },
+          "statusCode": {
+            "example": 401,
+            "description": "401",
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthBroadcast": {
+        "properties": {
+          "errorCode": {
+            "description": "ethereum.broadcast.failed",
+            "example": "ethereum.broadcast.failed",
+            "type": "string"
+          },
+          "message": {
+            "description": "Unable to broadcast transaction due to ${error}.",
+            "example": "Unable to broadcast transaction due to ${error}.",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error404TxNotFound": {
+        "properties": {
+          "errorCode": {
+            "description": "tx.not.found",
+            "example": "tx.not.found",
+            "type": "string"
+          },
+          "message": {
+            "description": "Transaction not found. Possible not exists or is still pending.",
+            "example": "Transaction not found. Possible not exists or is still pending.",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "404",
+            "example": 404,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthTxHash": {
+        "properties": {
+          "errorCode": {
+            "description": "eth.transaction.hash",
+            "example": "eth.transaction.hash",
+            "type": "string"
+          },
+          "message": {
+            "description": "Unable to calculate transaction hash. ${error}",
+            "example": "Unable to calculate transaction hash. ${error}",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthTxSign": {
+        "properties": {
+          "errorCode": {
+            "description": "eth.transaction.sign",
+            "example": "eth.transaction.sign",
+            "type": "string"
+          },
+          "message": {
+            "description": "Unable to sign transaction. ${error}",
+            "example": "Unable to sign transaction. ${error}",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthGasCalculation": {
+        "properties": {
+          "errorCode": {
+            "description": "eth.transaction.gas",
+            "example": "eth.transaction.gas",
+            "type": "string"
+          },
+          "message": {
+            "description": "Unable to calculate gas limit for transaction. ${error}",
+            "example": "Unable to calculate gas limit for transaction. ${error}",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthTxBody": {
+        "properties": {
+          "errorCode": {
+            "description": "ethereum.transaction.body",
+            "example": "ethereum.transaction.body",
+            "type": "string"
+          },
+          "message": {
+            "description": "Either currency, or tokenAddress must be defined.",
+            "example": "Either currency, or tokenAddress must be defined.",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthScBody": {
+        "properties": {
+          "errorCode": {
+            "description": "ethereum.sc.invalid",
+            "example": "ethereum.sc.invalid",
+            "type": "string"
+          },
+          "message": {
+            "description": "Invalid parameters for smart contract invocation.",
+            "example": "Invalid parameters for smart contract invocation.",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error403EthGasPrice": {
+        "properties": {
+          "errorCode": {
+            "description": "gas.price.failed",
+            "example": "gas.price.failed",
+            "type": "string"
+          },
+          "message": {
+            "description": "Unable to obtain current GAS price.",
+            "example": "Unable to obtain current GAS price.",
+            "type": "string"
+          },
+          "statusCode": {
+            "description": "403",
+            "example": 403,
+            "type": "number"
+          }
+        },
+        "required": [
+          "errorCode",
+          "message",
+          "statusCode"
+        ],
+        "type": "object"
+      },
+      "Error500": {
+        "properties": {
+          "message": {
+            "example": "Internal server error",
+            "description": "Internal server error",
+            "type": "string"
+          },
+          "statusCode": {
+            "example": 500,
+            "description": "500",
+            "type": "number"
+          }
+        },
+        "required": [
+          "statusCode",
+          "message"
+        ],
+        "type": "object"
+      },
+      "PrivKey": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Generated private key.",
+            "example": "cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ",
+            "type": "string"
+          }
+        }
+      },
+      "PrivKeyRequest": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "description": "Derivation index of private key to generate.",
+            "example": 0,
+            "maximum": 2147483647,
+            "type": "integer"
+          },
+          "mnemonic": {
+            "maxLength": 500,
+            "minLength": 1,
+            "description": "Mnemonic to generate private key from.",
+            "example": "urge pulp usage sister evidence arrest palm math please chief egg abuse",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mnemonic",
+          "index"
+        ]
+      },
+      "EthBalance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance in ETH",
+            "example": "10.52"
+          }
+        }
+      },
+      "CallSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "object"
+            },
+            "description": "Parameters of the method to be invoked."
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "description": "Custom defined fee. If not present, it will be calculated automatically.",
+            "type": "object",
+            "required": [
+              "gasLimit",
+              "gasPrice"
+            ],
+            "properties": {
+              "gasLimit": {
+                "type": "string",
+                "description": "Gas limit for transaction in gas price.",
+                "pattern": "^[+]?\\d+$",
+                "example": "40000"
+              },
+              "gasPrice": {
+                "type": "string",
+                "description": "Gas price in Gwei.",
+                "pattern": "^[+]?\\d+$",
+                "example": "20"
+              }
+            }
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "fromPrivateKey",
+          "methodName"
+        ]
+      },
+      "CallReadSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "object"
+            },
+            "description": "Parameters of the method to be invoked."
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "methodName"
+        ]
+      },
+      "CallSmartContractMethodKMS": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Parameters of the method to be invoked."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "description": "Custom defined fee. If not present, it will be calculated automatically.",
+            "type": "object",
+            "required": [
+              "gasLimit",
+              "gasPrice"
+            ],
+            "properties": {
+              "gasLimit": {
+                "type": "string",
+                "description": "Gas limit for transaction in gas price.",
+                "pattern": "^[+]?\\d+$",
+                "example": "40000"
+              },
+              "gasPrice": {
+                "type": "string",
+                "description": "Gas price in Gwei.",
+                "pattern": "^[+]?\\d+$",
+                "example": "20"
+              }
+            }
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "signatureId",
+          "methodName"
+        ]
+      },
+      "TransferEthBlockchain": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
+            "example": "My note to recipient."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from Ethereum Blockchain Account.",
+            "enum": [
+              "USDT",
+              "LEO",
+              "LINK",
+              "UNI",
+              "FREE",
+              "GMC",
+              "GMC_BSC",
+              "RMD",
+              "MKR",
+              "USDC",
+              "BAT",
+              "TUSD",
+              "BUSD",
+              "PAX",
+              "PAXG",
+              "MMY",
+              "WBTC",
+              "XCON",
+              "ETH"
+            ],
+            "example": "ETH",
+            "type": "string"
+          },
+          "fee": {
+            "description": "Custom defined fee. If not present, it will be calculated automatically.",
+            "type": "object",
+            "required": [
+              "gasLimit",
+              "gasPrice"
+            ],
+            "properties": {
+              "gasLimit": {
+                "type": "string",
+                "description": "Gas limit for transaction in gas price.",
+                "example": "40000",
+                "pattern": "^[+]?\\d+$"
+              },
+              "gasPrice": {
+                "type": "string",
+                "description": "Gas price in Gwei.",
+                "example": "20",
+                "pattern": "^[+]?\\d+$"
+              }
+            }
+          },
+          "amount": {
+            "description": "Amount to be sent in Ether.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "currency",
+          "fromPrivateKey",
+          "amount"
+        ]
+      },
+      "EthEstimateGas": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "maxLength": 42,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "minLength": 42,
+            "description": "Sender address."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "contractAddress": {
+            "description": "Contract address of ERC20 token, if transaction is ERC20 token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in Ether or ERC20.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
+            "example": "My note to recipient.",
+            "pattern": "^(0x|0h)?[0-9A-F]+$"
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "from"
+        ]
+      },
+      "EthEstimateGasArray": {
+        "type": "object",
+        "required": [
+          "estimations"
+        ],
+        "properties": {
+          "estimations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EthEstimateGas"
+            }
+          }
+        }
+      },
+      "EthGasEstimation": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice",
+          "estimations"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "string",
+            "description": "Gas limit for transaction in gas price.",
+            "example": "40000"
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price in wei.",
+            "example": "20000000000"
+          },
+          "estimations": {
+            "type": "object",
+            "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
+            "required": [
+              "safe",
+              "standard",
+              "fast",
+              "baseFee"
+            ],
+            "properties": {
+              "safe": {
+                "type": "string",
+                "description": "Safe gas price in wei.",
+                "example": "20000000000"
+              },
+              "standard": {
+                "type": "string",
+                "description": "Standard gas price in wei.",
+                "example": "40000000000"
+              },
+              "fast": {
+                "type": "string",
+                "description": "Fast gas price in wei.",
+                "example": "55000000000"
+              },
+              "baseFee": {
+                "type": "string",
+                "description": "Base fee for EIP-1559 transactions in wei.",
+                "example": "55000000000"
+              }
+            }
+          }
+        }
+      },
+      "EthGasEstimationBatch": {
+        "type": "object",
+        "required": [
+          "error",
+          "result"
+        ],
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "description": "If all estimations succeeded.",
+            "example": false
+          },
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "error"
+              ],
+              "properties": {
+                "error": {
+                  "type": "boolean",
+                  "description": "If estimation succeeded.",
+                  "example": false
+                },
+                "contractAddress": {
+                  "description": "Contract address of ERC20 token, if transaction is ERC20 token",
+                  "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+                  "maxLength": 42,
+                  "minLength": 42,
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "gasLimit",
+                    "gasPrice",
+                    "estimations"
+                  ],
+                  "properties": {
+                    "gasLimit": {
+                      "type": "string",
+                      "description": "Gas limit for transaction in gas price.",
+                      "example": "40000"
+                    },
+                    "gasPrice": {
+                      "type": "string",
+                      "description": "Gas price in wei.",
+                      "example": "20000000000"
+                    },
+                    "estimations": {
+                      "type": "object",
+                      "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
+                      "required": [
+                        "safe",
+                        "standard",
+                        "fast",
+                        "baseFee"
+                      ],
+                      "properties": {
+                        "safe": {
+                          "type": "string",
+                          "description": "Safe gas price in wei.",
+                          "example": "20000000000"
+                        },
+                        "standard": {
+                          "type": "string",
+                          "description": "Standard gas price in wei.",
+                          "example": "40000000000"
+                        },
+                        "fast": {
+                          "type": "string",
+                          "description": "Fast gas price in wei.",
+                          "example": "55000000000"
+                        },
+                        "baseFee": {
+                          "type": "string",
+                          "description": "Base fee for EIP-1559 transactions in wei.",
+                          "example": "55000000000"
+                        }
+                      }
+                    }
+                  }
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "Error message. Present only if error - true.",
+                  "example": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "error": true,
+          "result": [
+            {
+              "error": true,
+              "msg": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
+            },
+            {
+              "error": false,
+              "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+              "data": {
+                "gasLimit": "63185",
+                "gasPrice": "119104833751",
+                "estimations": {
+                  "safe": "100833333333",
+                  "standard": "104833333333",
+                  "fast": "119104833751",
+                  "baseFee": "119104833751"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "TransferEthBlockchainKMS": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
+            "example": "My note to recipient."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from Ethereum Blockchain Account.",
+            "enum": [
+              "USDT",
+              "LEO",
+              "LINK",
+              "UNI",
+              "FREE",
+              "GMC",
+              "GMC_BSC",
+              "RMD",
+              "MKR",
+              "USDC",
+              "BAT",
+              "TUSD",
+              "BUSD",
+              "PAX",
+              "PAXG",
+              "MMY",
+              "WBTC",
+              "XCON",
+              "ETH"
+            ],
+            "example": "ETH",
+            "type": "string"
+          },
+          "fee": {
+            "description": "Custom defined fee. If not present, it will be calculated automatically.",
+            "type": "object",
+            "required": [
+              "gasLimit",
+              "gasPrice"
+            ],
+            "properties": {
+              "gasLimit": {
+                "type": "string",
+                "description": "Gas limit for transaction in gas price.",
+                "example": "40000",
+                "pattern": "^[+]?\\d+$"
+              },
+              "gasPrice": {
+                "type": "string",
+                "description": "Gas price in Gwei.",
+                "example": "20",
+                "pattern": "^[+]?\\d+$"
+              }
+            }
+          },
+          "amount": {
+            "description": "Amount to be sent in Ether.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "signatureId"
+        ]
+      },
+      "TransactionHash": {
+        "type": "object",
+        "properties": {
+          "txId": {
+            "description": "TX hash of successful transaction.",
+            "example": "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txId"
+        ]
+      },
+      "Data": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "Result of the method, if the method was read only.",
+            "example": 2,
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SignatureId": {
+        "type": "object",
+        "properties": {
+          "signatureId": {
+            "format": "uuid",
+            "description": "ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "type": "string"
+          }
+        },
+        "required": [
+          "signatureId"
+        ]
+      },
+      "Wallet": {
+        "type": "object",
+        "properties": {
+          "mnemonic": {
+            "description": "Generated mnemonic for wallet.",
+            "example": "urge pulp usage sister evidence arrest palm math please chief egg abuse",
+            "type": "string"
+          },
+          "xpub": {
+            "description": "Generated Extended public key for wallet with derivation path according to BIP44. This key can be used to generate addresses.",
+            "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid",
+            "type": "string"
+          }
+        }
+      },
+      "GeneratedAddress": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Ethereum address",
+            "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "X-API-Key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n  \n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n  \n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n  \n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n  \n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n  \n  These limits are applied to both the testnet and mainnet.\n  \n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n  \n  `https://api-eu1.tatum.io/v3/ledger/account?type=testnet`\n"
+      }
+    }
+  }
+}
