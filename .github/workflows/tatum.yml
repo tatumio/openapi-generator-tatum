@@ -28,6 +28,7 @@ jobs:
   
   Build_Version:
     uses: ./.github/workflows/calculateBuildVersion.yml
+    needs: Generate_Core
 
   Core_Pack_RC:
     uses: ./.github/workflows/prepareBuildPackage.yml
