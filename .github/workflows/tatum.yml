@@ -24,3 +24,5 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn clean package -f pom.xml -DskipTests
+    - name: Generate Tatum.CSharp.Core
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/openapi_trim_trans.json -g csharp-netcore -o ./Tatum.CSharp --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageName=Tatum.CSharp.Core,oneOfMappingFilePath=./tatum/oneOfMapping.json,sourceFolder=""
