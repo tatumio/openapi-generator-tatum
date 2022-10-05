@@ -252,7 +252,8 @@
                     <source>${maven.compiler.source}</source>
                     <encoding>UTF-8</encoding>
                     <maxmemory>1g</maxmemory>
-                    <failOnWarnings>true</failOnWarnings>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <failOnWarnings>false</failOnWarnings>
                 </configuration>
                 <executions>
                     <execution>
@@ -291,7 +292,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>1.8.0</version>
+                                  <version>1.8.0</version>
                                 </requireJavaVersion>
                                 <requireMavenVersion>
                                     <version>3.2.5</version>
@@ -1390,7 +1391,6 @@
                 <module>modules/openapi-generator</module>
                 <module>modules/openapi-generator-cli</module>
                 <module>modules/openapi-generator-maven-plugin</module>
-                <module>modules/openapi-generator-gradle-plugin</module>
                 <module>modules/openapi-generator-online</module>
             </modules>
         </profile>
