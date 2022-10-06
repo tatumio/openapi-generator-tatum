@@ -51,4 +51,4 @@ jobs:
           -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
           -H "Accept: application/vnd.github.v3+json" \
           'https://api.github.com/repos/tatumio/tatum-csharp/actions/workflows/dotnet.yml/dispatches' \
-          -d '{"ref": "develop", "inputs": {"source": "New Client code generated"}}'
+          -d '{"ref": "develop", "inputs": {"source": "New Tatum.CSharp.Core generated"}}'
