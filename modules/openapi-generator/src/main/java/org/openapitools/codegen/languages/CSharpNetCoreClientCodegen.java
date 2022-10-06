@@ -1530,4 +1530,7 @@ public class CSharpNetCoreClientCodegen extends AbstractCSharpCodegen {
         // process 'additionalProperties'
         setAddProps(schema, m);
     }
+    
+    @Override
+    public boolean getUseInlineModelResolver() { return false; }
 }
