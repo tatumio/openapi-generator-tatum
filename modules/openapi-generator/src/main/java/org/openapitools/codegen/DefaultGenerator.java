@@ -103,7 +103,6 @@ public class DefaultGenerator implements Generator {
 
     private Map<String, String> oneOfReturnTypeMap = new HashMap<>();
 
-
     public DefaultGenerator() {
         this(false);
     }
@@ -852,7 +851,7 @@ public class DefaultGenerator implements Generator {
      * This adds a boolean and a collection for each authentication type to the map.
      * <p>
      * Examples:
-     * <p> 
+     * <p>
      *   boolean hasOAuthMethods
      * <p>
      *   List&lt;CodegenSecurity&gt; oauthMethods
@@ -953,9 +952,9 @@ public class DefaultGenerator implements Generator {
                     sb.append(System.lineSeparator());
                     if (verbose) {
                         sb.append("  ")
-                            .append(StringUtils.rightPad(status.getState().getDescription(), 20, "."))
-                            .append(" ").append(status.getReason())
-                            .append(System.lineSeparator());
+                                .append(StringUtils.rightPad(status.getState().getDescription(), 20, "."))
+                                .append(" ").append(status.getReason())
+                                .append(System.lineSeparator());
                     }
                 } catch (IOException e) {
                     LOGGER.debug("Unable to document dry run status for {}.", entry.getKey());
@@ -1344,16 +1343,16 @@ public class DefaultGenerator implements Generator {
 
         // check for nickname uniqueness
         if (config.getAddSuffixToDuplicateOperationNicknames()) {
-        Set<String> opIds = new HashSet<>();
-        int counter = 0;
-        for (CodegenOperation op : ops) {
-            String opId = op.nickname;
-            if (opIds.contains(opId)) {
-                counter++;
-                op.nickname += "_" + counter;
+            Set<String> opIds = new HashSet<>();
+            int counter = 0;
+            for (CodegenOperation op : ops) {
+                String opId = op.nickname;
+                if (opIds.contains(opId)) {
+                    counter++;
+                    op.nickname += "_" + counter;
+                }
+                opIds.add(opId);
             }
-            opIds.add(opId);
-        }
         }
         objs.setOperation(ops);
 
@@ -1418,7 +1417,7 @@ public class DefaultGenerator implements Generator {
             result.add(im);
         });
         return result;
-     }
+    }
 
     private ModelsMap processModels(CodegenConfig config, Map<String, Schema> definitions) {
         ModelsMap objs = new ModelsMap();
