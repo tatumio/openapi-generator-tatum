@@ -9,6 +9,13 @@ on:
   pull_request:
     branches: [ "develop" ]
 
+env:
+  PROJECT_PATH: ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj
+  PACKAGE_SOURCE: https://nuget.pkg.github.com/tatumio/index.json
+  OPENAPI_PATH: ./tatum/openapi_trim_trans.json
+  MAPPING_PATH: ./tatum/oneOfMapping.json
+  DOWNSTREAM_DISPATCH_ADDRESS: https://api.github.com/repos/tatumio/tatum-csharp/actions/workflows/dotnet.yml/dispatches
+
 jobs:
   Build_Version:
     name: Get Version
@@ -30,19 +37,19 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -f pom.xml -DskipTests
     - name: Generate Clients
-      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/openapi_trim_trans.json -g csharp-netcore --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageName=Tatum.CSharp.Core,oneOfMappingFilePath=./tatum/oneOfMapping.json,sourceFolder=""
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -g csharp-netcore --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageName=Tatum.CSharp.Core,oneOfMappingFilePath=${{ env.MAPPING_PATH }},sourceFolder=""
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
     - name: Add package source
-      run: dotnet nuget add source --username tatumio --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/tatumio/index.json"
+      run: dotnet nuget add source --username tatumio --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "${{ env.PACKAGE_SOURCE }}"
     - name: Restore dependencies
-      run: dotnet restore ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj
+      run: dotnet restore ${{ env.PROJECT_PATH }}
     - name: Build
-      run: dotnet build ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj --no-restore --configuration Release
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
     - name: Pack
-      run: dotnet pack ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj --no-build --no-restore --configuration Release /p:Version=${{ needs.Build_Version.outputs.version }} --output .
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-build --no-restore --configuration Release /p:Version=${{ needs.Build_Version.outputs.version }} --output .
     - name: Push to Github Packages
       run: dotnet nuget push "./Tatum.CSharp.Core.${{ needs.Build_Version.outputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.ACTIONS_PACKAGE_SOURCE_PAT }} --source "github"
     - name: Trigger Tatum.CSharp workflow
@@ -50,5 +57,5 @@ jobs:
           curl -X POST \
           -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
           -H "Accept: application/vnd.github.v3+json" \
-          'https://api.github.com/repos/tatumio/tatum-csharp/actions/workflows/dotnet.yml/dispatches' \
+          '${{ env.DOWNSTREAM_DISPATCH_ADDRESS }}' \
           -d '{"ref": "develop", "inputs": {"source": "New Tatum.CSharp.Core generated"}}'
