@@ -1003,8 +1003,8 @@ public class DefaultCodegen implements CodegenConfig {
         // finally escalate characters avoiding code injection
         return escapeUnsafeCharacters(
                 StringEscapeUtils.unescapeJava(
-                        StringEscapeUtils.escapeJava(input)
-                                .replace("\\/", "/"))
+                                StringEscapeUtils.escapeJava(input)
+                                        .replace("\\/", "/"))
                         .replaceAll("[\\t\\n\\r]", " ")
                         .replace("\\", "\\\\")
                         .replace("\"", "\\\""));
@@ -1029,8 +1029,8 @@ public class DefaultCodegen implements CodegenConfig {
         // finally escalate characters avoiding code injection
         return escapeUnsafeCharacters(
                 StringEscapeUtils.unescapeJava(
-                        StringEscapeUtils.escapeJava(input)
-                                .replace("\\/", "/"))
+                                StringEscapeUtils.escapeJava(input)
+                                        .replace("\\/", "/"))
                         .replaceAll("[\\t]", " ")
                         .replace("\\", "\\\\")
                         .replace("\"", "\\\""));
@@ -4991,11 +4991,11 @@ public class DefaultCodegen implements CodegenConfig {
             codegenParameter.baseType = itemsProperty.dataType;
             codegenParameter.isContainer = true;
             if (!addSchemaImportsFromV3SpecLocations) {
-            // recursively add import
-            while (itemsProperty != null) {
-                imports.add(itemsProperty.baseType);
-                itemsProperty = itemsProperty.items;
-            }
+                // recursively add import
+                while (itemsProperty != null) {
+                    imports.add(itemsProperty.baseType);
+                    itemsProperty = itemsProperty.items;
+                }
             }
         } else {
             // referenced schemas
@@ -5523,7 +5523,7 @@ public class DefaultCodegen implements CodegenConfig {
     }
 
     protected void addVars(CodegenModel m, Map<String, Schema> properties, List<String> required,
-                         Map<String, Schema> allProperties, List<String> allRequired) {
+                           Map<String, Schema> allProperties, List<String> allRequired) {
 
         m.hasRequired = false;
         if (properties != null && !properties.isEmpty()) {
