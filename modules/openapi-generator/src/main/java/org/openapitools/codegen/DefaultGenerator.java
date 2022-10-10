@@ -1295,6 +1295,12 @@ public class DefaultGenerator implements Generator {
             try {
                 CodegenOperation codegenOperation = config.fromOperation(resourcePath, httpMethod, operation, path.getServers());
                 codegenOperation.tags = new ArrayList<>(tags);
+
+                if(codegenOperation.isDeprecated)
+                {
+                    continue;
+                }
+                
                 config.addOperationToGroup(config.sanitizeTag(tag.getName()), resourcePath, operation, codegenOperation, operations);
 
                 List<SecurityRequirement> securities = operation.getSecurity();
