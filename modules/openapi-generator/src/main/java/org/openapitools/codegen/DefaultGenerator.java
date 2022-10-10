@@ -17,6 +17,7 @@
 
 package org.openapitools.codegen;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -25,6 +26,7 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.*;
@@ -99,6 +101,7 @@ public class DefaultGenerator implements Generator {
 
     private List<TemplateDefinition> userDefinedTemplates = new ArrayList<>();
 
+    private Map<String, String> oneOfReturnTypeMap = new HashMap<>();
 
     public DefaultGenerator() {
         this(false);
@@ -146,6 +149,20 @@ public class DefaultGenerator implements Generator {
             final File ignoreFile = new File(ignoreFileLocation);
             if (ignoreFile.exists() && ignoreFile.canRead()) {
                 this.ignoreProcessor = new CodegenIgnoreProcessor(ignoreFile);
+            } else {
+                LOGGER.warn("Ignore file specified at {} is not valid. This will fall back to an existing ignore file if present in the output directory.", ignoreFileLocation);
+            }
+        }
+
+        String oneOfMappingFilePath = this.config.additionalProperties().get("oneOfMappingFilePath").toString();
+        if (oneOfMappingFilePath != null) {
+            final File oneOfMappingFile = new File(oneOfMappingFilePath);
+            if (oneOfMappingFile.exists() && oneOfMappingFile.canRead()) {
+                try {
+                    this.oneOfReturnTypeMap = new ObjectMapper().readValue(oneOfMappingFile, HashMap.class);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else {
                 LOGGER.warn("Ignore file specified at {} is not valid. This will fall back to an existing ignore file if present in the output directory.", ignoreFileLocation);
             }
@@ -1075,16 +1092,140 @@ public class DefaultGenerator implements Generator {
         for (Map.Entry<String, PathItem> pathsEntry : paths.entrySet()) {
             String resourcePath = pathsEntry.getKey();
             PathItem path = pathsEntry.getValue();
-            processOperation(resourcePath, "get", path.getGet(), ops, path);
-            processOperation(resourcePath, "head", path.getHead(), ops, path);
-            processOperation(resourcePath, "put", path.getPut(), ops, path);
-            processOperation(resourcePath, "post", path.getPost(), ops, path);
-            processOperation(resourcePath, "delete", path.getDelete(), ops, path);
-            processOperation(resourcePath, "patch", path.getPatch(), ops, path);
-            processOperation(resourcePath, "options", path.getOptions(), ops, path);
-            processOperation(resourcePath, "trace", path.getTrace(), ops, path);
+            if(pathRequiresOneOfMapping(path)){
+                processOneOfOperation(resourcePath, "get", path.getGet(), ops, path);
+                processOneOfOperation(resourcePath, "head", path.getHead(), ops, path);
+                processOneOfOperation(resourcePath, "put", path.getPut(), ops, path);
+                processOneOfOperation(resourcePath, "post", path.getPost(), ops, path);
+                processOneOfOperation(resourcePath, "delete", path.getDelete(), ops, path);
+                processOneOfOperation(resourcePath, "patch", path.getPatch(), ops, path);
+                processOneOfOperation(resourcePath, "options", path.getOptions(), ops, path);
+                processOneOfOperation(resourcePath, "trace", path.getTrace(), ops, path);
+            }
+            else {
+                processOperation(resourcePath, "get", path.getGet(), ops, path);
+                processOperation(resourcePath, "head", path.getHead(), ops, path);
+                processOperation(resourcePath, "put", path.getPut(), ops, path);
+                processOperation(resourcePath, "post", path.getPost(), ops, path);
+                processOperation(resourcePath, "delete", path.getDelete(), ops, path);
+                processOperation(resourcePath, "patch", path.getPatch(), ops, path);
+                processOperation(resourcePath, "options", path.getOptions(), ops, path);
+                processOperation(resourcePath, "trace", path.getTrace(), ops, path);
+            }
         }
         return ops;
+    }
+    private void processOneOfOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
+        if (operation == null) {
+            return;
+        }
+
+        ComposedSchema composedSchema = (ComposedSchema) operation.getRequestBody().getContent().get("application/json").getSchema();
+
+        Schema targetResponseSchema = null;
+
+        Schema responseSchema = operation.getResponses().get("200").getContent().get("application/json").getSchema();
+
+        for (Schema oneOfSchema : composedSchema.getOneOf()) {
+
+            operation.getRequestBody().getContent().get("application/json").setSchema(oneOfSchema);
+
+            if(responseSchema instanceof ComposedSchema){
+
+                targetResponseSchema = getTargetResponseSchema(operation, targetResponseSchema, (ComposedSchema) responseSchema, oneOfSchema);
+            }
+
+            processOperation(resourcePath, httpMethod, operation, operations, path);
+        }
+    }
+
+    private Schema getTargetResponseSchema(Operation operation, Schema targetResponseSchema, ComposedSchema responseSchema, Schema oneOfSchema) {
+
+        String targetResponseSchemaName = this.oneOfReturnTypeMap.get(getNameFromRef(oneOfSchema));
+
+        if(targetResponseSchemaName == null){
+            targetResponseSchemaName = tryGetKmsSpecificMapping(responseSchema, oneOfSchema);
+        }
+
+        if(targetResponseSchemaName == null){
+            throw new RuntimeException("Missing return type mapping for " + oneOfSchema.get$ref());
+        }
+
+        for (Schema oneOfResponseSchema : responseSchema.getOneOf()) {
+            if(getNameFromRef(oneOfResponseSchema).equals(targetResponseSchemaName)){
+                targetResponseSchema = oneOfResponseSchema;
+                break;
+            }
+        }
+
+        operation.getResponses().get("200").getContent().get("application/json").setSchema(targetResponseSchema);
+
+        return targetResponseSchema;
+    }
+
+    private String tryGetKmsSpecificMapping(ComposedSchema responseSchema, Schema oneOfSchema) {
+        String transactionHashReturnTypeName = "TransactionHash";
+        String signatureIdReturnTypeName = "SignatureId";
+
+        Set<String> kmsReturnTypes = new HashSet<String>();
+        kmsReturnTypes.add(signatureIdReturnTypeName);
+        kmsReturnTypes.add(transactionHashReturnTypeName);
+
+        String targetResponseSchemaName;
+
+        Set<String> possibleReturnTypes = responseSchema
+                .getOneOf()
+                .stream()
+                .map(schema -> getNameFromRef(schema))
+                .collect(Collectors.toSet());
+
+        if(possibleReturnTypes.size() == 2 && possibleReturnTypes.containsAll(kmsReturnTypes)){
+            targetResponseSchemaName = getNameFromRef(oneOfSchema).endsWith("KMS")
+                    ? signatureIdReturnTypeName
+                    : transactionHashReturnTypeName;
+        }
+        else if(possibleReturnTypes.size() == 1){
+            targetResponseSchemaName = possibleReturnTypes.iterator().next();
+        }
+        else{
+            throw new RuntimeException("Missing return type mapping for " + oneOfSchema.get$ref());
+        }
+        return targetResponseSchemaName;
+    }
+
+    private String getNameFromRef(Schema schema){
+        return schema.get$ref().substring(schema.get$ref().lastIndexOf('/') + 1);
+    }
+
+    private boolean pathRequiresOneOfMapping(PathItem path){
+        Operation operation = path.getGet();
+        if(operation == null){
+            operation = path.getHead();
+        }
+        if(operation == null){
+            operation = path.getPut();
+        }
+        if(operation == null){
+            operation = path.getPost();
+        }
+        if(operation == null){
+            operation = path.getDelete();
+        }
+        if(operation == null){
+            operation = path.getPatch();
+        }
+        if(operation == null){
+            operation = path.getOptions();
+        }
+        if(operation == null){
+            operation = path.getTrace();
+        }
+
+        if(operation.getRequestBody() == null){
+            return false;
+        }
+
+        return operation.getRequestBody().getContent().get("application/json").getSchema() instanceof ComposedSchema;
     }
 
     private void processOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {

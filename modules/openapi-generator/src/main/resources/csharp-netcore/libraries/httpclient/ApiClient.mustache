@@ -165,13 +165,12 @@ namespace {{packageName}}.Client
     /// <remarks>
     /// The Dispose method will manage the HttpClient lifecycle when not passed by constructor.
     /// </remarks>
-    {{>visibility}} partial class ApiClient : IDisposable, ISynchronousClient{{#supportsAsync}}, IAsynchronousClient{{/supportsAsync}}
+    {{>visibility}} partial class ApiClient : ISynchronousClient{{#supportsAsync}}, IAsynchronousClient{{/supportsAsync}}
     {
         private readonly string _baseUrl;
 
         private readonly HttpClientHandler _httpClientHandler;
         private readonly HttpClient _httpClient;
-        private readonly bool _disposeClient;
 
         /// <summary>
         /// Specifies the settings on a <see cref="JsonSerializer" /> object.
@@ -189,33 +188,6 @@ namespace {{packageName}}.Client
                 }
             }
         };
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiClient" />, defaulting to the global configurations' base url.
-        /// **IMPORTANT** This will also create an instance of HttpClient, which is less than ideal.
-        /// It's better to reuse the <see href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests#issues-with-the-original-httpclient-class-available-in-net">HttpClient and HttpClientHandler</see>.
-        /// </summary>
-        public ApiClient() :
-                 this({{packageName}}.Client.GlobalConfiguration.Instance.BasePath)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApiClient" />.
-        /// **IMPORTANT** This will also create an instance of HttpClient, which is less than ideal.
-        /// It's better to reuse the <see href="https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests#issues-with-the-original-httpclient-class-available-in-net">HttpClient and HttpClientHandler</see>.
-        /// </summary>
-        /// <param name="basePath">The target service's base path in URL format.</param>
-        /// <exception cref="ArgumentException"></exception>
-        public ApiClient(string basePath)
-        {
-            if (string.IsNullOrEmpty(basePath)) throw new ArgumentException("basePath cannot be empty");
-
-            _httpClientHandler = new HttpClientHandler();
-            _httpClient = new HttpClient(_httpClientHandler, true);
-            _disposeClient = true;
-            _baseUrl = basePath;
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiClient" />, defaulting to the global configurations' base url.
@@ -252,16 +224,6 @@ namespace {{packageName}}.Client
             _httpClientHandler = handler;
             _httpClient = client;
             _baseUrl = basePath;
-        }
-
-        /// <summary>
-        /// Disposes resources if they were created by us
-        /// </summary>
-        public void Dispose()
-        {
-            if(_disposeClient) {
-                _httpClient.Dispose();
-            }
         }
 
         /// Prepares multipart/form-data content
@@ -459,9 +421,9 @@ namespace {{packageName}}.Client
             {
                 if (configuration.Timeout > 0)
                 {
-                    timeoutTokenSource = new CancellationTokenSource(configuration.Timeout);
-                    finalTokenSource = CancellationTokenSource.CreateLinkedTokenSource(finalToken, timeoutTokenSource.Token);
-                    finalToken = finalTokenSource.Token;
+                        timeoutTokenSource = new CancellationTokenSource(configuration.Timeout);
+                        finalTokenSource = CancellationTokenSource.CreateLinkedTokenSource(finalToken, timeoutTokenSource.Token);
+                        finalToken = finalTokenSource.Token;
                 }
 
                 if (configuration.Proxy != null)
@@ -490,12 +452,12 @@ namespace {{packageName}}.Client
                 InterceptRequest(req);
 
                 HttpResponseMessage response;
-                {{#supportsRetry}}
+{{#supportsRetry}}
                 if (RetryConfiguration.AsyncRetryPolicy != null)
                 {
                     var policy = RetryConfiguration.AsyncRetryPolicy;
                     var policyResult = await policy
-                        .ExecuteAndCaptureAsync(() => _httpClient.SendAsync(req, finalToken))
+                            .ExecuteAndCaptureAsync(() => _httpClient.SendAsync(req, finalToken))
                         .ConfigureAwait(false);
                     response = (policyResult.Outcome == OutcomeType.Successful) ?
                         policyResult.Result : new HttpResponseMessage()
@@ -506,11 +468,11 @@ namespace {{packageName}}.Client
                 }
                 else
                 {
-                {{/supportsRetry}}
+{{/supportsRetry}}
                     response = await _httpClient.SendAsync(req, finalToken).ConfigureAwait(false);
-                {{#supportsRetry}}
+{{#supportsRetry}}
                 }
-                {{/supportsRetry}}
+{{/supportsRetry}}
 
                 if (!response.IsSuccessStatusCode)
                 {

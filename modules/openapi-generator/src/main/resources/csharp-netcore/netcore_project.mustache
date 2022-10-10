@@ -13,10 +13,10 @@
     <Description>{{packageDescription}}</Description>
     <Copyright>{{packageCopyright}}</Copyright>
     <RootNamespace>{{packageName}}</RootNamespace>
-    <Version>{{packageVersion}}</Version>
+    <VersionPrefix>{{packageVersion}}</VersionPrefix>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\{{packageName}}.xml</DocumentationFile>{{#licenseId}}
     <PackageLicenseExpression>{{.}}</PackageLicenseExpression>{{/licenseId}}
-    <RepositoryUrl>https://{{{gitHost}}}/{{{gitUserId}}}/{{{gitRepoId}}}.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tatumio/tatum-csharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>{{#releaseNote}}
     <PackageReleaseNotes>{{.}}</PackageReleaseNotes>{{/releaseNote}}{{#packageTags}}
     <PackageTags>{{{.}}}</PackageTags>{{/packageTags}}{{#nrt}}
@@ -47,18 +47,5 @@
     {{#validatable}}
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     {{/validatable}}
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="System.Web" />
-    {{#net48}}
-    <None Remove="System.Net.Http" />
-    {{/net48}}
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web" />
-    {{#net48}}
-    <Reference Include="System.Net.Http" />
-    {{/net48}}
   </ItemGroup>
 </Project>

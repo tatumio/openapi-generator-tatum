@@ -6146,6 +6146,7 @@ public class DefaultCodegen implements CodegenConfig {
      */
     @Override
     public String sanitizeTag(String tag) {
+        tag = tag.replaceAll("\\(.*?\\)","");
         tag = camelize(sanitizeName(tag));
 
         // tag starts with numbers

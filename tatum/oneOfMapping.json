@@ -1,0 +1,9 @@
+{
+  "CallSmartContractMethod": "TransactionHash",
+  "CallReadSmartContractMethod": "Data",
+  "CallSmartContractMethodKMS": "SignatureId",
+  "CallPolygonSmartContractReadMethod": "Data",
+  "CallPolygonSmartContractMethod": "TransactionHash",
+  "CallPolygonSmartContractMethodCaller": "TransactionHash",
+  "CallPolygonSmartContractMethodKMS": "SignatureId"
+}
