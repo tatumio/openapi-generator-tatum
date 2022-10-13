@@ -314,53 +314,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcBlockchain"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -407,65 +360,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GeneratedAddress"
+                  "$ref": "#/components/schemas/GeneratedAddressBtc"
                 }
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403AccountIncompatibleXpubBtc"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403AccountAddressGeneral"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -504,53 +403,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BlockchainPrivateFailed"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -579,43 +431,6 @@
               }
             },
             "description": "OK"
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcBlockchain"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -656,53 +471,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcBlockchain"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -743,53 +511,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "404": {
-            "description": "Block not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error404BlockNotExists"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -830,53 +551,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcBlockchain"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -941,53 +615,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcBlockchain"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1004,7 +631,7 @@
     },
     "/v3/bitcoin/transaction": {
       "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Send BTC to blockchain addresses. It is possible to build a blockchain transaction in 2 ways:</p>\n<ul>\n<li><b>fromAddress</b> - assets will be sent from the list of addresses. For each of the addresses, the last 100 transactions will be scanned for any unspent UTXO to be included in the transaction.</li>\n<li><b>fromUTXO</b> - assets will be sent from the list of unspent UTXOs. Each of the UTXOs will be included in the transaction.</li>\n</ul>\n<p>In bitcoin-like blockchains, a transaction is created from the list of previously unspent UTXOs. Every UTXO contains the amount of funds that can be spent.</p>\n<p>When the UTXO is entered into the transaction, the whole amount is included and must be spent. For example, address A receives 2 transactions, T1 with 1 BTC and T2 with 2 BTC. The transaction, which will consume the UTXOs for T1 and T2, will have an available amount to spend of 3 BTC = 1 BTC (T1) + 2 BTC(T2).</p>\n<p>There can be multiple recipients of the transactions. In the <b>to</b> section, every recipient address has its own corresponding amount. When the amount of funds that the recipient should receive is lower than the amount of funds from the UTXOs, the difference is used as a transaction fee.</p>\n<p><b>Signing a transaction</b></p>\n<p>When sending BTC, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Send BTC to blockchain addresses.</p>\n<p>Bitcoin transactions are based on UTXOs. \"UTXO\" stands for \"Unspent Transaction Output\". A UTXO is the amount of BTC/satoshis that remains at a Bitcoin address after a cryptocurrency transaction involving this address has been performed. The UTXO can then be used as input for a new cryptocurrency transaction. For more information about Bitcoin transactions and UTXO, see the <a href=\"https://developer.bitcoin.org/devguide/transactions.html\" target=\"_blank\">Bitcoin user documentation</a>. To check UTXOs in a transaction, see the <a href=\"#operation/BtcGetUTXO\">API for getting information about a transaction output (UTXO) in a Bitcoin transaction</a>.</p>\n<p>You can build a BTC transaction by one of the following methods:</p>\n<ul>\n<li><b>Sending BTC from blockchain addresses</b><br/>The assets are sent from a list of addresses. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction. For easier control over the assets to be sent, we recommend that you use this method only if you have one address to send the assets from.<br/> To use this method, use the <code>BtcTransactionFromAddress</code> or <code>BtcTransactionFromAddressKMS</code> schema of the request body.</li>\n<li><b>Sending BTC from UTXOs</b><br/>The assets are sent from a list of UTXOs. Each UTXO is included in the transaction. Use this method if you want to manually calculate the amount to send.<br/> To use this method, use the <code>BtcTransactionFromUTXO</code> or <code>BtcTransactionFromUTXOKMS</code> schema of the request body.</li>\n</ul>\n<p>When an UTXO is entered into a transaction, the whole UTXO amount is included and must be spent. For example, address A receives two transactions, T1 with 1 BTC and T2 with 2 BTC. A transaction that consumes the UTXOs from both T1 and T2 will have an available amount of 3 BTC to spend:<br/><code>1 BTC (from T1) + 2 BTC (from T2) = 3 BTC (to spend in total)</code></p>\n<p>You can send the assets to one or multiple recipients in one transaction. If you send the assets to multiple addresses, each address must have its own amount to receive.</p>\n<p><b>Paying the gas fee and receiving the change</b><br/>\nWhen the amount that the recipients should receive is lower than the amount from the UTXOs, the difference between these two amounts is by default used as the gas fee for transaction. Because this amount may be considerable and you may not want to spend it all on the gas fee, you can explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent (the <code>fee</code> and <code>changeAddress</code> parameters in the request body, correspondingly).</p>\n<p><b>Signing a transaction</b><br/>\nWhen sending BTC, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
         "operationId": "BtcTransferBlockchain",
         "requestBody": {
           "content": {
@@ -1046,66 +673,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403BtcTx"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403BtcBlockchain"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403BtcUTXO"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403BtcTxFailed"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1146,60 +713,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403BtcBlockchain"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403TxNotFound"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1253,53 +766,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403BtcUTXO"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1333,57 +799,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403BtcBlockchain"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1422,60 +837,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to perform the required operation due to a logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403BtcBlockchain"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403Broadcast"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1547,43 +908,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "x-codeSamples": [],
@@ -1648,60 +972,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasCalculation"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1771,60 +1041,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasCalculation"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1878,43 +1094,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -1973,48 +1152,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GeneratedAddress"
+                  "$ref": "#/components/schemas/GeneratedAddressEth"
                 }
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2068,43 +1210,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2182,43 +1287,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "x-codeSamples": [],
@@ -2259,33 +1327,6 @@
               }
             },
             "description": "OK"
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2339,43 +1380,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2429,43 +1433,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2519,57 +1486,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "404": {
-            "description": "Transaction not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error404TxNotFound"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2627,43 +1543,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2775,43 +1654,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -2879,72 +1721,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403EthBroadcast"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasPrice"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasCalculation"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxHash"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxSign"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -3018,72 +1794,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error403EthBroadcast"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasPrice"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthScBody"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthGasCalculation"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxHash"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error403EthTxSign"
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -3161,43 +1871,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -3251,53 +1924,6 @@
               }
             },
             "description": "OK"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error400"
-                }
-              }
-            },
-            "description": "Bad Request. Validation failed for the given object in the HTTP Body or Request parameters."
-          },
-          "401": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Error401NotActive"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Error401Invalid"
-                    }
-                  ]
-                }
-              }
-            },
-            "description": "Unauthorized. Not valid or inactive subscription key present in the HTTP Header."
-          },
-          "403": {
-            "description": "Forbidden. The request is authenticated, but it is not possible to required perform operation due to logical error or invalid permissions.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error403EthBroadcast"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error500"
-                }
-              }
-            },
-            "description": "Internal server error. There was an error on the server while processing the request."
           }
         },
         "security": [
@@ -3480,94 +2106,14 @@
             "description": "List of transactions, from which assets are being sent.",
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "prevout": {
-                  "properties": {
-                    "hash": {
-                      "type": "string",
-                      "description": "Transaction hash of the input.",
-                      "example": "60bc8445c11318e45a72a3259e65118d2f352568757e6ceb8bf1b527ce68379f"
-                    },
-                    "index": {
-                      "type": "number",
-                      "description": "Transaction index of the input.",
-                      "example": 1
-                    }
-                  },
-                  "type": "object"
-                },
-                "script": {
-                  "type": "string",
-                  "description": "Data generated by a spender which is almost always used as variables to satisfy a pubkey script.",
-                  "example": "1600148c65244f095f3689aebb70981d102e33036fe786"
-                },
-                "witness": {
-                  "type": "string",
-                  "description": "Transaction witness.",
-                  "example": "0247304402207d7af97665ef5502c957f76a9fcdde2c228b6a8dc9951d45c318e6dfca0fcd2802207519528d6b61cc044800ab2cb499ef5f31d4decdc327c14fad4abbc3dd6e0190012102861d682cfd3bec8cbed98f5162299ba613bc5f352dd0d51961a5d81359fbc0af"
-                },
-                "sequence": {
-                  "type": "number",
-                  "example": 4294967294
-                },
-                "coin": {
-                  "properties": {
-                    "version": {
-                      "type": "number",
-                      "example": 2
-                    },
-                    "blockNumber": {
-                      "type": "number",
-                      "example": 1611608
-                    },
-                    "value": {
-                      "type": "number",
-                      "description": "Amount of the transaction, in Satoshis (1 BTC = 100 000 000 Satoshis)",
-                      "example": 1341956178
-                    },
-                    "script": {
-                      "type": "string",
-                      "example": "0014049a97d91d4e1123899bf48c5ba6ce3fd959664e"
-                    },
-                    "address": {
-                      "type": "string",
-                      "description": "Sender address.",
-                      "example": "tb1qqjdf0kgafcgj8zvm7jx9hfkw8lv4jejw6wsmjg"
-                    },
-                    "coinbase": {
-                      "type": "boolean",
-                      "description": "Coinbase transaction - miner fee.",
-                      "example": false
-                    }
-                  },
-                  "type": "object"
-                }
-              }
+              "$ref": "#/components/schemas/BtcTxInput"
             }
           },
           "outputs": {
             "type": "array",
             "description": "List of recipient addresses and amounts to send to each of them.",
             "items": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "number",
-                  "description": "Sent amount in satoshis.",
-                  "example": 2068942
-                },
-                "script": {
-                  "type": "string",
-                  "description": "Transaction script.",
-                  "example": "a914eaf2ad7e161c3ce7092bde14dc5842b642fe925187"
-                },
-                "address": {
-                  "type": "string",
-                  "description": "Recipient address.",
-                  "example": "2NEfWpiQwLEcHGbX2Fwij16NDxTEZwHk4BH"
-                }
-              }
+              "$ref": "#/components/schemas/BtcTxOutput"
             }
           },
           "locktime": {
@@ -3576,6 +2122,98 @@
             "example": 1611608
           }
         }
+      },
+      "BtcTxOutput": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Sent amount in satoshis.",
+            "example": 2068942
+          },
+          "script": {
+            "type": "string",
+            "description": "Transaction script.",
+            "example": "a914eaf2ad7e161c3ce7092bde14dc5842b642fe925187"
+          },
+          "address": {
+            "type": "string",
+            "description": "Recipient address.",
+            "example": "2NEfWpiQwLEcHGbX2Fwij16NDxTEZwHk4BH"
+          }
+        }
+      },
+      "BtcTxInput": {
+        "type": "object",
+        "properties": {
+          "prevout": {
+            "$ref": "#/components/schemas/BtcTxInputPrevOut"
+          },
+          "script": {
+            "type": "string",
+            "description": "Data generated by a spender which is almost always used as variables to satisfy a pubkey script.",
+            "example": "1600148c65244f095f3689aebb70981d102e33036fe786"
+          },
+          "witness": {
+            "type": "string",
+            "description": "Transaction witness.",
+            "example": "0247304402207d7af97665ef5502c957f76a9fcdde2c228b6a8dc9951d45c318e6dfca0fcd2802207519528d6b61cc044800ab2cb499ef5f31d4decdc327c14fad4abbc3dd6e0190012102861d682cfd3bec8cbed98f5162299ba613bc5f352dd0d51961a5d81359fbc0af"
+          },
+          "sequence": {
+            "type": "number",
+            "example": 4294967294
+          },
+          "coin": {
+            "$ref": "#/components/schemas/BtcTxInputCoin"
+          }
+        }
+      },
+      "BtcTxInputCoin": {
+        "properties": {
+          "version": {
+            "type": "number",
+            "example": 2
+          },
+          "blockNumber": {
+            "type": "number",
+            "example": 1611608
+          },
+          "value": {
+            "type": "number",
+            "description": "Amount of the transaction, in Satoshis (1 BTC = 100 000 000 Satoshis)",
+            "example": 1341956178
+          },
+          "script": {
+            "type": "string",
+            "example": "0014049a97d91d4e1123899bf48c5ba6ce3fd959664e"
+          },
+          "address": {
+            "type": "string",
+            "description": "Sender address.",
+            "example": "tb1qqjdf0kgafcgj8zvm7jx9hfkw8lv4jejw6wsmjg"
+          },
+          "coinbase": {
+            "type": "boolean",
+            "description": "Coinbase transaction - miner fee.",
+            "example": false
+          }
+        },
+        "type": "object"
+      },
+      "BtcTxInputPrevOut": {
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Transaction hash of the input.",
+            "example": "60bc8445c11318e45a72a3259e65118d2f352568757e6ceb8bf1b527ce68379f"
+          },
+          "index": {
+            "type": "number",
+            "description": "Transaction index of the input.",
+            "example": 1
+          }
+        },
+        "type": "object"
       },
       "BtcUTXO": {
         "type": "object",
@@ -3630,57 +2268,75 @@
         ],
         "properties": {
           "fromAddress": {
-            "description": "Array of addresses and corresponding private keys. Tatum will automatically scan last 100 transactions for each address and will use all of the unspent values. We advise to use this option if you have 1 address per 1 transaction only.",
+            "description": "The array of blockchain addresses to send the assets from and their private keys. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "privateKey"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Address to send assets from.",
-                  "type": "string",
-                  "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
-                  "minimum": 30,
-                  "maximum": 50
-                },
-                "privateKey": {
-                  "description": "Private key of the address to send assets from. Private key, or signature Id must be present.",
-                  "type": "string",
-                  "minimum": 52,
-                  "maximum": 52,
-                  "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf"
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromAddressSource"
             }
           },
           "to": {
-            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromAddress</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "value"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Destination address.",
-                  "type": "string",
-                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
-                  "minimum": 30,
-                  "maximum": 60
-                },
-                "value": {
-                  "description": "Amount to be sent, in BTC.",
-                  "type": "number",
-                  "minimum": 0,
-                  "example": 0.02969944
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromAddressTarget"
             }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC)",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromAddressSource": {
+        "type": "object",
+        "required": [
+          "address",
+          "privateKey"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to send the assets from",
+            "type": "string",
+            "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
+            "minimum": 30,
+            "maximum": 50
+          },
+          "privateKey": {
+            "description": "The private key of the address to send the assets from",
+            "type": "string",
+            "minimum": 52,
+            "maximum": 52,
+            "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf"
+          }
+        }
+      },
+      "BtcTransactionFromAddressTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
           }
         }
       },
@@ -3692,65 +2348,83 @@
         ],
         "properties": {
           "fromUTXO": {
-            "description": "Array of transaction hashes, index of UTXO in it and corresponding private keys. Use this option if you want to calculate amount to send manually. Either fromUTXO or fromAddress must be present.",
+            "description": "The array of transaction hashes, indexes of its UTXOs, and the private keys of the associated blockchain addresses",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "txHash",
-                "index",
-                "privateKey"
-              ],
-              "properties": {
-                "txHash": {
-                  "description": "Transaction hash of the UTXO to be spent.",
-                  "type": "string",
-                  "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
-                  "minLength": 64,
-                  "maxLength": 64
-                },
-                "index": {
-                  "description": "Index of the UTXO to be spent.",
-                  "type": "number",
-                  "example": 0,
-                  "minimum": 0,
-                  "maximum": 2147483647
-                },
-                "privateKey": {
-                  "description": "Private key of the UTXO to be spent.",
-                  "type": "string",
-                  "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf",
-                  "minLength": 52,
-                  "maxLength": 52
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOSource"
             }
           },
           "to": {
-            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromUTXO</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "value"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Destination address.",
-                  "type": "string",
-                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
-                  "minimum": 30,
-                  "maximum": 60
-                },
-                "value": {
-                  "description": "Amount to be sent, in BTC.",
-                  "type": "number",
-                  "minimum": 0,
-                  "example": 0.02969944
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOTarget"
             }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC)",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaining after covering the fee",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromUTXOSource": {
+        "type": "object",
+        "required": [
+          "txHash",
+          "index",
+          "privateKey"
+        ],
+        "properties": {
+          "txHash": {
+            "description": "The transaction hash of the UTXO to be spent",
+            "type": "string",
+            "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "index": {
+            "description": "The index of the UTXO to be spent",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "privateKey": {
+            "description": "The private key of the blockchain address that holds the UTXO to be spent",
+            "type": "string",
+            "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf",
+            "minLength": 52,
+            "maxLength": 52
+          }
+        }
+      },
+      "BtcTransactionFromUTXOTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
           }
         }
       },
@@ -3762,63 +2436,81 @@
         ],
         "properties": {
           "fromAddress": {
-            "description": "Array of addresses and corresponding private keys. Tatum will automatically scan last 100 transactions for each address and will use all of the unspent values. We advise to use this option if you have 1 address per 1 transaction only.",
+            "description": "The array of blockchain addresses to send the assets from and their signature IDs. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "signatureId"
-              ],
-              "properties": {
-                "signatureId": {
-                  "type": "string",
-                  "format": "uuid",
-                  "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
-                  "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
-                },
-                "address": {
-                  "description": "Address to send assets from.",
-                  "type": "string",
-                  "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
-                  "minimum": 30,
-                  "maximum": 50
-                },
-                "index": {
-                  "description": "Index of the SignatureId (mnemonic with-index).",
-                  "type": "number",
-                  "example": 0,
-                  "minimum": 0,
-                  "maximum": 2147483647
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromAddressKMSSource"
             }
           },
           "to": {
-            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromAddress</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "value"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Destination address.",
-                  "type": "string",
-                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
-                  "minimum": 30,
-                  "maximum": 60
-                },
-                "value": {
-                  "description": "Amount to be sent, in BTC.",
-                  "type": "number",
-                  "minimum": 0,
-                  "example": 0.02969944
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromAddressKMSTarget"
             }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC)",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromAddressKMSSource": {
+        "type": "object",
+        "required": [
+          "address",
+          "signatureId"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to send the assets from",
+            "type": "string",
+            "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
+            "minimum": 30,
+            "maximum": 50
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "description": "The KMS identifier of the private key of the address to send the assets from"
+          },
+          "index": {
+            "description": "(Only if the signature ID is mnemonic-based) The index of the specific address from the mnemonic",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        }
+      },
+      "BtcTransactionFromAddressKMSTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
           }
         }
       },
@@ -3830,64 +2522,82 @@
         ],
         "properties": {
           "fromUTXO": {
-            "description": "Array of transaction hashes, index of UTXO in it and corresponding private keys. Use this option if you want to calculate amount to send manually. Either fromUTXO or fromAddress must be present.",
+            "description": "The array of transaction hashes, indexes of its UTXOs, and the signature IDs of the associated blockchain addresses",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "txHash",
-                "signatureId",
-                "index"
-              ],
-              "properties": {
-                "txHash": {
-                  "description": "Transaction hash of the UTXO to be spent.",
-                  "type": "string",
-                  "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
-                  "minLength": 64,
-                  "maxLength": 64
-                },
-                "index": {
-                  "description": "Index of the UTXO to be spent.",
-                  "type": "number",
-                  "example": 0,
-                  "minimum": 0,
-                  "maximum": 2147483647
-                },
-                "signatureId": {
-                  "type": "string",
-                  "format": "uuid",
-                  "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
-                  "description": "Identifier of the private key associated in signing application."
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOKMSSource"
             }
           },
           "to": {
-            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromUTXO</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "value"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Destination address.",
-                  "type": "string",
-                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
-                  "minimum": 30,
-                  "maximum": 60
-                },
-                "value": {
-                  "description": "Amount to be sent, in BTC.",
-                  "type": "number",
-                  "minimum": 0,
-                  "example": 0.02969944
-                }
-              }
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOKMSTarget"
             }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC)",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromUTXOKMSSource": {
+        "type": "object",
+        "required": [
+          "txHash",
+          "signatureId",
+          "index"
+        ],
+        "properties": {
+          "txHash": {
+            "description": "The transaction hash of the UTXO to be spent",
+            "type": "string",
+            "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "index": {
+            "description": "The index of the UTXO to be spent",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "description": "The KMS identifier of the private key of the blockchain address that holds the UTXO to be spent"
+          }
+        }
+      },
+      "BtcTransactionFromUTXOKMSTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
           }
         }
       },
@@ -4096,40 +2806,43 @@
             "type": "array",
             "description": "Log events, that happened in this transaction.",
             "items": {
-              "type": "object",
-              "properties": {
-                "address": {
-                  "type": "string",
-                  "description": "From which this event originated from.",
-                  "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
-                },
-                "topics": {
-                  "type": "array",
-                  "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
-                  "items": {
-                    "type": "string",
-                    "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
-                  }
-                },
-                "data": {
-                  "type": "string",
-                  "description": "The data containing non-indexed log parameter."
-                },
-                "logIndex": {
-                  "type": "number",
-                  "description": "Integer of the event index position in the block."
-                },
-                "transactionIndex": {
-                  "type": "number",
-                  "description": "Integer of the transaction’s index position, the event was created in."
-                },
-                "transactionHash": {
-                  "type": "string",
-                  "description": "Hash of the transaction this event was created in.",
-                  "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
-                }
-              }
+              "$ref": "#/components/schemas/EthTxLog"
             }
+          }
+        }
+      },
+      "EthTxLog": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "From which this event originated from.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "topics": {
+            "type": "array",
+            "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
+            "items": {
+              "type": "string",
+              "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
+            }
+          },
+          "data": {
+            "type": "string",
+            "description": "The data containing non-indexed log parameter."
+          },
+          "logIndex": {
+            "type": "number",
+            "description": "Integer of the event index position in the block."
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transaction’s index position, the event was created in."
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction this event was created in.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
           }
         }
       },
@@ -4207,588 +2920,6 @@
             "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
           }
         }
-      },
-      "Error400": {
-        "properties": {
-          "errorCode": {
-            "example": "validation.failed",
-            "description": "validation.failed",
-            "type": "string"
-          },
-          "message": {
-            "example": "Request validation failed. Please see data for additional information.",
-            "description": "Request validation failed. Please see data for additional information.",
-            "type": "string"
-          },
-          "statusCode": {
-            "example": 400,
-            "description": "400",
-            "type": "number"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": [
-                "target"
-              ],
-              "properties": {
-                "target": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "description": "Request object present in the body of the HTTP request",
-                  "example": {
-                    "property": 12345
-                  }
-                },
-                "value": {
-                  "type": "number",
-                  "description": "Value of the target object which validation is wrong. Can be of any data type, example here is using type number.",
-                  "example": 12345
-                },
-                "property": {
-                  "type": "string",
-                  "description": "Property name of the target object which validation is wrong",
-                  "example": "property1"
-                },
-                "constraints": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "description": "Object of failed constraints for the target object. Key is the constraint, value is detailed description of the failed constraint.",
-                  "example": {
-                    "min": "property1 must not be less than 50000"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode",
-          "data"
-        ],
-        "type": "object"
-      },
-      "Error401Invalid": {
-        "properties": {
-          "errorCode": {
-            "example": "subscription.invalid",
-            "description": "subscription.invalid",
-            "type": "string"
-          },
-          "message": {
-            "example": "Unable to find valid subscription for '${apiKey}'",
-            "description": "Unable to find valid subscription for '${apiKey}'",
-            "type": "string"
-          },
-          "statusCode": {
-            "example": 401,
-            "description": "401",
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error401NotActive": {
-        "properties": {
-          "errorCode": {
-            "example": "subscription.not.active",
-            "description": "subscription.not.active",
-            "type": "string"
-          },
-          "message": {
-            "example": "Subscription not active anymore.",
-            "description": "Subscription not active anymore.",
-            "type": "string"
-          },
-          "statusCode": {
-            "example": 401,
-            "description": "401",
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthBroadcast": {
-        "properties": {
-          "errorCode": {
-            "description": "ethereum.broadcast.failed",
-            "example": "ethereum.broadcast.failed",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to broadcast transaction due to ${error}.",
-            "example": "Unable to broadcast transaction due to ${error}.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403TxNotFound": {
-        "properties": {
-          "errorCode": {
-            "description": "tx.missing",
-            "example": "tx.missing",
-            "type": "string"
-          },
-          "message": {
-            "description": "No such tx.",
-            "example": "No such tx.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error404TxNotFound": {
-        "properties": {
-          "errorCode": {
-            "description": "tx.not.found",
-            "example": "tx.not.found",
-            "type": "string"
-          },
-          "message": {
-            "description": "Transaction not found. Possible not exists or is still pending.",
-            "example": "Transaction not found. Possible not exists or is still pending.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "404",
-            "example": 404,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthTxHash": {
-        "properties": {
-          "errorCode": {
-            "description": "eth.transaction.hash",
-            "example": "eth.transaction.hash",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to calculate transaction hash. ${error}",
-            "example": "Unable to calculate transaction hash. ${error}",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthTxSign": {
-        "properties": {
-          "errorCode": {
-            "description": "eth.transaction.sign",
-            "example": "eth.transaction.sign",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to sign transaction. ${error}",
-            "example": "Unable to sign transaction. ${error}",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthGasCalculation": {
-        "properties": {
-          "errorCode": {
-            "description": "eth.transaction.gas",
-            "example": "eth.transaction.gas",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to calculate gas limit for transaction. ${error}",
-            "example": "Unable to calculate gas limit for transaction. ${error}",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthTxBody": {
-        "properties": {
-          "errorCode": {
-            "description": "ethereum.transaction.body",
-            "example": "ethereum.transaction.body",
-            "type": "string"
-          },
-          "message": {
-            "description": "Either currency, or tokenAddress must be defined.",
-            "example": "Either currency, or tokenAddress must be defined.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthScBody": {
-        "properties": {
-          "errorCode": {
-            "description": "ethereum.sc.invalid",
-            "example": "ethereum.sc.invalid",
-            "type": "string"
-          },
-          "message": {
-            "description": "Invalid parameters for smart contract invocation.",
-            "example": "Invalid parameters for smart contract invocation.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403EthGasPrice": {
-        "properties": {
-          "errorCode": {
-            "description": "gas.price.failed",
-            "example": "gas.price.failed",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to obtain current GAS price.",
-            "example": "Unable to obtain current GAS price.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403AccountIncompatibleXpubBtc": {
-        "properties": {
-          "errorCode": {
-            "description": "Address.generation.failed.wrong.xpub",
-            "example": "address.generation.failed.wrong.xpub",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to generate address, wrong xpub and account type.",
-            "example": "Unable to generate address, wrong xpub and account type.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403AccountAddressGeneral": {
-        "properties": {
-          "errorCode": {
-            "description": "Address.generation.failed",
-            "example": "address.generation.failed",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to generate address.",
-            "example": "Unable to generate address.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403BtcTxFailed": {
-        "properties": {
-          "errorCode": {
-            "description": "transaction.failed",
-            "example": "transaction.failed",
-            "type": "string"
-          },
-          "message": {
-            "description": "No spendable inputs.",
-            "example": "No spendable inputs.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403BtcTx": {
-        "properties": {
-          "errorCode": {
-            "description": "transaction.invalid.body",
-            "example": "transaction.invalid.body",
-            "type": "string"
-          },
-          "message": {
-            "description": "Either UTXO, or addresses must be present.",
-            "example": "Either UTXO, or addresses must be present.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403BtcBlockchain": {
-        "properties": {
-          "errorCode": {
-            "description": "blockchain.error.code",
-            "example": "blockchain.error.code",
-            "type": "string"
-          },
-          "message": {
-            "description": "${error.message} Code: ${error.code}",
-            "example": "${error.message} Code: ${error.code}",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error404BlockNotExists": {
-        "properties": {
-          "errorCode": {
-            "description": "block.hash.not.exists",
-            "example": "block.hash.not.exists",
-            "type": "string"
-          },
-          "message": {
-            "description": "No such block.",
-            "example": "No such block.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "404",
-            "example": 404,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403Broadcast": {
-        "properties": {
-          "errorCode": {
-            "description": "blockchain.broadcast.error",
-            "example": "blockchain.broadcast.error",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to broadcast transaction, wrong input data.",
-            "example": "Unable to broadcast transaction, wrong input data.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403BlockchainPrivateFailed": {
-        "properties": {
-          "errorCode": {
-            "description": "key.generation.failed.wrong.mnemonic",
-            "example": "key.generation.failed.wrong.mnemonic",
-            "type": "string"
-          },
-          "message": {
-            "description": "Unable to generate address, wrong mnemonic and index.",
-            "example": "Unable to generate address, wrong mnemonic and index.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error403BtcUTXO": {
-        "properties": {
-          "errorCode": {
-            "description": "tx.hash.index.spent",
-            "example": "tx.hash.index.spent",
-            "type": "string"
-          },
-          "message": {
-            "description": "No such UTXO for transaction and index.",
-            "example": "No such UTXO for transaction and index.",
-            "type": "string"
-          },
-          "statusCode": {
-            "description": "403",
-            "example": 403,
-            "type": "number"
-          }
-        },
-        "required": [
-          "errorCode",
-          "message",
-          "statusCode"
-        ],
-        "type": "object"
-      },
-      "Error500": {
-        "properties": {
-          "message": {
-            "example": "Internal server error",
-            "description": "Internal server error",
-            "type": "string"
-          },
-          "statusCode": {
-            "example": 500,
-            "description": "500",
-            "type": "number"
-          }
-        },
-        "required": [
-          "statusCode",
-          "message"
-        ],
-        "type": "object"
       },
       "PrivKey": {
         "type": "object",
@@ -4895,26 +3026,7 @@
             "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
           },
           "fee": {
-            "description": "Custom defined fee. If not present, it will be calculated automatically.",
-            "type": "object",
-            "required": [
-              "gasLimit",
-              "gasPrice"
-            ],
-            "properties": {
-              "gasLimit": {
-                "type": "string",
-                "description": "Gas limit for transaction in gas price.",
-                "pattern": "^[+]?\\d+$",
-                "example": "40000"
-              },
-              "gasPrice": {
-                "type": "string",
-                "description": "Gas price in Gwei.",
-                "pattern": "^[+]?\\d+$",
-                "example": "20"
-              }
-            }
+            "$ref": "#/components/schemas/CustomFee"
           }
         },
         "required": [
@@ -4924,6 +3036,28 @@
           "fromPrivateKey",
           "methodName"
         ]
+      },
+      "CustomFee": {
+        "description": "Custom defined fee. If not present, it will be calculated automatically.",
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "string",
+            "description": "Gas limit for transaction in gas price.",
+            "pattern": "^[+]?\\d+$",
+            "example": "40000"
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price in Gwei.",
+            "pattern": "^[+]?\\d+$",
+            "example": "20"
+          }
+        }
       },
       "CallReadSmartContractMethod": {
         "type": "object",
@@ -5028,26 +3162,7 @@
             "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
           },
           "fee": {
-            "description": "Custom defined fee. If not present, it will be calculated automatically.",
-            "type": "object",
-            "required": [
-              "gasLimit",
-              "gasPrice"
-            ],
-            "properties": {
-              "gasLimit": {
-                "type": "string",
-                "description": "Gas limit for transaction in gas price.",
-                "pattern": "^[+]?\\d+$",
-                "example": "40000"
-              },
-              "gasPrice": {
-                "type": "string",
-                "description": "Gas price in Gwei.",
-                "pattern": "^[+]?\\d+$",
-                "example": "20"
-              }
-            }
+            "$ref": "#/components/schemas/CustomFee"
           }
         },
         "required": [
@@ -5106,26 +3221,7 @@
             "type": "string"
           },
           "fee": {
-            "description": "Custom defined fee. If not present, it will be calculated automatically.",
-            "type": "object",
-            "required": [
-              "gasLimit",
-              "gasPrice"
-            ],
-            "properties": {
-              "gasLimit": {
-                "type": "string",
-                "description": "Gas limit for transaction in gas price.",
-                "example": "40000",
-                "pattern": "^[+]?\\d+$"
-              },
-              "gasPrice": {
-                "type": "string",
-                "description": "Gas price in Gwei.",
-                "example": "20",
-                "pattern": "^[+]?\\d+$"
-              }
-            }
+            "$ref": "#/components/schemas/CustomFee"
           },
           "amount": {
             "description": "Amount to be sent in Ether.",
@@ -5225,36 +3321,39 @@
             "example": "20000000000"
           },
           "estimations": {
-            "type": "object",
-            "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
-            "required": [
-              "safe",
-              "standard",
-              "fast",
-              "baseFee"
-            ],
-            "properties": {
-              "safe": {
-                "type": "string",
-                "description": "Safe gas price in wei.",
-                "example": "20000000000"
-              },
-              "standard": {
-                "type": "string",
-                "description": "Standard gas price in wei.",
-                "example": "40000000000"
-              },
-              "fast": {
-                "type": "string",
-                "description": "Fast gas price in wei.",
-                "example": "55000000000"
-              },
-              "baseFee": {
-                "type": "string",
-                "description": "Base fee for EIP-1559 transactions in wei.",
-                "example": "55000000000"
-              }
-            }
+            "$ref": "#/components/schemas/EthGasEstimationDetails"
+          }
+        }
+      },
+      "EthGasEstimationDetails": {
+        "type": "object",
+        "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
+        "required": [
+          "safe",
+          "standard",
+          "fast",
+          "baseFee"
+        ],
+        "properties": {
+          "safe": {
+            "type": "string",
+            "description": "Safe gas price in wei.",
+            "example": "20000000000"
+          },
+          "standard": {
+            "type": "string",
+            "description": "Standard gas price in wei.",
+            "example": "40000000000"
+          },
+          "fast": {
+            "type": "string",
+            "description": "Fast gas price in wei.",
+            "example": "55000000000"
+          },
+          "baseFee": {
+            "type": "string",
+            "description": "Base fee for EIP-1559 transactions in wei.",
+            "example": "55000000000"
           }
         }
       },
@@ -5273,81 +3372,7 @@
           "result": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "error"
-              ],
-              "properties": {
-                "error": {
-                  "type": "boolean",
-                  "description": "If estimation succeeded.",
-                  "example": false
-                },
-                "contractAddress": {
-                  "description": "Contract address of ERC20 token, if transaction is ERC20 token",
-                  "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-                  "maxLength": 42,
-                  "minLength": 42,
-                  "type": "string"
-                },
-                "data": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice",
-                    "estimations"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20000000000"
-                    },
-                    "estimations": {
-                      "type": "object",
-                      "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
-                      "required": [
-                        "safe",
-                        "standard",
-                        "fast",
-                        "baseFee"
-                      ],
-                      "properties": {
-                        "safe": {
-                          "type": "string",
-                          "description": "Safe gas price in wei.",
-                          "example": "20000000000"
-                        },
-                        "standard": {
-                          "type": "string",
-                          "description": "Standard gas price in wei.",
-                          "example": "40000000000"
-                        },
-                        "fast": {
-                          "type": "string",
-                          "description": "Fast gas price in wei.",
-                          "example": "55000000000"
-                        },
-                        "baseFee": {
-                          "type": "string",
-                          "description": "Base fee for EIP-1559 transactions in wei.",
-                          "example": "55000000000"
-                        }
-                      }
-                    }
-                  }
-                },
-                "msg": {
-                  "type": "string",
-                  "description": "Error message. Present only if error - true.",
-                  "example": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
-                }
-              }
+              "$ref": "#/components/schemas/EthGasEstimationBatchResult"
             }
           }
         },
@@ -5373,6 +3398,57 @@
               }
             }
           ]
+        }
+      },
+      "EthGasEstimationBatchResult": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "boolean",
+            "description": "If estimation succeeded.",
+            "example": false
+          },
+          "contractAddress": {
+            "description": "Contract address of ERC20 token, if transaction is ERC20 token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EthGasEstimationBatchResultData"
+          },
+          "msg": {
+            "type": "string",
+            "description": "Error message. Present only if error - true.",
+            "example": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
+          }
+        }
+      },
+      "EthGasEstimationBatchResultData": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice",
+          "estimations"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "string",
+            "description": "Gas limit for transaction in gas price.",
+            "example": "40000"
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price in wei.",
+            "example": "20000000000"
+          },
+          "estimations": {
+            "$ref": "#/components/schemas/EthGasEstimationDetails"
+          }
         }
       },
       "TransferEthBlockchainKMS": {
@@ -5423,26 +3499,7 @@
             "type": "string"
           },
           "fee": {
-            "description": "Custom defined fee. If not present, it will be calculated automatically.",
-            "type": "object",
-            "required": [
-              "gasLimit",
-              "gasPrice"
-            ],
-            "properties": {
-              "gasLimit": {
-                "type": "string",
-                "description": "Gas limit for transaction in gas price.",
-                "example": "40000",
-                "pattern": "^[+]?\\d+$"
-              },
-              "gasPrice": {
-                "type": "string",
-                "description": "Gas price in Gwei.",
-                "example": "20",
-                "pattern": "^[+]?\\d+$"
-              }
-            }
+            "$ref": "#/components/schemas/CustomFee"
           },
           "amount": {
             "description": "Amount to be sent in Ether.",
@@ -5524,12 +3581,22 @@
           }
         }
       },
-      "GeneratedAddress": {
+      "GeneratedAddressEth": {
         "type": "object",
         "properties": {
           "address": {
             "type": "string",
             "description": "Ethereum address",
+            "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+          }
+        }
+      },
+      "GeneratedAddressBtc": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Bitcoin address",
             "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
           }
         }
