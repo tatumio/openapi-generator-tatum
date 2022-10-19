@@ -44,7 +44,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -f pom.xml -DskipTests
     - name: Generate Clients
-      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -g csharp-netcore --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageTags=Tatum; EVM; ETH; BTC; Bitcoin; Ethereum,licenseId=MIT,packageName=Tatum.CSharp.Core,oneOfMappingFilePath=${{ env.MAPPING_PATH }},sourceFolder=""
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -g csharp-netcore --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageTags=Tatum;EVM;ETH;BTC;Bitcoin;Ethereum,licenseId=MIT,packageName=Tatum.CSharp.Core,oneOfMappingFilePath=${{ env.MAPPING_PATH }},sourceFolder=""
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
