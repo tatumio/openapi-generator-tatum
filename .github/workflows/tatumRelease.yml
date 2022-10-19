@@ -26,7 +26,7 @@ env:
 
 jobs:
   Generate_Core:
-    name: Generate Core Package
+    name: Release Core Package
     runs-on: ubuntu-latest
 
     steps:
