@@ -1,0 +1,60 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Tatum - generate CSharp.Core from OpenAPI
+run-name: ${{ inputs.source }}
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: 'Source of event'
+        required: false
+        default: ''
+      version:
+        required: true
+        type: string
+
+env:
+  PROJECT_PATH: ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj
+  PACKAGE_SOURCE: https://api.nuget.org/v3/index.json
+  OPENAPI_PATH: ./tatum/openapi_trim_trans.json
+  MAPPING_PATH: ./tatum/oneOfMapping.json
+  DOWNSTREAM_DISPATCH_ADDRESS: https://api.github.com/repos/tatumio/tatum-csharp/actions/workflows/releaseChains.yml/dispatches
+
+jobs:
+  Generate_Core:
+    name: Generate Core Package
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn clean package -f pom.xml -DskipTests
+    - name: Generate Clients
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -g csharp-netcore --library=httpclient --global-property generateAliasAsModel=false,modelTests=false,apiTests=false,apiDocs=false,modelDocs=false --additional-properties=packageName=Tatum.CSharp.Core,oneOfMappingFilePath=${{ env.MAPPING_PATH }},sourceFolder=""
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+    - name: Build
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+    - name: Pack
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-build --no-restore --configuration Release /p:Version=${{ needs.Build_Version.outputs.version }} --output .
+    - name: Core - Push to Nuget
+      run: echo "dotnet nuget push "./Tatum.CSharp.Core.${{ inputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.NUGET_PUBLISH_KEY }} --source ${{ env.PACKAGE_SOURCE }}"
+    - name: Trigger Tatum.CSharp workflow
+      run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          '${{ env.DOWNSTREAM_DISPATCH_ADDRESS }}' \
+          -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${VERSION} released", "version": "${VERSION}"}}'
