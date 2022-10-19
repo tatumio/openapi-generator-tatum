@@ -5,7 +5,7 @@ name: Tatum - release CSharp.Core
 run-name: ${{ inputs.source }}
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       source:
         type: string
@@ -13,6 +13,7 @@ on:
         required: false
         default: ''
       version:
+        description: 'Package Version'
         required: true
         type: string
 
