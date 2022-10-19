@@ -63,4 +63,4 @@ jobs:
           -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
           -H "Accept: application/vnd.github.v3+json" \
           '${{ env.DOWNSTREAM_DISPATCH_ADDRESS }}' \
-          -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${{ inputs.version }} released", "version": "${{ inputs.version }}", "rcFlag": "${{ input.rcFlag }}"}}'
+          -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${{ inputs.version }} released", "version": "${{ inputs.version }}", "rcFlag": "${{ inputs.rcFlag }}"}}'
