@@ -57,10 +57,25 @@ jobs:
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-build --no-restore --configuration Release /p:Version=${{ inputs.version }} --output .
     - name: Core - Push to Nuget
       run: dotnet nuget push "./Tatum.CSharp.Core.${{ inputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.NUGET_PUBLISH_KEY }} --source ${{ env.PACKAGE_SOURCE }}
-    - name: Trigger Tatum.CSharp workflow
-      run: |
+
+  Nuget_Wait:
+    name: Nuget package wait
+    uses: ./.github/workflows/waitForNuget.yml
+    with:
+      name: Core
+      version: ${{ inputs.version }}
+    secrets: inherit
+    needs: Generate_Core
+  
+  Chains_Release:
+    name: Dispatch Chains Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Tatum.CSharp workflow
+        run: |
           curl -X POST \
           -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
           -H "Accept: application/vnd.github.v3+json" \
           '${{ env.DOWNSTREAM_DISPATCH_ADDRESS }}' \
           -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${{ inputs.version }} released", "version": "${{ inputs.version }}", "rcFlag": "${{ inputs.rcFlag }}"}}'
+    needs: Nuget_Wait
