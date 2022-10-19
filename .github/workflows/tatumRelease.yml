@@ -16,6 +16,10 @@ on:
         description: 'Package Version'
         required: true
         type: string
+      rcFlag:
+        description: 'RC Flag'
+        required: false
+        type: string
 
 env:
   PROJECT_PATH: ./Tatum.CSharp.Core/Tatum.CSharp.Core.csproj
@@ -59,4 +63,4 @@ jobs:
           -H "Authorization: Bearer ${{secrets.DISPATCH_TOKEN}}" \
           -H "Accept: application/vnd.github.v3+json" \
           '${{ env.DOWNSTREAM_DISPATCH_ADDRESS }}' \
-          -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${{ inputs.version }} released", "version": "${{ inputs.version }}"}}'
+          -d '{"ref": "master", "inputs": {"source": "New Tatum.CSharp version ${{ inputs.version }} released", "version": "${{ inputs.version }}", "rcFlag": "${{ input.rcFlag }}"}}'
