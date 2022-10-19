@@ -5,8 +5,6 @@ name: Tatum - release CSharp.Core
 run-name: ${{ inputs.source }}
 
 on:
-  push:
-    branches: [ "develop" ]
   workflow_call:
     inputs:
       source:
