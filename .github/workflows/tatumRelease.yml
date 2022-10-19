@@ -56,7 +56,7 @@ jobs:
     - name: Pack
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-build --no-restore --configuration Release /p:Version=${{ inputs.version }} --output .
     - name: Core - Push to Nuget
-      run: echo "dotnet nuget push "./Tatum.CSharp.Core.${{ inputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.NUGET_PUBLISH_KEY }} --source ${{ env.PACKAGE_SOURCE }}"
+      run: dotnet nuget push "./Tatum.CSharp.Core.${{ inputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.NUGET_PUBLISH_KEY }} --source ${{ env.PACKAGE_SOURCE }}
     - name: Trigger Tatum.CSharp workflow
       run: |
           curl -X POST \
