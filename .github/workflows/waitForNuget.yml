@@ -20,7 +20,7 @@ jobs:
       run: |
           totalHits=0
           checkUntil=0
-          while true [ $totalHits -gt 0 ]; do
+          while true; do
             curl -o response.json -s -X GET 'https://azuresearch-usnc.nuget.org/query?q=packageid:Tatum.CSharp.${{ inputs.name }}%20version:${{ inputs.version }}&prerelease=true'
             totalHits="`grep -o '"totalHits":[0-9]*' response.json`"
             totalHits=${listedCount#*:}
