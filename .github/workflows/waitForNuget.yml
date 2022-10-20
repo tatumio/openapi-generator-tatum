@@ -39,12 +39,13 @@ jobs:
             getListedCount "${{ inputs.name }}" "${{ inputs.version }}"
             totalHits=$?
 
+            echo "Checking for hits"
             if [ $totalHits -gt 0 ]
             then
-              exit 0
+              echo "Success"
+              break
             fi
 
             echo "Sleeping for 30 seconds..."
             sleep 30
           done
-          exit 1
