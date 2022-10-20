@@ -18,26 +18,13 @@ jobs:
     steps:
     - name: Check if package avaliable
       run: |
-          function getListedCount() {
-            eval name="$1"
-            eval version="$2"
-            echo $name
-            echo $version
-            url="https://azuresearch-usnc.nuget.org/query?q=packageid:Tatum.CSharp.${name}%20version:${version}&prerelease=true"
-
-            echo $url
-
-            curl -o response.json -s -X GET "$url"
-            local listedCount="`grep -o '"totalHits":[0-9]*' response.json`"
-            local listedCount=${listedCount#*:}
-            echo "Total Hits: ${listedCount}"
-            return $listedCount
-          }
-
+          totalHits=0
           while true [ $totalHits -gt 0 ]
           do
-            getListedCount "${{ inputs.name }}" "${{ inputs.version }}"
-            totalHits=$?
+            curl -o response.json -s -X GET 'https://azuresearch-usnc.nuget.org/query?q=packageid:Tatum.CSharp.{{ inputs.name }}%20version:${{ inputs.version }}&prerelease=true'
+            totalHits="`grep -o '"totalHits":[0-9]*' response.json`"
+            totalHits=${listedCount#*:}
+            echo "Total Hits: ${totalHits}"
 
             echo "Checking for hits"
             if [ $totalHits -gt 0 ]
@@ -49,3 +36,4 @@ jobs:
             echo "Sleeping for 30 seconds..."
             sleep 30
           done
+          echo "Exiting"
