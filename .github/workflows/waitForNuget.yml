@@ -19,16 +19,15 @@ jobs:
     - name: Check if package avaliable
       run: |
           totalHits=0
-          while true [ $totalHits -gt 0 ]
-          do
+          checkUntil=0
+          while true [ $totalHits -gt 0 ]; do
             curl -o response.json -s -X GET 'https://azuresearch-usnc.nuget.org/query?q=packageid:Tatum.CSharp.${{ inputs.name }}%20version:${{ inputs.version }}&prerelease=true'
             totalHits="`grep -o '"totalHits":[0-9]*' response.json`"
             totalHits=${listedCount#*:}
             echo "Total Hits: ${totalHits}"
 
             echo "Checking for hits"
-            if [ $totalHits -gt 0 ]
-            then
+            if [ "$totalHits" -gt "$checkUntil" ]; then
               echo "Success"
               break
             fi
