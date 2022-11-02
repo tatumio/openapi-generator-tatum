@@ -7,7 +7,7 @@
   ],
   "info": {
     "title": "Tatum API Reference",
-    "version": "3.16.1",
+    "version": "3.17.0",
     "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
     "x-logo": {
       "url": "https://tatum.io/images/Light.svg",
@@ -112,11 +112,11 @@
       "name": "Flow"
     },
     {
-      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
+      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Examples of working with the XRP blockchain can be found in <a href=\"https://github.com/tatumio/tatum-js/tree/master/examples/xrp-example\" target=\"_blank\">Tatum XRP SDK</a>.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
       "name": "XRP"
     },
     {
-      "description": "<p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li> Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://friendbot.stellar.org/?addr=address\" target=\"_blank\">https://friendbot.stellar.org/?addr=address</a>.</li></ul>\n<br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>\n",
+      "description": "<p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nExamples of working with the Stellar blockchain can be found in <a href=\"https://github.com/tatumio/tatum-js/tree/master/examples/xlm-example\" target=\"_blank\">Tatum XLM SDK</a>.<br/>\nTatum supports 2 chains:\n<ul><li> Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://friendbot.stellar.org/?addr=address\" target=\"_blank\">https://friendbot.stellar.org/?addr=address</a>.</li></ul>\n<br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>\n",
       "name": "Stellar"
     },
     {
@@ -815,7 +815,7 @@
     },
     "/v3/bitcoin/broadcast": {
       "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcasts a signed transaction to the Bitcoin blockchain. This method is used internally from Tatum KMS, Tatum Middleware or Tatum Client Libraries.\nIt is possible to create a custom signing mechanism and only use this method for broadcasting data to the blockchain.</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcasts a signed transaction to the Bitcoin blockchain. This method is used internally from Tatum KMS or Tatum Client Libraries.\nIt is possible to create a custom signing mechanism and only use this method for broadcasting data to the blockchain.</p>\n",
         "operationId": "BtcBroadcast",
         "requestBody": {
           "content": {
@@ -1887,7 +1887,7 @@
     },
     "/v3/ethereum/broadcast": {
       "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcast signed transaction to Ethereum blockchain. This method is used internally from Tatum KMS, Tatum Middleware or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchain.</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcast signed transaction to Ethereum blockchain. This method is used internally from Tatum KMS or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchain.</p>\n",
         "operationId": "EthBroadcast",
         "parameters": [
           {
@@ -2288,11 +2288,11 @@
           },
           "fee": {
             "type": "string",
-            "description": "The fee to be paid for the transaction (in BTC)",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
             "example": "0.0015"
           },
           "changeAddress": {
-            "description": "The blockchain address to send any extra assets remaning after covering the fee to",
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
             "type": "string",
             "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
             "minimum": 30,
@@ -2368,11 +2368,11 @@
           },
           "fee": {
             "type": "string",
-            "description": "The fee to be paid for the transaction (in BTC)",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
             "example": "0.0015"
           },
           "changeAddress": {
-            "description": "The blockchain address to send any extra assets remaining after covering the fee",
+            "description": "The blockchain address to send any extra assets remaining after covering the fee; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
             "type": "string",
             "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
             "minimum": 30,
@@ -2456,11 +2456,11 @@
           },
           "fee": {
             "type": "string",
-            "description": "The fee to be paid for the transaction (in BTC)",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
             "example": "0.0015"
           },
           "changeAddress": {
-            "description": "The blockchain address to send any extra assets remaning after covering the fee to",
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
             "type": "string",
             "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
             "minimum": 30,
@@ -2542,11 +2542,11 @@
           },
           "fee": {
             "type": "string",
-            "description": "The fee to be paid for the transaction (in BTC)",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
             "example": "0.0015"
           },
           "changeAddress": {
-            "description": "The blockchain address to send any extra assets remaning after covering the fee",
+            "description": "The blockchain address to send any extra assets remaning after covering the fee; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
             "type": "string",
             "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
             "minimum": 30,
