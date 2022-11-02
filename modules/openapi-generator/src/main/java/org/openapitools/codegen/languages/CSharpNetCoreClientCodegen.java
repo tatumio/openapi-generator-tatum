@@ -96,7 +96,7 @@ public class CSharpNetCoreClientCodegen extends AbstractCSharpCodegen {
     // Defines nuget identifiers for target framework
     protected String targetFrameworkNuget = targetFramework;
 
-    protected boolean supportsRetry = Boolean.TRUE;
+    protected boolean supportsRetry = Boolean.FALSE;
     protected boolean supportsAsync = Boolean.TRUE;
     protected boolean netStandard = Boolean.FALSE;
 
