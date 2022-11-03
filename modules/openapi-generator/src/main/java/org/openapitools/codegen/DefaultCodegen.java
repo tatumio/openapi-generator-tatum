@@ -30,6 +30,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jsoup.Jsoup;
 import org.openapitools.codegen.CodegenDiscriminator.MappedModel;
 import org.openapitools.codegen.api.TemplatingEngineAdapter;
 import org.openapitools.codegen.config.GlobalSettings;
@@ -79,6 +80,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.servers.ServerVariable;
 import io.swagger.v3.parser.util.SchemaTypeUtil;
 
+import static org.apache.commons.text.StringEscapeUtils.unescapeHtml4;
 import static org.openapitools.codegen.CodegenConstants.UNSUPPORTED_V310_SPEC_MSG;
 import static org.openapitools.codegen.utils.OnceLogger.once;
 import static org.openapitools.codegen.utils.StringUtils.*;
@@ -4242,9 +4244,9 @@ public class DefaultCodegen implements CodegenConfig {
         }
 
         op.operationId = toOperationId(operationId);
-        op.summary = escapeText(operation.getSummary());
+        op.summary = Jsoup.parse(unescapeHtml4(escapeText(operation.getSummary()))).text();
         op.unescapedNotes = operation.getDescription();
-        op.notes = escapeText(operation.getDescription());
+        op.notes = Jsoup.parse(unescapeHtml4(escapeText(operation.getDescription()))).text();
         op.hasConsumes = false;
         op.hasProduces = false;
         if (operation.getDeprecated() != null) {
