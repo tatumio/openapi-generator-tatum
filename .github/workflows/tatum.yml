@@ -61,7 +61,7 @@ jobs:
           git clone https://user:${{ secrets.DISPATCH_TOKEN }}@github.com/tatumio/tatum-csharp.git
           cd tatum-csharp
           git checkout develop
-          mv ./Tatum.CSharp.Core ./tatum-csharp
+          mv ../Tatum.CSharp.Core .
           git add .
           git commit -m 'New Tatum.CSharp.Core generated'
           git push
