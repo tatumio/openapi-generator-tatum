@@ -55,11 +55,11 @@ jobs:
       run: dotnet nuget push "./Tatum.CSharp.Core.${{ needs.Build_Version.outputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.ACTIONS_PACKAGE_SOURCE_PAT }} --source "github"
     - name: Push to SDK repo
       run: |
-          git clone https://user:${{ secrets.DISPATCH_TOKEN }}@github.com/tatumio/tatum-csharp.git
-          cd tatum-csharp
           git config user.name "generator-workflow"
           git config user.email "csharp-generator@tatum.io"
           git config --unset-all http.https://github.com/.extraheader
+          git clone https://user:${{ secrets.DISPATCH_TOKEN }}@github.com/tatumio/tatum-csharp.git
+          cd tatum-csharp
           git checkout develop
           mv ./Tatum.CSharp.Core ./tatum-csharp
           git add .
