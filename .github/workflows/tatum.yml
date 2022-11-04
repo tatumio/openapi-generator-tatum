@@ -15,7 +15,6 @@ env:
   OPENAPI_PATH: ./tatum/openapi_trim_trans.json
   MAPPING_PATH: ./tatum/oneOfMapping.json
   CONFIG_PATH: ./tatum/config.yaml
-  DOWNSTREAM_DISPATCH_ADDRESS: https://api.github.com/repos/tatumio/tatum-csharp/actions/workflows/dotnet.yml/dispatches
 
 jobs:
   Build_Version:
@@ -49,10 +48,6 @@ jobs:
       run: dotnet restore ${{ env.PROJECT_PATH }}
     - name: Build
       run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
-    - name: Pack
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-build --no-restore --configuration Release /p:Version=${{ needs.Build_Version.outputs.version }} --output .
-    - name: Push to Github Packages
-      run: dotnet nuget push "./Tatum.CSharp.Core.${{ needs.Build_Version.outputs.version }}.nupkg" --skip-duplicate --api-key ${{ secrets.ACTIONS_PACKAGE_SOURCE_PAT }} --source "github"
     - name: Push to SDK repo
       run: |
           git config --unset-all http.https://github.com/.extraheader
