@@ -56,6 +56,7 @@ jobs:
           git config user.name "generator-workflow"
           git config user.email "csharp-generator@tatum.io"
           git checkout develop
+          rm -r ./Tatum.CSharp.Core
           mv ../Tatum.CSharp.Core .
           git add .
           git commit -m 'New Tatum.CSharp.Core generated'
