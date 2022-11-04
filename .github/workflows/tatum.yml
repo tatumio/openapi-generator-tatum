@@ -58,6 +58,9 @@ jobs:
           git checkout develop
           rm -r ./Tatum.CSharp.Core
           mv ../Tatum.CSharp.Core .
-          git add .
-          git commit -m 'New Tatum.CSharp.Core generated'
-          git push
+          if ! git diff --quiet
+          then
+            git add .
+            git commit -m 'New Tatum.CSharp.Core generated'
+            git push
+          fi
