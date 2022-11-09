@@ -62,6 +62,7 @@ public class CodegenOperation {
     public String operationIdLowerCase; // for markdown documentation
     public String operationIdCamelCase; // for class names
     public String operationIdSnakeCase;
+    public String chain;
 
     /**
      * Check if there's at least one parameter

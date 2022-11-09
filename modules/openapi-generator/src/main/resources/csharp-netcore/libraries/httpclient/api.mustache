@@ -314,6 +314,10 @@ namespace {{packageName}}.{{apiPackage}}
             if ({{paramName}} == null)
                 throw new ApiException(400, "Missing required parameter '{{paramName}}' when calling {{classname}}->{{operationId}}");
 
+            {{#chain}}
+            {{paramName}}.Chain = {{{dataType}}}.ChainEnum.{{chain}};
+            {{/chain}}
+
             {{/vendorExtensions.x-csharp-value-type}}
             {{/required}}
             {{/allParams}}
@@ -532,10 +536,13 @@ namespace {{packageName}}.{{apiPackage}}
             if ({{paramName}} == null)
                 throw new ApiException(400, "Missing required parameter '{{paramName}}' when calling {{classname}}->{{operationId}}");
 
+            {{#chain}}
+            {{paramName}}.Chain = {{{dataType}}}.ChainEnum.{{chain}};
+            {{/chain}}
+
             {{/vendorExtensions.x-csharp-value-type}}
             {{/required}}
             {{/allParams}}
-
             var localVarRequestOptions = new RequestOptions();
 
             var contentTypes = new string[]{

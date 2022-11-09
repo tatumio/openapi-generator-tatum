@@ -1,9 +1,39 @@
 {
-  "CallSmartContractMethod": "TransactionHash",
-  "CallReadSmartContractMethod": "Data",
-  "CallSmartContractMethodKMS": "SignatureId",
-  "CallPolygonSmartContractReadMethod": "Data",
-  "CallPolygonSmartContractMethod": "TransactionHash",
-  "CallPolygonSmartContractMethodCaller": "TransactionHash",
-  "CallPolygonSmartContractMethodKMS": "SignatureId"
+  "OneToOneMappings":
+  {
+    "CallSmartContractMethod": "TransactionHash",
+    "CallReadSmartContractMethod": "Data",
+    "CallSmartContractMethodKMS": "SignatureId",
+    "CallPolygonSmartContractReadMethod": "Data",
+    "CallPolygonSmartContractMethod": "TransactionHash",
+    "CallPolygonSmartContractMethodCaller": "TransactionHash",
+    "CallPolygonSmartContractMethodKMS": "SignatureId",
+    "MintNftExpress": "TransactionHash",
+    "MintNftExpressSolana": "TransactionHash",
+    "MintNftExpressAlgorand": "TransactionHash",
+    "MintNftMinter": "TransactionHash",
+    "TransferNftFlowKMS": "SignatureId",
+    "MintNftFlowPK": "TransactionHash",
+    "MintNftFlowMnemonic": "TransactionHash",
+    "MintNftFlowKMS": "SignatureId",
+    "TransferNftFlowPK": "TransactionHash",
+    "TransferNftFlowMnemonic": "TransactionHash",
+    "MintMultipleNftFlowPK": "TransactionHash",
+    "MintMultipleNftFlowMnemonic": "TransactionHash",
+    "MintMultipleNftFlowKMS": "SignatureId"
+  },
+  "ReturnPerChainMappings":
+    {
+      "NftGetTransactErc721":
+      {
+        "*": "EthTx",
+        "FLOW": "FlowTx",
+        "CELO": "CeloTx"
+      },
+      "NftGetBalanceErc721":
+      {
+        "*": "NftGetBalanceSc",
+        "ALGO": "NftGetBalanceScAlgo"
+      }
+    }
 }

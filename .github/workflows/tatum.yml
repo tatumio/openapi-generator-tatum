@@ -37,7 +37,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -f pom.xml -DskipTests
     - name: Generate Clients
-      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }}
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ${{ env.OPENAPI_PATH }} -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }},chainsToInclude=ETH;BTC
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:

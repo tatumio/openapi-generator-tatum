@@ -29,6 +29,8 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.*;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.apache.commons.io.FilenameUtils;
@@ -56,10 +58,7 @@ import org.openapitools.codegen.templating.CommonTemplateContentLocator;
 import org.openapitools.codegen.templating.GeneratorTemplateContentLocator;
 import org.openapitools.codegen.templating.MustacheEngineAdapter;
 import org.openapitools.codegen.templating.TemplateManagerOptions;
-import org.openapitools.codegen.utils.ImplementationVersion;
-import org.openapitools.codegen.utils.ModelUtils;
-import org.openapitools.codegen.utils.ProcessUtils;
-import org.openapitools.codegen.utils.URLPathUtils;
+import org.openapitools.codegen.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,7 +100,13 @@ public class DefaultGenerator implements Generator {
 
     private List<TemplateDefinition> userDefinedTemplates = new ArrayList<>();
 
-    private Map<String, String> oneOfReturnTypeMap = new HashMap<>();
+    private OneOfMappingModel oneOfReturnTypeMap = null;
+
+    // A cache to efficiently lookup a Schema instance based on the return value of `toModelName()`.
+    private Map<String, CodegenModel> modelNameToCodegenModel;
+
+    private Map<String,List<String>> chainsPerTag = new HashMap<>();
+    private Set<String> chainsToInclude;
 
     public DefaultGenerator() {
         this(false);
@@ -159,7 +164,7 @@ public class DefaultGenerator implements Generator {
             final File oneOfMappingFile = new File(oneOfMappingFilePath);
             if (oneOfMappingFile.exists() && oneOfMappingFile.canRead()) {
                 try {
-                    this.oneOfReturnTypeMap = new ObjectMapper().readValue(oneOfMappingFile, HashMap.class);
+                    this.oneOfReturnTypeMap = new ObjectMapper().readValue(oneOfMappingFile, OneOfMappingModel.class);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -587,6 +592,23 @@ public class DefaultGenerator implements Generator {
 
     }
 
+    void setModelNameToCodegenModel(List<ModelMap> allModels) {
+        // Create a cache to efficiently lookup codegenModel based on model name.
+        Map<String, CodegenModel> m = new HashMap<>();
+        allModels.forEach(modelMap -> m.put(modelMap.getModel().name, modelMap.getModel()));
+        modelNameToCodegenModel = Collections.unmodifiableMap(m);
+    }
+
+    private void setChainsToInclude() {
+        Set<String> chainsToIncludeSet = new HashSet<>();
+
+        String chainsToIncludeProp = this.config.additionalProperties().get("chainsToInclude").toString();
+
+        Collections.addAll(chainsToIncludeSet, chainsToIncludeProp.split(";"));
+
+        this.chainsToInclude = chainsToIncludeSet;
+    }
+
     @SuppressWarnings("unchecked")
     void generateApis(List<File> files, List<OperationsMap> allOperations, List<ModelMap> allModels) {
         if (!generateApis) {
@@ -594,6 +616,13 @@ public class DefaultGenerator implements Generator {
             LOGGER.info("Skipping generation of APIs.");
             return;
         }
+
+        this.setChainsToInclude();
+
+        this.setModelNameToCodegenModel(allModels);
+
+        this.gatherChainsPerTag();
+
         Map<String, List<CodegenOperation>> paths = processPaths(this.openAPI.getPaths());
         Set<String> apisToGenerate = null;
         String apiNames = GlobalSettings.getProperty("apis");
@@ -717,6 +746,102 @@ public class DefaultGenerator implements Generator {
             Json.prettyPrint(allOperations);
         }
 
+    }
+
+    private void gatherChainsPerTag() {
+        for (Map.Entry<String, PathItem> pathsEntry : this.openAPI.getPaths().entrySet()) {
+            PathItem path = pathsEntry.getValue();
+
+            Operation operation = path.getGet();
+            if(operation == null){
+                operation = path.getHead();
+            }
+            if(operation == null){
+                operation = path.getPut();
+            }
+            if(operation == null){
+                operation = path.getPost();
+            }
+            if(operation == null){
+                operation = path.getDelete();
+            }
+            if(operation == null){
+                operation = path.getPatch();
+            }
+            if(operation == null){
+                operation = path.getOptions();
+            }
+            if(operation == null){
+                operation = path.getTrace();
+            }
+
+            String tag = operation.getTags().get(0);
+
+            RequestBody requestBody = operation.getRequestBody();
+
+            if(requestBody == null){
+                continue;
+            }
+
+            Schema requestSchema = requestBody.getContent().get("application/json").getSchema();
+
+            Set<Schema> requestSchemaList = new HashSet<>();
+
+            if(requestSchema instanceof ComposedSchema) {
+                ComposedSchema composedSchema = (ComposedSchema) requestSchema;
+                requestSchemaList.addAll(composedSchema.getOneOf());
+            } else {
+                requestSchemaList.add(requestSchema);
+            }
+
+            for(Schema singleRequestSchema : requestSchemaList){
+
+                String name = getNameFromRef(singleRequestSchema);
+
+                if(name == null){
+                    continue;
+                }
+
+                CodegenModel requestToCheckForChain = modelNameToCodegenModel.get(name);
+
+                if(requestToCheckForChain.getMandatory().contains("Chain"))
+                {
+                    CodegenProperty chainParam = getChainProperty(requestToCheckForChain);
+
+                    if(chainParam == null){
+                        continue;
+                    }
+
+
+                    List<String> chains = getChainValues(chainParam);
+
+                    if(this.chainsPerTag.containsKey(tag))
+                    {
+                        for(String chain : chains){
+                            if(!this.chainsPerTag.get(tag).contains(chain)){
+                                this.chainsPerTag.get(tag).add(chain);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this.chainsPerTag.put(tag, chains);
+                    }
+                }
+            }
+        }
+    }
+
+    private List<String> getChainValues(CodegenProperty chainParam) {
+        List<String> allowableChains = (List<String>)chainParam.getAllowableValues().get("values");
+        List<String> enumChains = chainParam._enum;
+
+        if(allowableChains.size() <= enumChains.size()){
+            return allowableChains;
+        }
+        else{
+            return enumChains;
+        }
     }
 
     private void generateSupportingFiles(List<File> files, Map<String, Object> bundle) {
@@ -1092,59 +1217,212 @@ public class DefaultGenerator implements Generator {
         for (Map.Entry<String, PathItem> pathsEntry : paths.entrySet()) {
             String resourcePath = pathsEntry.getKey();
             PathItem path = pathsEntry.getValue();
-            if(pathRequiresOneOfMapping(path)){
-                processOneOfOperation(resourcePath, "get", path.getGet(), ops, path);
-                processOneOfOperation(resourcePath, "head", path.getHead(), ops, path);
-                processOneOfOperation(resourcePath, "put", path.getPut(), ops, path);
-                processOneOfOperation(resourcePath, "post", path.getPost(), ops, path);
-                processOneOfOperation(resourcePath, "delete", path.getDelete(), ops, path);
-                processOneOfOperation(resourcePath, "patch", path.getPatch(), ops, path);
-                processOneOfOperation(resourcePath, "options", path.getOptions(), ops, path);
-                processOneOfOperation(resourcePath, "trace", path.getTrace(), ops, path);
-            }
-            else {
-                processOperation(resourcePath, "get", path.getGet(), ops, path);
-                processOperation(resourcePath, "head", path.getHead(), ops, path);
-                processOperation(resourcePath, "put", path.getPut(), ops, path);
-                processOperation(resourcePath, "post", path.getPost(), ops, path);
-                processOperation(resourcePath, "delete", path.getDelete(), ops, path);
-                processOperation(resourcePath, "patch", path.getPatch(), ops, path);
-                processOperation(resourcePath, "options", path.getOptions(), ops, path);
-                processOperation(resourcePath, "trace", path.getTrace(), ops, path);
-            }
+
+            processOperationEntryPoint(resourcePath, "get", path.getGet(), ops, path);
+            processOperationEntryPoint(resourcePath, "head", path.getHead(), ops, path);
+            processOperationEntryPoint(resourcePath, "put", path.getPut(), ops, path);
+            processOperationEntryPoint(resourcePath, "post", path.getPost(), ops, path);
+            processOperationEntryPoint(resourcePath, "delete", path.getDelete(), ops, path);
+            processOperationEntryPoint(resourcePath, "patch", path.getPatch(), ops, path);
+            processOperationEntryPoint(resourcePath, "options", path.getOptions(), ops, path);
+            processOperationEntryPoint(resourcePath, "trace", path.getTrace(), ops, path);
         }
         return ops;
     }
-    private void processOneOfOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
+
+    private void processOperationEntryPoint(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
         if (operation == null) {
             return;
         }
 
-        ComposedSchema composedSchema = (ComposedSchema) operation.getRequestBody().getContent().get("application/json").getSchema();
+        if(pathRequiresOneOfMapping(operation)){
+            processOneOfOperation(resourcePath, httpMethod, operation, operations, path);
+        }
+        else {
+            handlePerChainOperation(resourcePath, httpMethod, operation, operations, path);
+        }
+    }
 
-        Schema targetResponseSchema = null;
+    private void processOneOfOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
+        if (operation == null) {
+            return;
+        }
+        Schema requestSchema = null;
+        Schema responseSchema = null;
+        
+        RequestBody requestBody = operation.getRequestBody();
+        ApiResponse apiResponseOk = operation.getResponses().get("200");
+        
+        if(requestBody != null){
+            requestSchema = requestBody.getContent().get("application/json").getSchema();
+        }
+        
+        if(apiResponseOk != null){
+            responseSchema = apiResponseOk.getContent().get("application/json").getSchema();
+        }
 
-        Schema responseSchema = operation.getResponses().get("200").getContent().get("application/json").getSchema();
+        if(requestSchema instanceof ComposedSchema){
+            processOneToOneMapping(resourcePath, httpMethod, operation, operations, path, requestSchema, responseSchema);
+        }
+        else{
+            processPerChainMapping(resourcePath, httpMethod, operation, operations, path, (ComposedSchema) responseSchema, apiResponseOk);
+        }
+    }
 
-        for (Schema oneOfSchema : composedSchema.getOneOf()) {
+    private void processPerChainMapping(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path, ComposedSchema responseSchema, ApiResponse apiResponseOk) {
+        Map<String, String> perChainMappings = this.oneOfReturnTypeMap.ReturnPerChainMappings.get(operation.getOperationId());
+
+        if(perChainMappings == null){
+            throw new RuntimeException("Missing per chain return type mapping for " + operation.getOperationId());
+        }
+
+        Parameter chainParam = getChainParam(operation);
+
+        if(chainParam == null){
+            throw new RuntimeException("Trying to chain map method without chain param: " + operation.getOperationId());
+        }
+
+        List<String> chains = chainParam.getSchema().getEnum();
+
+        List<Schema> responseSchemaList = responseSchema.getOneOf();
+
+        String tag = operation.getTags().get(0);
+
+        for (String chain : chains) {
+
+            Schema targetResponseSchema = getTargetResponseSchema(responseSchemaList, perChainMappings.get(chain));
+
+            if(targetResponseSchema == null){
+                targetResponseSchema = getTargetResponseSchema(responseSchemaList, perChainMappings.get("*"));
+            }
+
+            if(targetResponseSchema == null){
+                throw new RuntimeException("Unable to find default per chain mapping for: " + operation.getOperationId() + ", chain: " + chain);
+            }
+
+            apiResponseOk.getContent().get("application/json").setSchema(targetResponseSchema);
+
+            if(resourcePath.contains("{chain}")){
+                if(!this.chainsToInclude.contains(chain)){
+                    continue;
+                }
+                addChainToOperationTag(operation, tag, chain);
+
+                List<Parameter> parameters = operation.getParameters();
+                parameters.remove(chainParam);
+
+                processOperation(resourcePath.replace("{chain}", chain), httpMethod, operation, operations, path);
+            }
+            else
+            {
+                throw new RuntimeException("Trying to map chain specific endpoint without 'chain' param in the path: " + operation.getOperationId() + ", chain: " + chain);
+            }
+        }
+    }
+
+    private Schema getTargetResponseSchema(List<Schema> responseSchemaList, String targetChain) {
+        return responseSchemaList
+                .stream()
+                .filter(s -> getNameFromRef(s).equals(targetChain))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static Parameter getChainParam(Operation operation) {
+        return operation
+                .getParameters()
+                .stream()
+                .filter(op -> op.getName().equals("chain"))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private void processOneToOneMapping(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path, Schema requestSchema, Schema responseSchema) {
+        List<Schema> requestSchemaList = ((ComposedSchema) requestSchema).getOneOf();
+
+        String tag = operation.getTags().get(0);
+
+        for (Schema oneOfSchema : requestSchemaList) {
 
             operation.getRequestBody().getContent().get("application/json").setSchema(oneOfSchema);
 
             if(responseSchema instanceof ComposedSchema){
 
-                targetResponseSchema = getTargetResponseSchema(operation, targetResponseSchema, (ComposedSchema) responseSchema, oneOfSchema);
+                Schema targetResponseSchema = getTargetResponseSchema(operation, (ComposedSchema) responseSchema, oneOfSchema, requestSchemaList);
+                operation.getResponses().get("200").getContent().get("application/json").setSchema(targetResponseSchema);
             }
 
+            CodegenModel requestToCheckForChain = modelNameToCodegenModel.get(getNameFromRef(oneOfSchema));
+
+            if(requestToCheckForChain.getMandatory().contains("Chain"))
+            {
+                CodegenProperty chainParam = getChainProperty(requestToCheckForChain);
+
+                if(chainParam == null){
+                    throw new RuntimeException("Trying to chain map method without chain param: " + operation.getOperationId());
+                }
+
+                List<String> chains = getChainValues(chainParam);
+
+                for (String chain : chains) {
+                    addChainToOperationTag(operation, tag, chain);
+                    processOperation(resourcePath, httpMethod, operation, operations, path, chain);
+                }
+            }
+            else
+            {
+                handlePerChainOperation(resourcePath, httpMethod, operation, operations, path);
+            }
+        }
+    }
+
+    private static CodegenProperty getChainProperty(CodegenModel requestToCheckForChain) {
+        return requestToCheckForChain
+                .getRequiredVars()
+                .stream()
+                .filter(p -> p.getBaseName().equals("chain"))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static void addChainToOperationTag(Operation operation, String tag, String chain) {
+        String chainName = chain.substring(0,1).toUpperCase() + chain.substring(1).toLowerCase();
+        operation.getTags().set(0, tag +chainName);
+    }
+
+    private void handlePerChainOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
+        String tag = operation.getTags().get(0);
+
+        if(this.chainsPerTag.containsKey(tag))
+        {
+            for (String chain : this.chainsPerTag.get(tag)) {
+                if(!this.chainsToInclude.contains(chain)){
+                    continue;
+                }
+
+                Parameter chainParam = getChainParam(operation);
+
+                if(chainParam != null){
+                    operation.getParameters().remove(chainParam);
+                    resourcePath = resourcePath.replace("{chain}", chain);
+                }
+
+                addChainToOperationTag(operation, tag, chain);
+                processOperation(resourcePath, httpMethod, operation, operations, path);
+            }
+        }
+        else {
             processOperation(resourcePath, httpMethod, operation, operations, path);
         }
     }
 
-    private Schema getTargetResponseSchema(Operation operation, Schema targetResponseSchema, ComposedSchema responseSchema, Schema oneOfSchema) {
+    private Schema getTargetResponseSchema(Operation operation, ComposedSchema responseSchema, Schema oneOfSchema, List<Schema> requestSchemaList) {
 
-        String targetResponseSchemaName = this.oneOfReturnTypeMap.get(getNameFromRef(oneOfSchema));
+        Schema targetResponseSchema = null;
+        String targetResponseSchemaName = this.oneOfReturnTypeMap.OneToOneMappings.get(getNameFromRef(oneOfSchema));
 
         if(targetResponseSchemaName == null){
-            targetResponseSchemaName = tryGetKmsSpecificMapping(responseSchema, oneOfSchema);
+            targetResponseSchemaName = tryGetKmsSpecificMapping(responseSchema, oneOfSchema, requestSchemaList);
         }
 
         if(targetResponseSchemaName == null){
@@ -1158,12 +1436,10 @@ public class DefaultGenerator implements Generator {
             }
         }
 
-        operation.getResponses().get("200").getContent().get("application/json").setSchema(targetResponseSchema);
-
         return targetResponseSchema;
     }
 
-    private String tryGetKmsSpecificMapping(ComposedSchema responseSchema, Schema oneOfSchema) {
+    private String tryGetKmsSpecificMapping(ComposedSchema responseSchema, Schema oneOfSchema, List<Schema> requestSchemaList) {
         String transactionHashReturnTypeName = "TransactionHash";
         String signatureIdReturnTypeName = "SignatureId";
 
@@ -1179,8 +1455,10 @@ public class DefaultGenerator implements Generator {
                 .map(schema -> getNameFromRef(schema))
                 .collect(Collectors.toSet());
 
-        if(possibleReturnTypes.size() == 2 && possibleReturnTypes.containsAll(kmsReturnTypes)){
-            targetResponseSchemaName = getNameFromRef(oneOfSchema).endsWith("KMS")
+        boolean isKmsPair = checkIfIsKMSPair(oneOfSchema, requestSchemaList);
+
+        if((possibleReturnTypes.size() == 2 || isKmsPair) && possibleReturnTypes.containsAll(kmsReturnTypes)){
+            targetResponseSchemaName = getNameFromRef(oneOfSchema).contains("KMS")
                     ? signatureIdReturnTypeName
                     : transactionHashReturnTypeName;
         }
@@ -1193,43 +1471,57 @@ public class DefaultGenerator implements Generator {
         return targetResponseSchemaName;
     }
 
+    private boolean checkIfIsKMSPair(Schema oneOfSchema, List<Schema> requestSchemaList){
+        Set<String> possibleRequestTypes = requestSchemaList
+                .stream()
+                .map(schema -> getNameFromRef(schema))
+                .collect(Collectors.toSet());
+
+        return possibleRequestTypes.contains(getNameFromRef(oneOfSchema) + "KMS") || possibleRequestTypes.contains(getNameFromRef(oneOfSchema).replace("KMS", ""));
+    }
+
     private String getNameFromRef(Schema schema){
+        if(schema.get$ref() == null){
+            return null;
+        }
         return schema.get$ref().substring(schema.get$ref().lastIndexOf('/') + 1);
     }
 
-    private boolean pathRequiresOneOfMapping(PathItem path){
-        Operation operation = path.getGet();
-        if(operation == null){
-            operation = path.getHead();
-        }
-        if(operation == null){
-            operation = path.getPut();
-        }
-        if(operation == null){
-            operation = path.getPost();
-        }
-        if(operation == null){
-            operation = path.getDelete();
-        }
-        if(operation == null){
-            operation = path.getPatch();
-        }
-        if(operation == null){
-            operation = path.getOptions();
-        }
-        if(operation == null){
-            operation = path.getTrace();
+    private boolean pathRequiresOneOfMapping(Operation operation){
+
+        boolean isOneOfMapping = false;
+
+        if(operation.getRequestBody() != null)
+        {
+            Schema requestSchema = operation.getRequestBody().getContent().get("application/json").getSchema();
+
+            if(requestSchema instanceof ComposedSchema){
+                isOneOfMapping = true;
+            }
         }
 
-        if(operation.getRequestBody() == null){
-            return false;
+        if(operation.getResponses() != null)
+        {
+            Schema responseSchema = operation.getResponses().get("200").getContent().get("application/json").getSchema();
+
+            if(responseSchema instanceof ComposedSchema){
+                isOneOfMapping = true;
+            }
         }
 
-        return operation.getRequestBody().getContent().get("application/json").getSchema() instanceof ComposedSchema;
+        return isOneOfMapping;
     }
 
     private void processOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
+        this.processOperation(resourcePath, httpMethod, operation, operations, path, null);
+    }
+
+    private void processOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path, String chain) {
         if (operation == null) {
+            return;
+        }
+
+        if(chain != null && !this.chainsToInclude.contains(chain)){
             return;
         }
 
@@ -1295,6 +1587,7 @@ public class DefaultGenerator implements Generator {
             try {
                 CodegenOperation codegenOperation = config.fromOperation(resourcePath, httpMethod, operation, path.getServers());
                 codegenOperation.tags = new ArrayList<>(tags);
+                codegenOperation.chain = chain;
 
                 if(codegenOperation.isDeprecated)
                 {
