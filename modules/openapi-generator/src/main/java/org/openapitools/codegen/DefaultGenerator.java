@@ -604,7 +604,7 @@ public class DefaultGenerator implements Generator {
 
         String chainsToIncludeProp = this.config.additionalProperties().get("chainsToInclude").toString();
 
-        Collections.addAll(chainsToIncludeSet, chainsToIncludeProp.split(";"));
+        Collections.addAll(chainsToIncludeSet, chainsToIncludeProp.split("-"));
 
         this.chainsToInclude = chainsToIncludeSet;
     }
