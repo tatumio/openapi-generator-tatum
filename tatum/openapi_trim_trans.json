@@ -3085,7 +3085,7 @@
         ]
       }
     },
-    "/v3/nft/metadata/{chain}/{contractAddress}/{token}": {
+    "/v3/nft/metadata/{chain}/{contractAddress}/{tokenId}": {
       "get": {
         "description": "<p><b>1 credit per API call</b></p>\n<p>Get metadata of an NFT.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Flow</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n<li>Solana</li>\n<li>TRON</li>\n</ul>\n",
         "operationId": "NftGetMetadataErc721",
@@ -3124,12 +3124,12 @@
           {
             "description": "The ID of the NFT to get metadata for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana.",
             "in": "path",
-            "name": "token",
+            "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "string",
-              "example": "1",
-              "maxLength": 32
+              "type": "integer",
+              "minimum": 0,
+              "example": 1
             }
           },
           {
@@ -5383,8 +5383,9 @@
             "type": "array",
             "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs",
             "items": {
-              "type": "string",
-              "example": "1"
+              "type": "integer",
+              "minimum": 0,
+              "example": 1
             }
           },
           "blockNumber": {
@@ -10385,9 +10386,10 @@
             "type": "array",
             "description": "The array returning the ID of the NFTs",
             "items": {
-              "type": "string",
               "description": "The ID of the NFT",
-              "example": "10"
+              "type": "integer",
+              "minimum": 0,
+              "example": 1
             }
           }
         }
