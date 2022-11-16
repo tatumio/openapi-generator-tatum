@@ -3265,7 +3265,7 @@
         ]
       }
     },
-    "/v3/nft/royalty/{chain}/{contractAddress}/{token}": {
+    "/v3/nft/royalty/{chain}/{contractAddress}/{tokenId}": {
       "get": {
         "description": "<p><b>1 credit per API call</b></p>\n<p>Get information about royalties for an NFT.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n<li>Solana</li>\n<li>TRON</li>\n</ul>\n",
         "operationId": "NftGetRoyaltyErc721",
@@ -3303,12 +3303,12 @@
           {
             "description": "The ID of the NFT to get royalty information for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana",
             "in": "path",
-            "name": "token",
+            "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "string",
-              "example": "1",
-              "maxLength": 32
+              "type": "integer",
+              "minimum": 0,
+              "example": 1
             }
           },
           {
