@@ -2681,14 +2681,14 @@
             }
           },
           {
-            "description": "NFT Token ID",
+            "description": "NFT Token ID. (uint256 number)",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           {
@@ -3122,14 +3122,14 @@
             }
           },
           {
-            "description": "The ID of the NFT to get metadata for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana.",
+            "description": "The ID of the NFT to get metadata for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana. (uint256 number)",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           {
@@ -3214,14 +3214,14 @@
             }
           },
           {
-            "description": "The ID of the NFT to get provenance information for",
+            "description": "The ID of the NFT to get provenance information for. (uint256 number)",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           {
@@ -3301,14 +3301,14 @@
             }
           },
           {
-            "description": "The ID of the NFT to get royalty information for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana",
+            "description": "The ID of the NFT to get royalty information for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana. (uint256 number)",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           {
@@ -5408,10 +5408,10 @@
         "type": "object",
         "properties": {
           "tokenId": {
-            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; the URL may not be present, and if it is not returned, you can get it by calling the NFT Contract.tokenURI() method",
@@ -5440,10 +5440,10 @@
         ],
         "properties": {
           "tokenId": {
-            "type": "integer",
-            "minimum": 0,
-            "example": 1,
-            "description": "ID of the token."
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "metadata": {
             "$ref": "#/components/schemas/NftTokenByCollectionErc721TokenMetadata"
@@ -5457,10 +5457,10 @@
         ],
         "properties": {
           "tokenId": {
-            "description": "TokenID of the NFT token owned by this address.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "TokenID of the NFT token owned by this address. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "Metadata URL of the TokenID. This data don't have to be present, safest way (if not present) is to obtain them from the NFT Contract.tokenURI() method call.",
@@ -5502,10 +5502,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "provenance": {
             "description": "True if the contract is provenance type",
@@ -5584,10 +5584,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -5629,10 +5629,10 @@
           "tokenId": {
             "type": "array",
             "items": {
-              "description": "ID of the minted token",
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "description": "ID of the minted token. (uint256 number)",
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           }
         }
@@ -5646,10 +5646,10 @@
             "example": "d67787399d205139f4d6f42c2aa4fffdf6f247411fae3706e874fbba0ce04b1b"
           },
           "tokenId": {
-            "description": "ID of the minted token",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           }
         }
       },
@@ -5718,14 +5718,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -5829,14 +5829,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -6152,14 +6152,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -6274,14 +6274,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -6342,10 +6342,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -6428,10 +6428,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -6473,10 +6473,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -6538,10 +6538,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -6588,10 +6588,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -6635,10 +6635,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -6689,10 +6689,10 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be destroyed. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7243,10 +7243,10 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be sent. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7298,10 +7298,10 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be sent. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7360,10 +7360,10 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of token to be sent. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7420,10 +7420,10 @@
             "description": "Contract address"
           },
           "tokenId": {
-            "type": "integer",
-            "minimum": 0,
-            "example": 1,
-            "description": "ID of the token"
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "from": {
             "type": "string",
@@ -7457,10 +7457,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7517,10 +7517,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -7568,10 +7568,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7632,10 +7632,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7707,10 +7707,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7801,10 +7801,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -7867,10 +7867,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -7975,10 +7975,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8054,10 +8054,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8167,10 +8167,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8260,10 +8260,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -8692,10 +8692,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token.",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "ID of the token. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -8780,10 +8780,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8893,10 +8893,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -9222,10 +9222,10 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -9736,14 +9736,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -9846,14 +9846,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "minter": {
@@ -9928,14 +9928,14 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created.",
+            "description": "ID of token to be created. (uint256 number)",
             "example": [
-              "100000"
+              "123"
             ],
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "url": {
@@ -10028,10 +10028,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to burn. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10146,10 +10146,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10210,10 +10210,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10270,10 +10270,10 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn",
-            "type": "integer",
-            "minimum": 0,
-            "example": 1
+            "description": "The ID of the NFT to burn. (uint256 number)",
+            "type": "string",
+            "maxLength": 78,
+            "example": "123"
           },
           "contractAddress": {
             "maxLength": 42,
