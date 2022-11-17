@@ -5381,11 +5381,11 @@
           },
           "balances": {
             "type": "array",
-            "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs",
+            "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs. (uint256 numbers)",
             "items": {
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           },
           "blockNumber": {
@@ -10386,10 +10386,10 @@
             "type": "array",
             "description": "The array returning the ID of the NFTs",
             "items": {
-              "description": "The ID of the NFT",
-              "type": "integer",
-              "minimum": 0,
-              "example": 1
+              "description": "The ID of the NFT (uint256 number)",
+              "type": "string",
+              "maxLength": 78,
+              "example": "123"
             }
           }
         }
