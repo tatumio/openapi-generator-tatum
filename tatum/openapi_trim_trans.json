@@ -5435,8 +5435,7 @@
       "NftTokenByCollectionErc721": {
         "type": "object",
         "required": [
-          "tokenId",
-          "metadata"
+          "tokenId"
         ],
         "properties": {
           "tokenId": {
