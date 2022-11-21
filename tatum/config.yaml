@@ -1,5 +1,5 @@
 generatorName: csharp-netcore
-httpUserAgent: Tatum_CSharp_SDK
+httpUserAgent: Tatum_SDK_CSharp
 library: httpclient
 globalProperties:
   generateAliasAsModel: false
