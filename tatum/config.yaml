@@ -11,4 +11,5 @@ additionalProperties:
   licenseId: MIT
   packageName: Tatum.CSharp.Core
   sourceFolder: ""
-releaseNote: "NFT support for Ethereum. Minor improvements to embedded documentation. Removed unused dependencies."
+  chainsToInclude: ETH-BTC-MATIC
+releaseNote: "Polygon chain introduced. NFT support for Polygon."
