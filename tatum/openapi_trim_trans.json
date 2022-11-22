@@ -1052,6 +1052,60 @@
         ]
       }
     },
+    "/v3/polygon/gas": {
+      "post": {
+        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Polygon transaction. Gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.\n</p>\n",
+        "operationId": "PolygonEstimateGas",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolygonEstimateGas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "gasLimit",
+                    "gasPrice"
+                  ],
+                  "properties": {
+                    "gasLimit": {
+                      "type": "string",
+                      "description": "Gas limit for transaction in gas price.",
+                      "example": "40000"
+                    },
+                    "gasPrice": {
+                      "type": "string",
+                      "description": "Gas price in wei.",
+                      "example": "20"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate Polygon transaction fees",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
     "/v3/ethereum/wallet": {
       "get": {
         "description": "<h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. A mnemonic phrase consists of 24 special words in a defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value which should never be revealed</li><li>Public Key - a public address to be published</li><li>Derivation index - an index of generated address</li></ul></p><p>Tatum follows the BIP44 specification and generates for Ethereum wallets with the derivation path m/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerates a BIP44 compatible Ethereum wallet.</p>\n",
@@ -2681,14 +2735,15 @@
             }
           },
           {
-            "description": "NFT Token ID. (uint256 number)",
+            "description": "NFT Token ID.",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           {
@@ -2855,7 +2910,7 @@
     },
     "/v3/nft/address/balance/{chain}/{address}": {
       "get": {
-        "description": "<p><b>1 credit per API call + 5 credits for each owned NFT</b></p>\n<p>Get all NFTs that a blockchain address holds. The NFTs are returned grouped by the smart contracts they were minted on.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n<p>On Solana and Algorand, if a blockchain address holds fewer than 50 NFTs, the API also returns each NFT's metadata. If the metadata is not returned, you can obtain it using the <a href=\"https://apidoc.tatum.io/tag/NFT-(ERC-721-or-compatible)/#operation/NftGetMetadataErc721\">API for getting NFT metadata</a>.</p>\n",
+        "description": "<p><b>1 credit per API call + 5 credits for each owned NFT</b></p>\n<p>Get all NFTs that a blockchain address holds. The NFTs are returned grouped by the smart contracts they were minted on.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>BNB Smart Chain - mainnet only</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n<p>On Solana and Algorand, if a blockchain address holds fewer than 50 NFTs, the API also returns each NFT's metadata. If the metadata is not returned, you can obtain it using the <a href=\"https://apidoc.tatum.io/tag/NFT-(ERC-721-or-compatible)/#operation/NftGetMetadataErc721\">API for getting NFT metadata</a>.</p>\n",
         "operationId": "NftGetTokensByAddressErc721",
         "parameters": [
           {
@@ -2868,6 +2923,7 @@
               "example": "SOL",
               "enum": [
                 "ALGO",
+                "BSC",
                 "CELO",
                 "ETH",
                 "MATIC",
@@ -3122,14 +3178,15 @@
             }
           },
           {
-            "description": "The ID of the NFT to get metadata for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana. (uint256 number)",
+            "description": "The ID of the NFT to get metadata for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana.",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           {
@@ -3214,14 +3271,15 @@
             }
           },
           {
-            "description": "The ID of the NFT to get provenance information for. (uint256 number)",
+            "description": "The ID of the NFT to get provenance information for.",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           {
@@ -3301,14 +3359,15 @@
             }
           },
           {
-            "description": "The ID of the NFT to get royalty information for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana. (uint256 number)",
+            "description": "The ID of the NFT to get royalty information for<br/>Do <b>not</b> use this parameter if you are getting metadata for an NFT on Solana, this parameter is irrelevant on Solana.",
             "in": "path",
             "name": "tokenId",
             "required": true,
             "schema": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           {
@@ -3506,6 +3565,637 @@
         "summary": "Get the address of an NFT smart contract by its transaction hash",
         "tags": [
           "NFT (ERC-721 or compatible)"
+        ]
+      }
+    },
+    "/v3/polygon/wallet": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for Polygon wallet with derivation path m'/44'/966'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerate BIP44 compatible Polygon wallet.</p>\n",
+        "operationId": "PolygonGenerateWallet",
+        "parameters": [
+          {
+            "description": "Mnemonic to use for generation of extended public and private keys.",
+            "in": "query",
+            "name": "mnemonic",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Polygon wallet",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/address/{xpub}/{index}": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Generate Polygon account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate\nup to 2^31 addresses starting from index 0 until 2^31.</p>\n",
+        "operationId": "PolygonGenerateAddress",
+        "parameters": [
+          {
+            "description": "Extended public key of wallet.",
+            "in": "path",
+            "name": "xpub",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid"
+            }
+          },
+          {
+            "description": "Derivation index of desired address to be generated.",
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddressMatic"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Polygon account address from Extended public key",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/wallet/priv": {
+      "post": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic\ncan generate up to 2^31 private keys starting from index 0 until 2^31.</p>\n",
+        "operationId": "PolygonGenerateAddressPrivateKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivKey"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Polygon private key",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/web3/{xApiKey}": {
+      "post": {
+        "deprecated": true,
+        "description": "<p><b>2 credits per API call</b></p>\n<p><b>This endpoint is deprecated. Use the <a href=\"https://apidoc.tatum.io/tag/Node-RPC\" target=\"_blank\">HTTP-based JSON RPC driver</a> instead.</b></p><br/>\n<p>Use this endpoint URL as a http-based web3 driver to connect directly to the Polygon node provided by Tatum.\nTo learn more about Polygon Web3, visit the <a href=\"https://docs.matic.network/\" target=\"_blank\">Polygon developer's guide</a>.</p>\n",
+        "operationId": "PolygonWeb3Driver",
+        "parameters": [
+          {
+            "description": "Tatum X-API-Key used for authorization.",
+            "in": "path",
+            "name": "xApiKey",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "asdlkfjnqunalkwjfnq2oi303294857k"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid Web3 method content body.",
+                "example": {
+                  "jsonrpc": "2.0",
+                  "method": "web3_clientVersion",
+                  "params": [],
+                  "id": 2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid Web3 response.",
+                  "example": {
+                    "jsonrpc": "2.0",
+                    "id": 2,
+                    "result": "Geth/v1.9.9-omnibus-e320ae4c-20191206/linux-amd64/go1.13.4"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "Web3 HTTP driver",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/block/current": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Get Polygon current block number. This is the number of the latest block in the blockchain.</p>\n",
+        "operationId": "PolygonGetCurrentBlock",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "description": "Current block number",
+                  "example": 6491272
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get current block number",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/block/{hash}": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Get Polygon block by block hash or block number.</p>\n",
+        "operationId": "PolygonGetBlock",
+        "parameters": [
+          {
+            "description": "Block hash or block number",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6470657"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthBlock"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Polygon block by hash",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/account/balance/{address}": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Get Polygon account balance in MATIC. This method does not prints any balance of the ERC20 or ERC721 tokens on the account.</p>\n",
+        "operationId": "PolygonGetBalance",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MaticBalance"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Polygon Account balance",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/transaction/{hash}": {
+      "get": {
+        "description": "<b><p>2 credits per API call</p></b>\n<p>Get Polygon transaction by transaction hash.</p>\n",
+        "operationId": "PolygonGetTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolygonTx"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Polygon Transaction",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/account/transaction/{address}": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Get Polygon transactions by address. This includes incoming and outgoing transactions for the address.</p>\n",
+        "operationId": "PolygonGetTransactionByAddress",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x8ce4e40889a13971681391aad29e88efaf91f784"
+            }
+          },
+          {
+            "description": "Max number of items per page is 50.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "maximum": 50,
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "description": "Offset to obtain next page of the data.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          },
+          {
+            "description": "Transactions from this block onwards will be included.",
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "example": 1087623
+            }
+          },
+          {
+            "description": "Transactions up to this block will be included.",
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "example": 1087823
+            }
+          },
+          {
+            "description": "Sorting of the data. ASC - oldest first, DESC - newest first.",
+            "in": "query",
+            "name": "sort",
+            "schema": {
+              "type": "string",
+              "default": "DESC",
+              "example": "ASC",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PolygonTx"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Polygon transactions by address",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/transaction/count/{address}": {
+      "get": {
+        "description": "<b><p>1 credit per API call</p></b>\n<p>Get a number of outgoing Polygon transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,\nwhich are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents\nthe order of the transaction in the list of outgoing transactions.</p>\n",
+        "operationId": "PolygonGetTransactionCount",
+        "parameters": [
+          {
+            "description": "address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 42,
+              "minLength": 42,
+              "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "example": 5,
+                  "description": "Number of transactions, that were made from this address. Can be used as a nonce parameter in send transaction calls."
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get count of outgoing Polygon transactions",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/transaction": {
+      "post": {
+        "description": "<b><p>2 credits per API call</p></b>\n<p>Send MATIC from account to account.<br/><br/>\n<p><b>Signing a transaction</b></p>\n<p>When sending MATIC, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "PolygonBlockchainTransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferPolygonBlockchain"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferPolygonBlockchainKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send MATIC from account to account",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/smartcontract": {
+      "post": {
+        "description": "<b><p>2 credits per API call</p></b>\n<p>Invoke a method in an existing smart contract on Polygon.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Signing a transaction</b></p>\n<p>When invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>If <b>caller</b> field is present instead of the private key, Tatum will sign the transaction with the managed private key connected to the caller address. This is applicable only for paid mainnet plans and all testnet plans. Keep in mind that the caller address must have enough access right to perform the action in the smart contract method.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "PolygonBlockchainSmartContractInvocation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CallPolygonSmartContractReadMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallPolygonSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallPolygonSmartContractMethodCaller"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallPolygonSmartContractMethodKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Data"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Invoke a method in a smart contract on Polygon",
+        "tags": [
+          "Polygon"
+        ]
+      }
+    },
+    "/v3/polygon/broadcast": {
+      "post": {
+        "description": "<b><p>2 credits per API call</p></b>\n<p>Broadcast signed transaction to Polygon blockchain. This method is used internally from Tatum KMS or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchain.</p>\n",
+        "operationId": "PolygonBroadcast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastKMS"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHash"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast signed Polygon transaction",
+        "tags": [
+          "Polygon"
         ]
       }
     }
@@ -5251,7 +5941,7 @@
         "type": "object",
         "properties": {
           "txId": {
-            "description": "TX hash of successful transaction.",
+            "description": "The hash (ID) of the transaction",
             "example": "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9",
             "type": "string"
           }
@@ -5278,7 +5968,7 @@
         "properties": {
           "signatureId": {
             "format": "uuid",
-            "description": "ID of prepared payment template to sign. This is should be stored on a client side to retrieve ID of the blockchain transaction, when signing application signs the transaction and broadcasts it to the blockchain.",
+            "description": "The internal Tatum ID of the prepared transaction for Key Management Sysytem (KMS) to sign<br/>This is different from the <code>signatureId</code> parameter that you provided in the request body. The <code>signatureId</code> parameter in the request body specifies the signature ID associated with the private key in KMS.",
             "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
             "type": "string"
           }
@@ -5381,11 +6071,12 @@
           },
           "balances": {
             "type": "array",
-            "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs. (uint256 numbers)",
+            "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs.",
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "blockNumber": {
@@ -5408,10 +6099,11 @@
         "type": "object",
         "properties": {
           "tokenId": {
-            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address. (uint256 number)",
+            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; the URL may not be present, and if it is not returned, you can get it by calling the NFT Contract.tokenURI() method",
@@ -5439,10 +6131,11 @@
         ],
         "properties": {
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "metadata": {
             "$ref": "#/components/schemas/NftTokenByCollectionErc721TokenMetadata"
@@ -5456,10 +6149,11 @@
         ],
         "properties": {
           "tokenId": {
-            "description": "TokenID of the NFT token owned by this address. (uint256 number)",
+            "description": "TokenID of the NFT token owned by this address.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "Metadata URL of the TokenID. This data don't have to be present, safest way (if not present) is to obtain them from the NFT Contract.tokenURI() method call.",
@@ -5501,10 +6195,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "provenance": {
             "description": "True if the contract is provenance type",
@@ -5539,7 +6234,7 @@
           "nonce": {
             "type": "number",
             "example": 1,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "feeCurrency": {
             "type": "string",
@@ -5583,10 +6278,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -5628,10 +6324,11 @@
           "tokenId": {
             "type": "array",
             "items": {
-              "description": "ID of the minted token. (uint256 number)",
+              "description": "ID of the minted token.",
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           }
         }
@@ -5645,10 +6342,11 @@
             "example": "d67787399d205139f4d6f42c2aa4fffdf6f247411fae3706e874fbba0ce04b1b"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           }
         }
       },
@@ -5717,14 +6415,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -5781,7 +6480,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "feeCurrency": {
             "type": "string",
@@ -5828,14 +6527,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -6033,6 +6733,7 @@
           },
           "nonce": {
             "type": "number",
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used",
             "minimum": 0
           },
           "provenance": {
@@ -6151,14 +6852,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -6218,8 +6920,8 @@
           },
           "nonce": {
             "type": "number",
-            "minimum": 0,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used",
+            "minimum": 0
           },
           "feeCurrency": {
             "type": "string",
@@ -6273,14 +6975,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -6341,10 +7044,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -6363,7 +7067,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "feeCurrency": {
             "type": "string",
@@ -6427,10 +7131,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -6472,10 +7177,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -6498,7 +7204,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "feeCurrency": {
             "type": "string",
@@ -6537,10 +7243,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -6587,10 +7294,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -6634,10 +7342,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -6688,10 +7397,11 @@
             ]
           },
           "tokenId": {
-            "description": "ID of token to be destroyed. (uint256 number)",
+            "description": "ID of token to be destroyed.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7242,10 +7952,11 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent. (uint256 number)",
+            "description": "ID of token to be sent.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7297,10 +8008,11 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent. (uint256 number)",
+            "description": "ID of token to be sent.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7359,10 +8071,11 @@
             "minLength": 18
           },
           "tokenId": {
-            "description": "ID of token to be sent. (uint256 number)",
+            "description": "ID of token to be sent.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 36,
@@ -7419,10 +8132,11 @@
             "description": "Contract address"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "from": {
             "type": "string",
@@ -7456,10 +8170,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7492,7 +8207,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "The nonce to be set to the transfer transaction; if not present, the last known nonce will be used"
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           }
         },
         "required": [
@@ -7516,10 +8231,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -7567,10 +8283,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7607,7 +8324,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "The nonce to be set to the transfer transaction; if not present, the last known nonce will be used"
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           }
         },
         "required": [
@@ -7631,14 +8348,15 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
-            "maxLength": 42,
-            "minLength": 42,
+            "maxLength": 34,
+            "minLength": 34,
             "description": "The blockchain address of the NFT to update royalty information for",
             "example": "TCrmdJmvDUPy8qSTgoVStF51yWm6VUh5yQ",
             "type": "string"
@@ -7706,10 +8424,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -7748,7 +8467,7 @@
           "nonce": {
             "type": "number",
             "example": 1,
-            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "feeCurrency": {
             "type": "string",
@@ -7800,10 +8519,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 34,
@@ -7866,10 +8586,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -7974,10 +8695,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8053,10 +8775,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8166,10 +8889,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8259,10 +8983,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -8373,6 +9098,20 @@
             "example": "100000",
             "type": "string",
             "maxLength": 256
+          },
+          "amount": {
+            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be minted. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "example": 1,
+            "default": 1,
+            "type": "number",
+            "minimum": 0
+          },
+          "decimals": {
+            "description": "The decimal places of the NFT to transfer. Defaults to 0 - which means regular NFT will be transfered. Value above 0 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "example": 0,
+            "default": 0,
+            "type": "number",
+            "minimum": 0
           }
         },
         "required": [
@@ -8691,10 +9430,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "ID of the token. (uint256 number)",
+            "description": "ID of the token.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -8779,10 +9519,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8892,10 +9633,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -8984,6 +9726,20 @@
                 "type": "string",
                 "maxLength": 8,
                 "minLength": 1
+              },
+              "total": {
+                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted. Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+                "example": 1,
+                "default": 1,
+                "type": "number",
+                "minimum": 1
+              },
+              "decimals": {
+                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted. Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+                "example": 0,
+                "default": 0,
+                "type": "number",
+                "minimum": 0
               },
               "clawback": {
                 "description": "The address of the clawback account that can claw back holdings of the NFT",
@@ -9221,10 +9977,11 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT. (uint256 number)",
+            "description": "The ID of the NFT.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "url": {
             "description": "The URL pointing to the NFT metadata; for more information, see <a href=\"https://eips.ethereum.org/EIPS/eip-721#specification\" target=\"_blank\">EIP-721</a>",
@@ -9735,14 +10492,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -9845,14 +10603,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "minter": {
@@ -9927,14 +10686,15 @@
           },
           "tokenId": {
             "type": "array",
-            "description": "ID of token to be created. (uint256 number)",
+            "description": "ID of token to be created.",
             "example": [
               "123"
             ],
             "items": {
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           },
           "url": {
@@ -10027,10 +10787,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn. (uint256 number)",
+            "description": "The ID of the NFT to burn.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10049,7 +10810,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "The nonce to be set to the transfer transaction; if not present, the last known nonce will be used"
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "fee": {
             "$ref": "#/components/schemas/CustomFee"
@@ -10145,10 +10906,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10209,10 +10971,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for. (uint256 number)",
+            "description": "The ID of the NFT to update royalty information for.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10236,7 +10999,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "The nonce to be set to the transfer transaction; if not present, the last known nonce will be used"
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "fee": {
             "$ref": "#/components/schemas/CustomFee"
@@ -10269,10 +11032,11 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn. (uint256 number)",
+            "description": "The ID of the NFT to burn.",
             "type": "string",
             "maxLength": 78,
-            "example": "123"
+            "example": "123",
+            "format": "uint256"
           },
           "contractAddress": {
             "maxLength": 42,
@@ -10295,7 +11059,7 @@
           "nonce": {
             "type": "number",
             "minimum": 0,
-            "description": "The nonce to be set to the transfer transaction; if not present, the last known nonce will be used"
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "fee": {
             "$ref": "#/components/schemas/CustomFee"
@@ -10385,10 +11149,11 @@
             "type": "array",
             "description": "The array returning the ID of the NFTs",
             "items": {
-              "description": "The ID of the NFT (uint256 number)",
+              "description": "The ID of the NFT.",
               "type": "string",
               "maxLength": 78,
-              "example": "123"
+              "example": "123",
+              "format": "uint256"
             }
           }
         }
@@ -10435,6 +11200,570 @@
             }
           }
         }
+      },
+      "MaticBalance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance in MATIC",
+            "example": "10.52"
+          }
+        }
+      },
+      "GeneratedAddressMatic": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Polygon address",
+            "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+          }
+        }
+      },
+      "PolygonTx": {
+        "type": "object",
+        "properties": {
+          "blockHash": {
+            "description": "Hash of the block where this transaction was in.",
+            "type": "string",
+            "example": "0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "from": {
+            "type": "string",
+            "description": "Address of the sender.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "gas": {
+            "type": "number",
+            "description": "Gas provided by the sender.",
+            "example": 21000
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price provided by the sender in wei.",
+            "example": "1000000000"
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          },
+          "input": {
+            "type": "string",
+            "description": "The data sent along with the transaction.",
+            "example": "0x"
+          },
+          "nonce": {
+            "type": "number",
+            "description": "The number of transactions made by the sender prior to this one.",
+            "example": 26836405
+          },
+          "to": {
+            "type": "string",
+            "description": "Address of the receiver. 'null' when its a contract creation transaction.",
+            "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transactions index position in the block.",
+            "example": 3
+          },
+          "value": {
+            "type": "string",
+            "description": "Value transferred in wei.",
+            "example": "1000000000000000000"
+          },
+          "gasUsed": {
+            "type": "number",
+            "description": "The amount of gas used by this specific transaction alone.",
+            "example": 21000
+          },
+          "cumulativeGasUsed": {
+            "type": "number",
+            "description": "The total amount of gas used when this transaction was executed in the block.",
+            "example": 314159
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "The contract address created, if the transaction was a contract creation, otherwise null.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "logs": {
+            "type": "array",
+            "description": "Log events, that happened in this transaction.",
+            "items": {
+              "$ref": "#/components/schemas/PolygonTxLog"
+            }
+          }
+        }
+      },
+      "PolygonTxLog": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "From which this event originated from.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "topics": {
+            "type": "array",
+            "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
+            "items": {
+              "type": "string",
+              "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
+            }
+          },
+          "data": {
+            "type": "string",
+            "description": "The data containing non-indexed log parameter."
+          },
+          "logIndex": {
+            "type": "number",
+            "description": "Integer of the event index position in the block."
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "blockHash": {
+            "description": "Hash of the block.",
+            "type": "string",
+            "example": "0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc"
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transaction’s index position, the event was created in."
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction this event was created in.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          }
+        }
+      },
+      "CallPolygonSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0xC9c8ba8C7e2EAF43e84330Db08915A8106d7bD74",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Polygon transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "fromPrivateKey",
+          "methodName"
+        ]
+      },
+      "CallPolygonSmartContractMethodCaller": {
+        "type": "object",
+        "properties": {
+          "caller": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the account, which will be sender and fee payer of this transaction",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0xC9c8ba8C7e2EAF43e84330Db08915A8106d7bD74",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "fromPrivateKey",
+          "methodName",
+          "caller"
+        ]
+      },
+      "CallPolygonSmartContractReadMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0xC9c8ba8C7e2EAF43e84330Db08915A8106d7bD74",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "methodName"
+        ]
+      },
+      "CallPolygonSmartContractMethodKMS": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0xC9c8ba8C7e2EAF43e84330Db08915A8106d7bD74",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameters of the method to be invoked."
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Polygon transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "signatureId",
+          "methodName"
+        ]
+      },
+      "TransferPolygonBlockchain": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property. Only for MATIC transactions.",
+            "example": "My note to recipient."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Polygon transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from Polygon Blockchain Account. ERC20 tokens USDC and USDT are available only for mainnet use.",
+            "enum": [
+              "MATIC",
+              "USDC_MATIC",
+              "USDT_MATIC"
+            ],
+            "example": "MATIC",
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "fromPrivateKey"
+        ]
+      },
+      "PolygonEstimateGas": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "maxLength": 42,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "minLength": 42,
+            "description": "Sender address."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in MATIC.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property.",
+            "example": "My note to recipient.",
+            "pattern": "^(0x|0h)?[0-9A-F]+$"
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "from"
+        ]
+      },
+      "TransferPolygonBlockchainKMS": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property. Only for MATIC transactions.",
+            "example": "My note to recipient."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Polygon transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from Polygon Blockchain Account. ERC20 tokens BETH, BBTC, BADA, WMATIC, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.",
+            "enum": [
+              "BETH",
+              "BBTC",
+              "BADA",
+              "WMATIC",
+              "BDOT",
+              "BXRP",
+              "BLTC",
+              "BBCH",
+              "MATIC"
+            ],
+            "example": "MATIC",
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "signatureId"
+        ]
       },
       "CeloTx": {
         "type": "object",
