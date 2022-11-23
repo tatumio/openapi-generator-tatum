@@ -11235,9 +11235,10 @@
             "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
           },
           "blockNumber": {
-            "type": "number",
             "description": "Block number where this transaction was in.",
-            "example": 6470854
+            "example": 6470854,
+            "type": "number",
+            "nullable": true
           },
           "from": {
             "type": "string",
@@ -11275,9 +11276,10 @@
             "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
           },
           "transactionIndex": {
-            "type": "number",
             "description": "Integer of the transactions index position in the block.",
-            "example": 3
+            "example": 3,
+            "type": "number",
+            "nullable": true
           },
           "value": {
             "type": "string",
@@ -11285,14 +11287,16 @@
             "example": "1000000000000000000"
           },
           "gasUsed": {
-            "type": "number",
             "description": "The amount of gas used by this specific transaction alone.",
-            "example": 21000
+            "example": 21000,
+            "type": "number",
+            "nullable": true
           },
           "cumulativeGasUsed": {
-            "type": "number",
             "description": "The total amount of gas used when this transaction was executed in the block.",
-            "example": 314159
+            "example": 314159,
+            "type": "number",
+            "nullable": true
           },
           "contractAddress": {
             "type": "string",
