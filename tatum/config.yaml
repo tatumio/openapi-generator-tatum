@@ -12,4 +12,4 @@ additionalProperties:
   packageName: Tatum.CSharp.Core
   sourceFolder: ""
   chainsToInclude: ETH-BTC-MATIC-BSC
-releaseNote: "Polygon chain introduced. NFT support for Polygon."
+releaseNote: "BSC chain introduced. NFT support for BSC."
