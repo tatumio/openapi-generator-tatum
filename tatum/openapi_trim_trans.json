@@ -1106,6 +1106,60 @@
         ]
       }
     },
+    "/v3/bsc/gas": {
+      "post": {
+        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the BSC transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.\n</p>\n",
+        "operationId": "BscEstimateGas",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BscEstimateGas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "gasLimit",
+                    "gasPrice"
+                  ],
+                  "properties": {
+                    "gasLimit": {
+                      "type": "string",
+                      "description": "Gas limit for transaction in gas price.",
+                      "example": "40000"
+                    },
+                    "gasPrice": {
+                      "type": "string",
+                      "description": "Gas price in wei.",
+                      "example": "20"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate BNB Smart Chain transaction fees",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
     "/v3/ethereum/wallet": {
       "get": {
         "description": "<h4>1 credit per API call.</h4><br/><p>Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. A mnemonic phrase consists of 24 special words in a defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value which should never be revealed</li><li>Public Key - a public address to be published</li><li>Derivation index - an index of generated address</li></ul></p><p>Tatum follows the BIP44 specification and generates for Ethereum wallets with the derivation path m/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerates a BIP44 compatible Ethereum wallet.</p>\n",
@@ -3565,6 +3619,536 @@
         "summary": "Get the address of an NFT smart contract by its transaction hash",
         "tags": [
           "NFT (ERC-721 or compatible)"
+        ]
+      }
+    },
+    "/v3/bsc/wallet": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for BSC wallet with derivation path m'/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerate BIP44 compatible BSC wallet.</p>\n",
+        "operationId": "BscGenerateWallet",
+        "parameters": [
+          {
+            "description": "Mnemonic to use for generation of extended public and private keys.",
+            "in": "query",
+            "name": "mnemonic",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate BSC wallet",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/address/{xpub}/{index}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generate BSC account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate\nup to 2^31 addresses starting from index 0 until 2^31.</p>\n",
+        "operationId": "BscGenerateAddress",
+        "parameters": [
+          {
+            "description": "Extended public key of wallet.",
+            "in": "path",
+            "name": "xpub",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid"
+            }
+          },
+          {
+            "description": "Derivation index of desired address to be generated.",
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddressBsc"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate BSC account address from Extended public key",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/wallet/priv": {
+      "post": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic\ncan generate up to 2^31 private keys starting from index 0 until 2^31.</p>\n",
+        "operationId": "BscGenerateAddressPrivateKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivKey"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate BSC private key",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/web3/{xApiKey}": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p><b>This endpoint is deprecated. Use the <a href=\"https://apidoc.tatum.io/tag/Node-RPC\" target=\"_blank\">HTTP-based JSON RPC driver</a> instead.</b></p><br/>\n<p>Use this endpoint URL as a http-based web3 driver to connect directly to the BSC node provided by Tatum.\nTo learn more about BSC Web3, visit the <a href=\"https://bsc.org/en/developers/\" target=\"_blank\">BSC developer's guide.</a></p>\n",
+        "operationId": "BscWeb3Driver",
+        "deprecated": true,
+        "parameters": [
+          {
+            "description": "Tatum X-API-Key used for authorization.",
+            "in": "path",
+            "name": "xApiKey",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "asdlkfjnqunalkwjfnq2oi303294857k"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid Web3 method content body.",
+                "example": {
+                  "jsonrpc": "2.0",
+                  "method": "web3_clientVersion",
+                  "params": [],
+                  "id": 2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid Web3 response.",
+                  "example": {
+                    "jsonrpc": "2.0",
+                    "id": 2,
+                    "result": "Geth/v1.9.9-omnibus-e320ae4c-20191206/linux-amd64/go1.13.4"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "Web3 HTTP driver",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/block/current": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get BSC current block number. This is the number of the latest block in the blockchain.</p>\n",
+        "operationId": "BscGetCurrentBlock",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "description": "Current block number",
+                  "example": 6491272
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get current block number",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/block/{hash}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get BSC block by block hash or block number.</p>\n",
+        "operationId": "BscGetBlock",
+        "parameters": [
+          {
+            "description": "Block hash or block number",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6470657"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthBlock"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get BSC block by hash",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/account/balance/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get BSC account balance in BNB. This method does not prints any balance of the BEP20 or BEP721 tokens on the account.</p>\n",
+        "operationId": "BscGetBalance",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BscBalance"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get BSC Account balance",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/transaction/{hash}": {
+      "get": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get BSC transaction by transaction hash.</p>\n",
+        "operationId": "BscGetTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BscTx"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get BSC Transaction",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/transaction/count/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get a number of outgoing BSC transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,\nwhich are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents\nthe order of the transaction in the list of outgoing transactions.</p>\n",
+        "operationId": "BscGetTransactionCount",
+        "parameters": [
+          {
+            "description": "address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 42,
+              "minLength": 42,
+              "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "example": 5,
+                  "description": "Number of transactions, that were made from this address. Can be used as a nonce parameter in send transaction calls."
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get count of outgoing BSC transactions",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/transaction": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Send BNB or Tatum supported BEP20 token from account to account.<br/><br/>\n<p><b>Signing a transaction</b></p>\n<p>When sending BNB, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "BscBlockchainTransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferBscBlockchain"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferBscBlockchainKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send BSC / BEP20 from account to account",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/smartcontract": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Invoke a method in an existing smart contract on BNB Smart Chain.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Signing a transaction</b></p>\n<p>When invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "BscBlockchainSmartContractInvocation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CallBscSmartContractReadMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallBscSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallBscSmartContractMethodKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Data"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Invoke a method in a smart contract on BNB Smart Chain",
+        "tags": [
+          "BNB Smart Chain"
+        ]
+      }
+    },
+    "/v3/bsc/broadcast": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcast signed transaction to BSC blockchain. This method is used internally from Tatum KMS or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchain.</p>\n",
+        "operationId": "BscBroadcast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastKMS"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHash"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast signed BSC transaction",
+        "tags": [
+          "BNB Smart Chain"
         ]
       }
     },
@@ -9066,6 +9650,13 @@
             "example": "72TCV5BRQPBMSAFPYO3CPWVDBYWNGAYNMTW5QHENOMQF7I6QLNMJWCJZ7A3V5YKD7QD6ZZPEHG2PV2ZVVEDDO6BCRGXWIL3DIUMSUCI",
             "minLength": 106,
             "description": "Private key of sender address."
+          },
+          "amount": {
+            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transferred. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "example": 1,
+            "default": 1,
+            "minimum": 1,
+            "type": "number"
           }
         },
         "required": [
@@ -9100,16 +9691,9 @@
             "maxLength": 256
           },
           "amount": {
-            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be minted. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transfered. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
             "example": 1,
             "default": 1,
-            "type": "number",
-            "minimum": 0
-          },
-          "decimals": {
-            "description": "The decimal places of the NFT to transfer. Defaults to 0 - which means regular NFT will be transfered. Value above 0 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
-            "example": 0,
-            "default": 0,
             "type": "number",
             "minimum": 0
           }
@@ -9204,6 +9788,13 @@
             "format": "uuid",
             "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
             "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "amount": {
+            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transfered. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "example": 1,
+            "default": 1,
+            "type": "number",
+            "minimum": 0
           }
         },
         "required": [
@@ -9728,18 +10319,19 @@
                 "minLength": 1
               },
               "total": {
-                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted. Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
-                "example": 1,
+                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
+                "example": 10,
                 "default": 1,
                 "type": "number",
-                "minimum": 1
+                "minimum": 10
               },
               "decimals": {
-                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted. Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
-                "example": 0,
+                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
+                "example": 1,
                 "default": 0,
                 "type": "number",
-                "minimum": 0
+                "minimum": 1,
+                "maximum": 15
               },
               "clawback": {
                 "description": "The address of the clawback account that can claw back holdings of the NFT",
@@ -9847,6 +10439,21 @@
                 "type": "string",
                 "maxLength": 58,
                 "minLength": 58
+              },
+              "total": {
+                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
+                "example": 10,
+                "default": 1,
+                "type": "number",
+                "minimum": 10
+              },
+              "decimals": {
+                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
+                "example": 1,
+                "default": 0,
+                "type": "number",
+                "minimum": 1,
+                "maximum": 15
               }
             }
           }
@@ -9933,6 +10540,21 @@
                 "type": "string",
                 "maxLength": 58,
                 "minLength": 58
+              },
+              "total": {
+                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
+                "example": 10,
+                "default": 1,
+                "type": "number",
+                "minimum": 10
+              },
+              "decimals": {
+                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
+                "example": 1,
+                "default": 0,
+                "type": "number",
+                "minimum": 1,
+                "maximum": 15
               }
             }
           }
@@ -11201,27 +11823,27 @@
           }
         }
       },
-      "MaticBalance": {
+      "BscBalance": {
         "type": "object",
         "properties": {
           "balance": {
             "type": "string",
-            "description": "Balance in MATIC",
+            "description": "Balance in BNB",
             "example": "10.52"
           }
         }
       },
-      "GeneratedAddressMatic": {
+      "GeneratedAddressBsc": {
         "type": "object",
         "properties": {
           "address": {
             "type": "string",
-            "description": "Polygon address",
+            "description": "BSC address",
             "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
           }
         }
       },
-      "PolygonTx": {
+      "BscTx": {
         "type": "object",
         "properties": {
           "blockHash": {
@@ -11235,7 +11857,7 @@
             "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
           },
           "blockNumber": {
-            "description": "Block number where this transaction was in.",
+            "description": "The number of the block that the transaction is included in; if not returned, the transaction has not been included in a block yet.",
             "example": 6470854,
             "type": "number",
             "nullable": true
@@ -11276,7 +11898,7 @@
             "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
           },
           "transactionIndex": {
-            "description": "Integer of the transactions index position in the block.",
+            "description": "The integer of the transactions index position in the block; if not returned, the transaction has not been included in a block yet.",
             "example": 3,
             "type": "number",
             "nullable": true
@@ -11287,13 +11909,524 @@
             "example": "1000000000000000000"
           },
           "gasUsed": {
-            "description": "The amount of gas used by this specific transaction alone.",
+            "description": "The amount of gas used by this specific transaction alone; if not returned, the transaction has not been included in a block yet.",
             "example": 21000,
             "type": "number",
             "nullable": true
           },
           "cumulativeGasUsed": {
-            "description": "The total amount of gas used when this transaction was executed in the block.",
+            "description": "The total amount of gas used when this transaction was executed in the block; if not returned, the transaction has not been included in a block yet.",
+            "example": 314159,
+            "type": "number",
+            "nullable": true
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "The contract address created, if the transaction was a contract creation, otherwise null.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "logs": {
+            "type": "array",
+            "description": "Log events, that happened in this transaction.",
+            "items": {
+              "$ref": "#/components/schemas/BscTxLog"
+            }
+          }
+        }
+      },
+      "BscTxLog": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "From which this event originated from.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "topics": {
+            "type": "array",
+            "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
+            "items": {
+              "type": "string",
+              "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
+            }
+          },
+          "data": {
+            "type": "string",
+            "description": "The data containing non-indexed log parameter."
+          },
+          "logIndex": {
+            "type": "number",
+            "description": "Integer of the event index position in the block."
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "blockHash": {
+            "description": "Hash of the block.",
+            "type": "string",
+            "example": "0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc"
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transaction’s index position, the event was created in."
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction this event was created in.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          }
+        }
+      },
+      "CallBscSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to BSC transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "fromPrivateKey",
+          "methodName"
+        ]
+      },
+      "CallBscSmartContractReadMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "methodName"
+        ]
+      },
+      "CallBscSmartContractMethodKMS": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameters of the method to be invoked."
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to BSC transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "signatureId",
+          "methodName"
+        ]
+      },
+      "TransferBscBlockchain": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "(Only for BSC transactions) Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
+            "example": "4d79206e6f746520746f2074686520726563697069656e74"
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to BSC transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from BSC Blockchain Account. BEP20 tokens BETH, BBTC, BADA, WBNB, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.",
+            "enum": [
+              "BSC",
+              "BETH",
+              "BBTC",
+              "RMD",
+              "USDC_BSC",
+              "B2U_BSC",
+              "BADA",
+              "WBNB",
+              "GMC_BSC",
+              "BDOT",
+              "BXRP",
+              "BLTC",
+              "BBCH",
+              "HAG",
+              "CAKE",
+              "BUSD_BSC"
+            ],
+            "example": "BSC",
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "fromPrivateKey"
+        ]
+      },
+      "BscEstimateGas": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "maxLength": 42,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "minLength": 42,
+            "description": "Sender address."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in BSC.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property.",
+            "example": "My note to recipient.",
+            "pattern": "^(0x|0h)?[0-9A-F]+$"
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "from"
+        ]
+      },
+      "TransferBscBlockchainKMS": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "(Only for BSC transactions) Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
+            "example": "4d79206e6f746520746f2074686520726563697069656e74"
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to BSC transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "currency": {
+            "description": "Currency to transfer from BSC Blockchain Account. BEP20 tokens BETH, BBTC, BADA, WBNB, BDOT, BXRP, BLTC, BBCH are available only for mainnet use.",
+            "enum": [
+              "BETH",
+              "BBTC",
+              "BADA",
+              "WBNB",
+              "BDOT",
+              "BXRP",
+              "BLTC",
+              "BBCH",
+              "BSC"
+            ],
+            "example": "BSC",
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "signatureId"
+        ]
+      },
+      "MaticBalance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance in MATIC",
+            "example": "10.52"
+          }
+        }
+      },
+      "GeneratedAddressMatic": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Polygon address",
+            "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+          }
+        }
+      },
+      "PolygonTx": {
+        "type": "object",
+        "properties": {
+          "blockHash": {
+            "description": "Hash of the block where this transaction was in.",
+            "type": "string",
+            "example": "0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
+          },
+          "blockNumber": {
+            "description": "The number of the block that the transaction is included in; if not returned, the transaction has not been included in a block yet.",
+            "example": 6470854,
+            "type": "number",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "description": "Address of the sender.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "gas": {
+            "type": "number",
+            "description": "Gas provided by the sender.",
+            "example": 21000
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price provided by the sender in wei.",
+            "example": "1000000000"
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          },
+          "input": {
+            "type": "string",
+            "description": "The data sent along with the transaction.",
+            "example": "0x"
+          },
+          "nonce": {
+            "type": "number",
+            "description": "The number of transactions made by the sender prior to this one.",
+            "example": 26836405
+          },
+          "to": {
+            "type": "string",
+            "description": "Address of the receiver. 'null' when its a contract creation transaction.",
+            "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
+          },
+          "transactionIndex": {
+            "description": "The integer of the transactions index position in the block; if not returned, the transaction has not been included in a block yet.",
+            "example": 3,
+            "type": "number",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "Value transferred in wei.",
+            "example": "1000000000000000000"
+          },
+          "gasUsed": {
+            "description": "The amount of gas used by this specific transaction alone; if not returned, the transaction has not been included in a block yet.",
+            "example": 21000,
+            "type": "number",
+            "nullable": true
+          },
+          "cumulativeGasUsed": {
+            "description": "The total amount of gas used when this transaction was executed in the block; if not returned, the transaction has not been included in a block yet.",
             "example": 314159,
             "type": "number",
             "nullable": true

@@ -11,5 +11,5 @@ additionalProperties:
   licenseId: MIT
   packageName: Tatum.CSharp.Core
   sourceFolder: ""
-  chainsToInclude: ETH-BTC-MATIC
+  chainsToInclude: ETH-BTC-MATIC-BSC
 releaseNote: "Polygon chain introduced. NFT support for Polygon."
