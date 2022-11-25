@@ -4782,6 +4782,671 @@
           "Polygon"
         ]
       }
+    },
+    "/v3/one/wallet": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for ONE wallet with derivation path m'/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerate BIP44 compatible ONE wallet.</p>\n",
+        "operationId": "OneGenerateWallet",
+        "parameters": [
+          {
+            "description": "Mnemonic to use for generation of extended public and private keys.",
+            "in": "query",
+            "name": "mnemonic",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate ONE wallet",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/address/{xpub}/{index}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generate ONE account deposit address from Extended public key. Deposit address is generated for the specific index - each extended public key can generate\nup to 2^31 addresses starting from index 0 until 2^31.</p>\n",
+        "operationId": "OneGenerateAddress",
+        "parameters": [
+          {
+            "description": "Extended public key of wallet.",
+            "in": "path",
+            "name": "xpub",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid"
+            }
+          },
+          {
+            "description": "Derivation index of desired address to be generated.",
+            "in": "path",
+            "name": "index",
+            "example": 1,
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddressOne"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate ONE account address from Extended public key",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/address/format/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Transform HEX address to Bech32 format with one prefix.</p>\n",
+        "operationId": "OneFormatAddress",
+        "parameters": [
+          {
+            "description": "Address in HEX (ETH compatible) format.",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddressOne"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Transform HEX address to Bech32 ONE address format",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/wallet/priv": {
+      "post": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generate private key of address from mnemonic for given derivation path index. Private key is generated for the specific index - each mnemonic\ncan generate up to 2^31 private keys starting from index 0 until 2^31.</p>\n",
+        "operationId": "OneGenerateAddressPrivateKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivKey"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate ONE private key",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/web3/{xApiKey}": {
+      "post": {
+        "deprecated": true,
+        "description": "<p><b>2 credits per API call</b></p>\n<p><b>This endpoint is deprecated. Use the <a href=\"https://apidoc.tatum.io/tag/Node-RPC\" target=\"_blank\">HTTP-based JSON RPC driver</a> instead.</b></p><br/>\n<p>Use this endpoint URL as a http-based web3 driver to connect directly to the ONE node provided by Tatum.\nTo learn more about ONE Web3, visit the <a href=\"https://docs.harmony.one/home/developers/api\" target=\"_blank\">ONE developer's guide</a>.</p>\n",
+        "operationId": "OneWeb3Driver",
+        "parameters": [
+          {
+            "description": "Tatum X-API-Key used for authorization.",
+            "in": "path",
+            "name": "xApiKey",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "asdlkfjnqunalkwjfnq2oi303294857k"
+            }
+          },
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid Web3 method content body.",
+                "example": {
+                  "jsonrpc": "2.0",
+                  "method": "web3_clientVersion",
+                  "params": [],
+                  "id": 2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid Web3 response.",
+                  "example": {
+                    "jsonrpc": "2.0",
+                    "id": 2,
+                    "result": "Geth/v1.9.9-omnibus-e320ae4c-20191206/linux-amd64/go1.13.4"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "Web3 HTTP driver",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/block/current": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get ONE current block number. This is the number of the latest block in the blockchain.</p>\n",
+        "operationId": "OneGetCurrentBlock",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OneBlockCurrent"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get current block number",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/block/{hash}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get ONE block by block hash or block number.</p>\n",
+        "operationId": "OneGetBlock",
+        "parameters": [
+          {
+            "description": "Block hash or block number",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6470657"
+            }
+          },
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EthBlock"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get ONE block by hash",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/account/balance/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get ONE account balance in ONE. This method does not prints any balance of the HRM20 or HRM721 tokens on the account.</p>\n",
+        "operationId": "OneGetBalance",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          },
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneBalance"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get ONE Account balance",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/transaction/{hash}": {
+      "get": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get ONE transaction by transaction hash.</p>\n",
+        "operationId": "OneGetTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          },
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OneTx"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get ONE Transaction",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/transaction/count/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get a number of outgoing ONE transactions for the address. When a transaction is sent, there can be multiple outgoing transactions,\nwhich are not yet processed by the blockchain. To distinguish between them, there is a counter called a nonce, which represents\nthe order of the transaction in the list of outgoing transactions.</p>\n",
+        "operationId": "OneGetTransactionCount",
+        "parameters": [
+          {
+            "description": "address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 42,
+              "minLength": 42,
+              "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+            }
+          },
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "example": 5,
+                  "description": "Number of transactions, that were made from this address. Can be used as a nonce parameter in send transaction calls."
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get count of outgoing ONE transactions",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/transaction": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Send ONE or Tatum supported HRM20 token from account to account.<br/><br/>\nDefault shard 0 is used for sender and recipient.<br/>\n<p><b>Signing a transaction</b></p>\n<p>When sending ONE, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\nAlternatively, using the Tatum client library for supported languages.</p>\n",
+        "operationId": "OneBlockchainTransfer",
+        "parameters": [
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferOneBlockchain"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferOneBlockchainKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send ONE / HRM20 from account to account",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/smartcontract": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Invoke a method in an existing smart contract on Harmony.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Signing a transaction</b></p>\n<p>When invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "OneBlockchainSmartContractInvocation",
+        "parameters": [
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CallOneReadSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallOneSmartContractMethod"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CallOneSmartContractMethodKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Data"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Invoke a method in a smart contract on Harmony",
+        "tags": [
+          "Harmony"
+        ]
+      }
+    },
+    "/v3/one/broadcast": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcast signed transaction to ONE blockchain. This method is used internally from Tatum KMS or Tatum client libraries.\nIt is possible to create custom signing mechanism and use this method only for broadcasting data to the blockchain.</p>\n",
+        "operationId": "OneBroadcast",
+        "parameters": [
+          {
+            "description": "Shard to read data from",
+            "in": "query",
+            "name": "shardID",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastKMS"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHash"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast signed ONE transaction",
+        "tags": [
+          "Harmony"
+        ]
+      }
     }
   },
   "components": {
@@ -13020,6 +13685,472 @@
             }
           }
         }
+      },
+      "OneBlockCurrent": {
+        "type": "object",
+        "properties": {
+          "shardID": {
+            "type": "number",
+            "description": "Shard ID",
+            "example": 0
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Current block number in this shard",
+            "example": 6491272
+          }
+        }
+      },
+      "OneBalance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance in ONE",
+            "example": "10.52"
+          }
+        }
+      },
+      "GeneratedAddressOne": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "ONE address",
+            "example": "one15annzcwtlcq3dfx7nc6plpr9jsxzyyw5xc8pjn"
+          }
+        }
+      },
+      "OneTx": {
+        "type": "object",
+        "properties": {
+          "blockHash": {
+            "description": "Hash of the block where this transaction was in.",
+            "type": "string",
+            "example": "0xcf2c40f475e78c7c19778e1ae999a0e371c9319b38182ea15dc94536f13f9137"
+          },
+          "status": {
+            "type": "boolean",
+            "example": true,
+            "description": "TRUE if the transaction was successful, FALSE, if the EVM reverted the transaction."
+          },
+          "blockNumber": {
+            "description": "The number of the block that the transaction is included in; if not returned, the transaction has not been included in a block yet.",
+            "example": 6470854,
+            "type": "number",
+            "nullable": true
+          },
+          "from": {
+            "type": "string",
+            "description": "Address of the sender.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "gas": {
+            "type": "number",
+            "description": "Gas provided by the sender.",
+            "example": 21000
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price provided by the sender in wei.",
+            "example": "1000000000"
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          },
+          "input": {
+            "type": "string",
+            "description": "The data sent along with the transaction.",
+            "example": "0x"
+          },
+          "nonce": {
+            "type": "number",
+            "description": "The number of transactions made by the sender prior to this one.",
+            "example": 26836405
+          },
+          "to": {
+            "type": "string",
+            "description": "Address of the receiver. 'null' when its a contract creation transaction.",
+            "example": "0xbC546fa1716Ed886967cf73f40e8F2F5e623a92d"
+          },
+          "transactionIndex": {
+            "description": "The integer of the transactions index position in the block; if not returned, the transaction has not been included in a block yet.",
+            "example": 3,
+            "type": "number",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "Value transferred in wei.",
+            "example": "1000000000000000000"
+          },
+          "gasUsed": {
+            "description": "The amount of gas used by this specific transaction alone; if not returned, the transaction has not been included in a block yet.",
+            "example": 21000,
+            "type": "number",
+            "nullable": true
+          },
+          "cumulativeGasUsed": {
+            "description": "The total amount of gas used when this transaction was executed in the block; if not returned, the transaction has not been included in a block yet.",
+            "example": 314159,
+            "type": "number",
+            "nullable": true
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "The contract address created, if the transaction was a contract creation, otherwise null.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "logs": {
+            "type": "array",
+            "description": "Log events, that happened in this transaction.",
+            "items": {
+              "$ref": "#/components/schemas/OneTxLog"
+            }
+          }
+        }
+      },
+      "OneTxLog": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "From which this event originated from.",
+            "example": "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+          },
+          "topics": {
+            "type": "array",
+            "description": "An array with max 4 32 Byte topics, topic 1-3 contains indexed parameters of the log.",
+            "items": {
+              "type": "string",
+              "example": "0x033456732123ffff2342342dd12342434324234234fd234fd23fd4f23d4234"
+            }
+          },
+          "data": {
+            "type": "string",
+            "description": "The data containing non-indexed log parameter."
+          },
+          "logIndex": {
+            "type": "number",
+            "description": "Integer of the event index position in the block."
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number where this transaction was in.",
+            "example": 6470854
+          },
+          "blockHash": {
+            "description": "Hash of the block.",
+            "type": "string",
+            "example": "0x5d40698ee1b1ec589035f2a39c6162287e9056868cc79d66cfb248ba9f66c3fc"
+          },
+          "transactionIndex": {
+            "type": "number",
+            "description": "Integer of the transaction’s index position, the event was created in."
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction this event was created in.",
+            "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+          }
+        }
+      },
+      "CallOneSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount of the assets to be sent.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to ONE transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "fromPrivateKey",
+          "methodName"
+        ]
+      },
+      "CallOneReadSmartContractMethod": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "example": {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                }
+              ],
+              "name": "stake",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Parameters of the method to be invoked"
+            }
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "methodName"
+        ]
+      },
+      "CallOneSmartContractMethodKMS": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "methodName": {
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Name of the method to invoke on smart contract.",
+            "type": "string",
+            "example": "transfer"
+          },
+          "methodABI": {
+            "type": "object",
+            "description": "ABI of the method to invoke."
+          },
+          "params": {
+            "type": "array",
+            "example": [
+              "0x632"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "description": "Parameters of the method to be invoked."
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to ONE transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "contractAddress",
+          "params",
+          "methodABI",
+          "signatureId",
+          "methodName"
+        ]
+      },
+      "TransferOneBlockchain": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property.",
+            "example": "My note to recipient."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the transfer.",
+            "example": "ONE",
+            "enum": [
+              "ONE"
+            ]
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to ONE transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent in One.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "fromPrivateKey"
+        ]
+      },
+      "TransferOneBlockchainKMS": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "maxLength": 50000,
+            "description": "Additional data, that can be passed to blockchain transaction as data property.",
+            "example": "My note to recipient."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency of the transfer.",
+            "example": "ONE",
+            "enum": [
+              "ONE"
+            ]
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to ONE transaction. If not present, last known nonce will be used."
+          },
+          "to": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "amount": {
+            "description": "Amount to be sent in One.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "currency",
+          "signatureId"
+        ]
       }
     },
     "securitySchemes": {

@@ -11,5 +11,5 @@ additionalProperties:
   licenseId: MIT
   packageName: Tatum.CSharp.Core
   sourceFolder: ""
-  chainsToInclude: ETH-BTC-MATIC-BSC
-releaseNote: "BSC chain introduced. NFT support for BSC."
+  chainsToInclude: ETH-BTC-MATIC-BSC-ONE
+releaseNote: "Harmony chain introduced. NFT support for Harmony."
