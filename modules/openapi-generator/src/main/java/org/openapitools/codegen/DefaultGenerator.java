@@ -1393,22 +1393,23 @@ public class DefaultGenerator implements Generator {
     private void handlePerChainOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
         String tag = operation.getTags().get(0);
 
-        if(this.chainsPerTag.containsKey(tag))
+        if(this.chainsPerTag.containsKey(tag) && getChainParam(operation) != null)
         {
-            for (String chain : this.chainsPerTag.get(tag)) {
+            List<String> chains = this.chainsPerTag.get(tag);
+
+            operation.getParameters().remove(getChainParam(operation));
+
+
+            for (String chain : chains) {
                 if(!this.chainsToInclude.contains(chain)){
                     continue;
                 }
 
-                Parameter chainParam = getChainParam(operation);
-
-                if(chainParam != null){
-                    operation.getParameters().remove(chainParam);
-                    resourcePath = resourcePath.replace("{chain}", chain);
-                }
+                resourcePath = resourcePath.replace("{chain}", chain);
 
                 addChainToOperationTag(operation, tag, chain);
                 processOperation(resourcePath, httpMethod, operation, operations, path);
+                resourcePath = resourcePath.replace(chain, "{chain}");
             }
         }
         else {
