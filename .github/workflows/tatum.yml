@@ -67,7 +67,7 @@ jobs:
           git config user.email "csharp-generator@tatum.io"
           git checkout develop
           if [ -d "./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core" ]; then rm -Rf ./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core; fi
-          mv ../Tatum.CSharp.${{ matrix.arrays.package }}.Core ./${{ matrix.arrays.package }}
+          mv ../Tatum.CSharp.${{ matrix.arrays.package }}.Core ./Tatum.CSharp.${{ matrix.arrays.package }}
           if ! git diff --quiet
           then
             git add .
