@@ -68,11 +68,11 @@ jobs:
           git checkout develop
           if [ -d "./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core" ]; then rm -Rf ./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core; fi
           mv ../Tatum.CSharp.${{ matrix.arrays.package }}.Core ./Tatum.CSharp.${{ matrix.arrays.package }}
+          git add .
           git status
           if ! git diff --quiet
           then
             echo "Changes detected, committing"
-            git add .
             git commit -m 'New Tatum.CSharp.${{ matrix.arrays.package }}.Core generated'
             git push
           fi
