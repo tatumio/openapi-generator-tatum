@@ -70,8 +70,7 @@ jobs:
           mv ../Tatum.CSharp.${{ matrix.arrays.package }}.Core ./Tatum.CSharp.${{ matrix.arrays.package }}
           git add .
           git status
-          if ! git diff --quiet
-          then
+          if [[ `git status --porcelain` ]]; then
             echo "Changes detected, committing"
             git commit -m 'New Tatum.CSharp.${{ matrix.arrays.package }}.Core generated'
             git push
