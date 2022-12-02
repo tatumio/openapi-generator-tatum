@@ -47,7 +47,7 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -f pom.xml -DskipTests
     - name: Generate Clients
-      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/${{ matrix.arrays.package }}_trim_trans.json -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }},chainsToInclude=${{ matrix.arrays.chains }},packageName=Tatum.CSharp.${{ matrix.arrays.package }}.Core
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/Tatum.CSharp.${{ matrix.arrays.package }}_trim_trans.json -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }},chainsToInclude=${{ matrix.arrays.chains }},packageName=Tatum.CSharp.${{ matrix.arrays.package }}.Core
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
