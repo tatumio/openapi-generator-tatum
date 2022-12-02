@@ -1,0 +1,1700 @@
+{
+  "openapi": "3.0.0",
+  "security": [
+    {
+      "X-API-Key": []
+    }
+  ],
+  "info": {
+    "title": "Tatum API Reference",
+    "version": "3.17.0",
+    "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
+    "x-logo": {
+      "url": "https://tatum.io/images/Light.svg",
+      "altText": "Tatum"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.tatum.io"
+    }
+  ],
+  "tags": [
+    {
+      "description": "<p>Interact with the blockchain directly by connecting to the blockchain node and communicating with it through JSON-RPC.</p>\n<p>Each node-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Node RPC"
+    },
+    {
+      "description": "<p>A Tatum Account is the primary building block of Tatum-powered applications. It is an envelope that holds essential information about balances, the state of the account or customer, and to whom the account belongs.<br/><br/>\nAccounts in Tatum are stored within Tatum Private Ledger. Tatum Private Ledger contains information about accounts, the customers that own the accounts, transactions that affect the accounts or virtual currencies present in the ledger.<br/><br/>\nBy default, the private ledger is not connected to any blockchain. It is possible to create an application on it without any blockchain at all. Using Tatum Private Ledger and the building blocks included within it, it is possible to quickly swap the whole application from the ledger to any blockchain supported by Tatum. All of the API calls will remain the same, the only thing that changes is the blockchain the application lives on.<br/><br/>\nMost blockchains do not have any compliance layer at all. It is not possible to freeze funds at a blockchain address or deactivate an address. The Tatum Account has built-in compliance, and it is possible to block funds in the account, freeze outgoing transactions from the account or even completely deactivate the account.\n</p>\n",
+      "name": "Account"
+    },
+    {
+      "description": "<p>An endpoint used to create and list transactions within Tatum Private Ledger. A transaction is performed between 2 accounts with the same currency. To perform an exchange operation between accounts with different currencies, API calls from <a href=\"#tag/Order-BookLedger-Order-Book\">Order Book</a> sections are available. Transactions in the ledger are instant, with a settlement time of below 200ms.<br/>\nTatum Private Ledger supports microtransactions - a transaction of an amount as little as 1e-30 (30 decimal places). Transactions are atomic.<br/>\nWhen there is an insufficient balance in the sender account, or recipient account cannot receive funds, the transaction is not settled.</p>\n",
+      "name": "Transaction"
+    },
+    {
+      "description": "<p>An endpoint used to handle customer operations, like updating customer information, enabling/disabling etc.\nWithin Tatum API, a customer represents a client of the entity that communicates with Tatum.<br/>\nCustomers cannot be created via any other operation than Create Ledger Account.<br/>\nDue to compliance restrictions, it is recommended to enter the country of residence of the customer and the country of the provider. The Tatum compliance engine operates based on this information.\n</p>\n",
+      "name": "Customer"
+    },
+    {
+      "description": "<p>Register and use Tatum Private Ledger's virtual currencies. You can create your own virtual currency and distribute it amongst your customers.<br/>\nVirtual currencies are used to support FIAT currencies. When a virtual currency is created with basePair of the FIAT currency, it is possible to perform transactions in the private ledger in FIAT.\n</p>\n",
+      "name": "Virtual Currency"
+    },
+    {
+      "description": "<p>The gas pump is Tatum's feature that helps you manage gas fees in a custodial application. When you use the gas pump, gas fees for any transaction made by your customers (users of your custodial application) are automatically deducted from the master address instead of the customer's address. This eliminates the need to send crypto to each customer's address to pay for gas fees.</p>\n<p>For more information about the gas pump, see <a href=\"https://docs.tatum.io/gas-pump/pay-gas-fees-with-tatum-gas-pump\" target=\"_blank\">our user documentation</a>.</p>\n<p>Each API related to the gas pump supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Gas pump"
+    },
+    {
+      "description": "<p>Endpoints to handle subscriptions to the Tatum Platform. Subscriptions allow users to enable some additional features or reports that are not enabled by default,\nlike outgoing off-chain transaction scanning, accounts with balances above the limit, etc.</p>\n",
+      "name": "Notification subscriptions"
+    },
+    {
+      "description": "<p>Endpoint to handle Order book operations like creating BID / ASK trades between Tatum Private Virtual accounts, obtaining trade histories, creating futures etc. It is possible to build an exchange based on the Ledger Accounts.</p>",
+      "name": "Order Book"
+    },
+    {
+      "description": "<p><a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System</a> (KMS) is a comprehensive solution for building custodial applications. KMS runs locally on your server and provides security for generating wallets, addresses, and private keys, and for signing transactions.</p>\n<p>KMS builds a list of pending transaction to sign and provides the options to complete a transaction after it has been signed and to obtain transaction details with the result of the blockchain operation via the transaction ID.</p>\n<p>In KMS, each managed wallet or private key is assigned a unique signature ID (<code>signatureId</code>) that represents that wallet or private key. This signature ID is then used in an API request to identify the wallet.</p>\n<p>Depending on the API, you can use the signature ID in an API call request in the following ways:</p>\n<ul>\n<li>\nTo represent the <b>mnemonic</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/BtcTransfer\" target=\"_blank\">API for sending BTC from a virtual account to the blockchain</a> (see the <code>transferBtcKMS</code> request schema).</li>\n<li>To represent the <b>privateKey</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Bitcoin#operation/BtcTransferBlockchain\" target=\"_blank\">API for sending BTC to a blockchain address</a> (see the <code>BtcTransactionFromUTXOKMS</code> request schema).</li>\n<li>To represent the <b>mnemonic</b> and <b>index</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/EthTransfer\" target=\"_blank\">API for sending ETH from a virtual account to the blockchain</a> (see the <code>transferEthKMS</code> request schema).<br />In this case, the index of the specific private key generated from the mnemonic must be used in addition to the signature ID.</li>\n</ul>\n<p>You can run KMS on the following operating systems:</p>\n<ul>\n<li><b>macOS:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>Unix:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>MS Windows:</b> Only via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n</ul>\n<p>For more information about KMS, see the <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">KMS GitHub repository</a> and the <a href=\"https://docs.tatum.io/private-key-management/private-key-management\" target=\"_blank\">user documentation</a>.</p>\n</ul></p>\n",
+      "name": "Key Management System"
+    },
+    {
+      "description": "<p>An endpoint to check if the blockchain address is safe to work with or not.</p>\n",
+      "name": "Malicious address"
+    },
+    {
+      "description": "<p>Manage deposit addresses associated with your virtual account.</p>\n<p>Depending on how virtual accounts are connected to the blockchain, the virtual accounts can be:</p>\n<ul>\n<li><b>Virtual accounts with associated deposit addresses</b>\n<br/>Customers can send funds to and receive funds from other blockchain addresses.</li>\n<li><b>Virtual accounts with no deposit addresses</b>\n<br/>These accounts have a cryptocurrency assigned but do not have any associated deposit addresses. The customers can send funds to and receive funds from another virtual accounts and can send funds to blockchain addresses. However, the customers cannot receive funds from blockchain addresses.</li>\n</ul>\n",
+      "name": "Blockchain addresses"
+    },
+    {
+      "description": "<p>An endpoint to handle operations between Tatum Private Ledger and the blockchain, e.g. to create blockchain transactions from ledger accounts,\ncreate custom Ethereum ERC20 tokens, Stellar XLM, or Ripple XRP custom assets and register them as regular currency into the Tatum Private Ledger.</p>\n",
+      "name": "Blockchain operations"
+    },
+    {
+      "description": "<p>An endpoint used to create, cancel, or complete withdrawals by customers from Tatum to supported blockchains.\nWithdrawals are always multi-step operations that consist of the following steps:\n<ul>\n<li><b>create withdrawal</b></li>\n<li><b>perform blockchain transaction</b></li>\n<li><b>complete withdrawal</b></li>\n<li><b>cancel withdrawal</b>, when any of the previous operations fail</li>\n</ul>\n</p>\n",
+      "name": "Withdrawals"
+    },
+    {
+      "description": "<p>Bitcoin Blockchain enables access to the most commonly used Bitcoin methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet3 - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.mempool.co/\">https://testnet-faucet.mempool.co/</a></li></ul><br/>\n",
+      "name": "Bitcoin"
+    },
+    {
+      "description": "<p><a href=\"https://ethereum.org/\" target=\"_blank\">Ethereum</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Ethereum methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports the following Ethereum networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Sepolia</b>, a proof-of-work testnet and the default testnet for Ethereum. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, <a target=\"_blank\" href=\"https://fauceth.komputing.org/\">FaucETH</a>).</li>\n</ul>\n",
+      "name": "Ethereum"
+    },
+    {
+      "description": "<p>IPFS is a distributed file storage. You can store data to IPFS and read from them.</p>\n",
+      "name": "IPFS"
+    },
+    {
+      "description": "<p>Bitcoin Cash Blockchain enables access to the most commonly used Bitcoin Cash methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://faucet.fullstack.cash/\">https://faucet.fullstack.cash/</a></li></ul>\n  </ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Bitcoin Cash"
+    },
+    {
+      "description": "<p>Build a peer-to-peer NFT marketplace and allow your customers to sell and buy assets. When an asset is sold, the creator is automatically paid, the asset is instantly transferred to the buyer, and you as the owner of the marketplace automatically receive a percentage of the transaction.</p>\n<p>Each marketplace-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Marketplace"
+    },
+    {
+      "description": "<p>The utility APIs help you use some native blockchain features such as getting the address of a smart contract or estimating the block number.</p>\n<p>Each utility API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Blockchain utils"
+    },
+    {
+      "description": "<p>Litecoin Blockchain enables access to the most commonly used Litecoin methods. These methods bring a small level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"http://testnet.litecointools.com/\">http://testnet.litecointools.com/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Litecoin"
+    },
+    {
+      "description": "<p>Dogecoin Blockchain enables access to the most commonly used Dogecoin methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.com/doge-testnet/\">https://testnet-faucet.com/doge-testnet/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Dogecoin"
+    },
+    {
+      "description": "<p>Flow Blockchain enables access to the most commonly used Flow methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports FLOW and FUSD stable coin.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.onflow.org/\">https://testnet-faucet.onflow.org/</a>\n<br/>To obtain FUSD on testnet, you can swap them using <a target=\"_blank\" href=\"https://swap-testnet.blocto.app/#/swap\">https://swap-testnet.blocto.app/#/swap</a></li></ul>\nTo create accounts or mint NFTs on <b>mainnet</b>, you have to have paid API Key. Tatum covers the transaction fees on FLOW blockchain out of the box, so mainnet operations are available only on the paid API Key.<br/>\nTatum handles automatically proposal key management - we internally rotate the proposal keys for you, so you don't have to take care of that and can easily scale your transaction throughput.<br/>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.<br/>\nIt's not possible to pregenerate addresses on the Flow blockchain. You can generate only public keys, which are used to generate address using a create account transaction to the Flow blockchain.\nYou have to have existing account on the Flow to initialize new address creation. Transactions on the Flow blockchain are free.</p>\n",
+      "name": "Flow"
+    },
+    {
+      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
+      "name": "XRP"
+    },
+    {
+      "description": "<p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li> Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://friendbot.stellar.org/?addr=address\" target=\"_blank\">https://friendbot.stellar.org/?addr=address</a>.</li></ul>\n<br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>\n",
+      "name": "Stellar"
+    },
+    {
+      "description": "<p>The Record section enables the storing of records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever. Tatum supports storing data on the following blockchains:</p>\n<ul>\n<li>Ethereum</li>\n</ul>\n",
+      "name": "Blockchain storage"
+    },
+    {
+      "description": "<p>Binance Blockchain enables access to most commonly used Binance methods.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://www.binance.com/en/dex/testnet/address\">https://www.binance.com/en/dex/testnet/address</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "BNB Beacon Chain"
+    },
+    {
+      "description": "<p>VeChain Blockchain enables access to the most commonly used VeChain methods. Tatum does not support off-chain capabilities for the VET blockchain.\nTatum KMS is not supported for VET transactions. VET supports 2 native assets - VET and VTHO. VTHO is used for paying transaction fees.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a test chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.vecha.in/\">https://faucet.vecha.in/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "VeChain"
+    },
+    {
+      "description": "<p><b>Support for Cardano is deprecated.</b></p>\n<s><p><b>Cardano is in maintenance mode.</b></p>\n<p><a href=\"https://cardano.org/\" target=\"_blank\">Cardano</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Cardano methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports Cardano mainnet and <a href=\"https://docs.cardano.org/cardano-testnet/getting-started\" target=\"_blank\">Cardano preproduction testnet</a>.</p></s>\n",
+      "name": "Cardano"
+    },
+    {
+      "description": "<p>Custodial API is a set of operations, which allows you to work with managed blockchain addresses without having its private key.\nYou can easily create new managed address and export its details - with private key as well - once required.<br/>\nThis features are currently in <b>Alpha version</b>.</p>\n",
+      "name": "Custodial managed wallets"
+    },
+    {
+      "description": "<p>\"NFT\" stands for \"Non-Fungible Token\", which means that each token is unique and irreplaceable. NFTs are described by the ERC-721 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>NFTs can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> NFTs can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> NFTs can be used to create rare and unique collectible digital releases. Similarly, NFTs can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as NFTs.</li>\n</ul>\n<p>Each NFT-related API its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "NFT (ERC-721 or compatible)"
+    },
+    {
+      "description": "<p>Fungible tokens are interchangeable and are used as a blockchain representation of the currency. Fungible tokens are described by the ERC-20 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>Each API related to fungible tokens supports its own set of the blockchains. The list of the supported blockchains is provided in the operation description further in this section.</p>\n",
+      "name": "Fungible Tokens (ERC-20 or compatible)"
+    },
+    {
+      "description": "<p>A Multi Token combines characteristics of fungible and non-fungible tokens. A single Multi Token smart contract allows you to mint fungible, non-fungible, and semi-fungible tokens and process different types of the tokens in a single transaction. Multi Tokens are described by the ERC-1155 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.<p/>\n<p>Multi Tokens can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> Multi Tokens can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> Multi Tokens can be used to create rare and unique collectible digital releases. Similarly, Multi Tokens can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as Multi Tokens.</li>\n</ul>\n<p>Each Multi Token-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Multi Tokens (ERC-1155 or compatible)"
+    },
+    {
+      "description": "<p>Solana is a blockchain network focused on fast transactions and high throughput. It uses a unique method of ordering transactions to improve its speed. Users can pay their transaction fees and interact with smart contracts with SOL, the network's native cryptocurrency.<br/>\n<b>For now, Solana is in <b>BETA</b> and there is a rate limitation applied for all projects for Solana to 40 req/s on the platform.</b><br/>\nTatum supports 2 chains:\n<ul><li>Mainnet BETA - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://solfaucet.com/\">https://solfaucet.com/</a></li></ul></p>\n",
+      "name": "Solana"
+    },
+    {
+      "description": "<p>Binance Smart Chain is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://testnet.binance.org/faucet-smart\">https://testnet.binance.org/faucet-smart</a></li></ul></p>\n",
+      "name": "BNB Smart Chain"
+    },
+    {
+      "description": "<p>Polygon (Matic) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.matic.network/\">https://faucet.matic.network/</a></li></ul></p>\n",
+      "name": "Polygon"
+    },
+    {
+      "description": "<p>Celo is fork of Celo with more than 1000 tps and possibility to pay for\ntransactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.\nThese methods bring small level of abstraction,\n       and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n       to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>\n      Tatum supports 2 chains:\n      <ul><li>Mainnet - regular live chain\n      <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\n      Faucet, e.g. <a target=\"_blank\" href=\"https://celo.org/developers/faucet\">https://celo.org/developers/faucet</a></li></ul><br/>\n      Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Celo"
+    },
+    {
+      "description": "<p>Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://r3d4.fr/elrond/devnet/index.php\">https://r3d4.fr/elrond/devnet/</a></li></ul></p>\n",
+      "name": "Elrond"
+    },
+    {
+      "description": "<p>Algorand is a decentralized blockchain technology network. Algorand is enabling the simple creation of next generation financial products, protocols and exchange of value across defi, financial institutions and governments.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://bank.testnet.algorand.network/\">https://bank.testnet.algorand.network/</a></li></ul></p>\n",
+      "name": "Algorand"
+    },
+    {
+      "description": "<p>Tron Blockchain enables access to most commonly used Tron methods. It's possible to generate TRON account, send TRX, TRC10 and TRC20 assets. It's also possible to generate custom TRC10 or TRC20 tokens using API.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - regular live chain\n<li>Shasta Testnet - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\nFaucet, e.g. <a target=\"_blank\" href=\"https://www.trongrid.io/shasta/\">https://www.trongrid.io/shasta/</a></li></ul>\n",
+      "name": "Tron"
+    },
+    {
+      "description": "<p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Baobab Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://baobab.wallet.klaytn.com/access?next=faucet\">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>\n",
+      "name": "Klaytn"
+    },
+    {
+      "description": "<p>Harmony.ONE is an Oneeum L2 scaling solution 100% EVM compatible, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.pops.one/\">https://faucet.pops.one/</a></li></ul></p>\n",
+      "name": "Harmony"
+    },
+    {
+      "description": "<p>XDC Network (XinFin) is enterprise ready hybrid blockchain for global trade and finance, combining the power of Public & Private blockchains with interoperable Smart Contracts.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://apothem.network/#getTestXDC\">https://apothem.network/#getTestXDC</a></li></ul></p>\n",
+      "name": "XinFin"
+    },
+    {
+      "description": "<p>Kcs (KCS) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet-testnet.kcc.network/\">https://faucet-testnet.kcc.network/</a></li></ul></p>\n",
+      "name": "KuCoin"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Blockchain",
+      "tags": [
+        "Node RPC",
+        "Algorand",
+        "Bitcoin",
+        "Bitcoin Cash",
+        "BNB Smart Chain",
+        "BNB Beacon Chain",
+        "Cardano",
+        "Celo",
+        "Dogecoin",
+        "Elrond",
+        "Ethereum",
+        "Flow",
+        "Harmony",
+        "Klaytn",
+        "KuCoin",
+        "Litecoin",
+        "Polygon",
+        "Solana",
+        "Stellar",
+        "Tron",
+        "VeChain",
+        "XinFin",
+        "XRP"
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "tags": [
+        "Notification subscriptions"
+      ]
+    },
+    {
+      "name": "Fee estimation",
+      "tags": [
+        "Blockchain fees",
+        "Virtual account blockchain fees"
+      ]
+    },
+    {
+      "name": "Smart Contracts",
+      "tags": [
+        "NFT (ERC-721 or compatible)",
+        "Fungible Tokens (ERC-20 or compatible)",
+        "Multi Tokens (ERC-1155 or compatible)",
+        "Gas pump",
+        "Marketplace",
+        "Auction"
+      ]
+    },
+    {
+      "name": "Security",
+      "tags": [
+        "Key Management System",
+        "Malicious address",
+        "Custodial managed wallets"
+      ]
+    },
+    {
+      "name": "Storage",
+      "tags": [
+        "IPFS",
+        "Blockchain storage"
+      ]
+    },
+    {
+      "name": "Virtual Accounts",
+      "tags": [
+        "Account",
+        "Transaction",
+        "Customer",
+        "Virtual Currency",
+        "Order Book",
+        "Withdrawal",
+        "Blockchain addresses",
+        "Blockchain operations",
+        "Deposit"
+      ]
+    },
+    {
+      "name": "Utils",
+      "tags": [
+        "Blockchain utils",
+        "Exchange rate",
+        "Service utils"
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/bitcoin/wallet": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Tatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. A mnemonic phrase consists of 24 special words in a defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for Bitcoin wallet with derivation path m'/44'/0'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerate BIP44 compatible Bitcoin wallet.</p>\n",
+        "operationId": "BtcGenerateWallet",
+        "parameters": [
+          {
+            "description": "Mnemonic to use for generation of extended public and private keys.",
+            "in": "query",
+            "name": "mnemonic",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 500
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallet"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate a Bitcoin wallet",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/address/{xpub}/{index}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generate a Bitcoin address from the extended public key of the wallet. The address is generated for the specific index - each extended public key can generate up to 2^32 addresses with the index starting from 0 up to 2^31 - 1.</p>\n",
+        "operationId": "BtcGenerateAddress",
+        "parameters": [
+          {
+            "description": "Extended public key of a wallet.",
+            "in": "path",
+            "name": "xpub",
+            "required": true,
+            "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Derivation index of the desired address to be generated.",
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "example": 0,
+            "schema": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedAddressBtc"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate a Bitcoin address from the wallet's extended public key",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/wallet/priv": {
+      "post": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Generates a private key for an address from a mnemonic for a given derivation path index. The private key is generated for the specific index - each mnemonic can generate up to 2^32 private keys starting from index 0 until 2^31 - 1.</p>\n",
+        "operationId": "BtcGenerateAddressPrivateKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrivKeyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivKey"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate the private key for a Bitcoin address",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/info": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Gets Bitcoin blockchain information. Obtains basic info like the testnet / mainnet version of the chain, the current block number and its hash.</p>\n",
+        "operationId": "BtcGetBlockChainInfo",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcInfo"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Bitcoin blockchain information",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/block/hash/{i}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Gets a Bitcoin block hash. Returns the hash of the block to get the block's details.</p>\n",
+        "operationId": "BtcGetBlockHash",
+        "parameters": [
+          {
+            "description": "The number of blocks preceding a particular block on a blockchain.",
+            "in": "path",
+            "name": "i",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 1580117
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcBlockHash"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get the hash of a Bitcoin block",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/block/{hash}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Gets Bitcoin block detail by block hash or height.</p>\n",
+        "operationId": "BtcGetBlock",
+        "parameters": [
+          {
+            "description": "Block hash or height.",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "00000000ca231a439a5c0a86a5a5dd6dc1918a8e897b96522fa9499288e70183"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcBlock"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get a Bitcoin block by its hash or height",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/address/balance/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get the balance of a Bitcoin address.</p>\n",
+        "operationId": "BtcGetBalanceOfAddress",
+        "parameters": [
+          {
+            "description": "The blockchain address to get the balance for",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2MsM67NLa71fHvTUBqNENW15P68nHB2vVXb"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcBasedBalance"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get the balance of a Bitcoin address",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/transaction/address/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get all transactions for a Bitcoin address.</p>\n",
+        "operationId": "BtcGetTxByAddress",
+        "parameters": [
+          {
+            "description": "Address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "2MsM67NLa71fHvTUBqNENW15P68nHB2vVXb"
+            }
+          },
+          {
+            "description": "Max number of items per page is 50.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "maximum": 50,
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "description": "Offset to obtain the next page of data.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BtcTx"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get all transactions for a Bitcoin address",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/transaction": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Send BTC to blockchain addresses.</p>\n<p>Bitcoin transactions are based on UTXOs. \"UTXO\" stands for \"Unspent Transaction Output\". A UTXO is the amount of BTC/satoshis that remains at a Bitcoin address after a cryptocurrency transaction involving this address has been performed. The UTXO can then be used as input for a new cryptocurrency transaction. For more information about Bitcoin transactions and UTXO, see the <a href=\"https://developer.bitcoin.org/devguide/transactions.html\" target=\"_blank\">Bitcoin user documentation</a>. To check UTXOs in a transaction, see the <a href=\"#operation/BtcGetUTXO\">API for getting information about a transaction output (UTXO) in a Bitcoin transaction</a>.</p>\n<p>You can build a BTC transaction by one of the following methods:</p>\n<ul>\n<li><b>Sending BTC from blockchain addresses</b><br/>The assets are sent from a list of addresses. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction. For easier control over the assets to be sent, we recommend that you use this method only if you have one address to send the assets from.<br/> To use this method, use the <code>BtcTransactionFromAddress</code> or <code>BtcTransactionFromAddressKMS</code> schema of the request body.</li>\n<li><b>Sending BTC from UTXOs</b><br/>The assets are sent from a list of UTXOs. Each UTXO is included in the transaction. Use this method if you want to manually calculate the amount to send.<br/> To use this method, use the <code>BtcTransactionFromUTXO</code> or <code>BtcTransactionFromUTXOKMS</code> schema of the request body.</li>\n</ul>\n<p>When an UTXO is entered into a transaction, the whole UTXO amount is included and must be spent. For example, address A receives two transactions, T1 with 1 BTC and T2 with 2 BTC. A transaction that consumes the UTXOs from both T1 and T2 will have an available amount of 3 BTC to spend:<br/><code>1 BTC (from T1) + 2 BTC (from T2) = 3 BTC (to spend in total)</code></p>\n<p>You can send the assets to one or multiple recipients in one transaction. If you send the assets to multiple addresses, each address must have its own amount to receive.</p>\n<p><b>Paying the gas fee and receiving the change</b><br/>\nWhen the amount that the recipients should receive is lower than the amount from the UTXOs, the difference between these two amounts is by default used as the gas fee for the transaction. Because this amount may be considerable and you may not want to spend it all on the gas fee, you can explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent (the <code>fee</code> and <code>changeAddress</code> parameters in the request body, correspondingly).</p>\n<p><b>Signing a transaction</b><br/>\nWhen sending BTC, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "BtcTransferBlockchain",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BtcTransactionFromAddress"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BtcTransactionFromAddressKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BtcTransactionFromUTXO"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BtcTransactionFromUTXOKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send BTC to Bitcoin addresses",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/transaction/{hash}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get Bitcoin Transaction detail by transaction hash.</p>\n",
+        "operationId": "BtcGetRawTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1451692ebbfbea1a2d2ec6fe6782596b6aa2e46c0589d04c406f491b5b46bc6a"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcTx"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get a Bitcoin transaction by its hash",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/utxo/{hash}/{index}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get information about a transaction output in a transaction and check whether this output is a UTXO or has been spent.</p>\n<p>\"UTXO\" stands for \"Unspent Transaction Output\". A UTXO is the amount of BTC/satoshis that remains at a Bitcoin address after a cryptocurrency transaction involving this address has been performed. The UTXO can then be used as input for a new cryptocurrency transaction. For more information about Bitcoin transactions and UTXO, see the <a href=\"https://developer.bitcoin.org/devguide/transactions.html\" target=\"_blank\">Bitcoin user documentation</a>.</p>\n<ul>\n<li>If the transaction output is an UTXO, the API returns data about it.</li>\n<li>If the transaction output has been spent and there is no UTXO to return, the API returns an error with the <code>404</code> response code.</li>\n</ul>\n",
+        "operationId": "BtcGetUTXO",
+        "parameters": [
+          {
+            "description": "The transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 64,
+              "maxLength": 64,
+              "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc"
+            }
+          },
+          {
+            "description": "The index of the transaction output that you want to check for the UTXO",
+            "in": "path",
+            "name": "index",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BtcUTXO"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get information about a transaction output (UTXO) in a Bitcoin transaction",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/mempool": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Gets Bitcoin transaction IDs in the mempool.</p>\n",
+        "operationId": "BtcGetMempool",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "TX ID of the transaction in mempool",
+                    "example": "4c7846a8ff8415945e96937dea27bdb3144c15d793648d725602784826052586"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get transactions from the Bitcoin mempool",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/broadcast": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Broadcasts a signed transaction to the Bitcoin blockchain. This method is used internally from Tatum KMS or Tatum Client Libraries.\nIt is possible to create a custom signing mechanism and only use this method for broadcasting data to the blockchain.</p>\n",
+        "operationId": "BtcBroadcast",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BroadcastKMS"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionHash"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast a signed Bitcoin transaction",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    },
+    "/v3/bitcoin/node": {
+      "post": {
+        "description": "<p>This endpoint is deprecated. Do not use it.<br/>\nInstead, use <a href=\"https://apidoc.tatum.io/tag/Node-RPC#operation/NodeJsonPostRpcDriver\" target=\"_blank\">this API</a>.</b></p><br/>\n<p><b>2 credits per API call</b></p>\n<p>Use this endpoint URL as an http-based JSON RPC driver to connect directly to the node provided by Tatum.\nTo learn more about JSON RPC, visit the <a href=\"https://developer.bitcoin.org/reference/rpc/index.html\" target=\"_blank\">Bitcoin developers' guide</a>.</p>\n",
+        "deprecated": true,
+        "operationId": "BtcRpcDriver",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid JSON RPC method content body.",
+                "properties": {
+                  "jsonrpc": {
+                    "type": "string",
+                    "description": "Version of the JSON RPC.",
+                    "example": "1.0"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "ID of the request, could be any arbitrary identifier.",
+                    "example": "test"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Method to invoke on the node.",
+                    "example": "getblockcount"
+                  },
+                  "params": {
+                    "type": "array",
+                    "description": "Params to the method call, if required.",
+                    "example": [],
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid RPC response.",
+                  "example": {
+                    "jsonrpc": "1.0",
+                    "id": "test",
+                    "result": 654321
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "Connect to a Bitcoin node through an RPC driver",
+        "tags": [
+          "Bitcoin"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BtcBlockHash": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Block hash",
+            "example": "0000000053f225e202cf27fe3046e06719efd3b31b5ab75fc5ef7f853c8b246f"
+          }
+        }
+      },
+      "BtcBlock": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Hash of block.",
+            "example": "00000000ca231a439a5c0a86a5a5dd6dc1918a8e897b96522fa9499288e70183"
+          },
+          "height": {
+            "description": "The number of blocks preceding a particular block on a block chain.",
+            "type": "number",
+            "example": 15235
+          },
+          "depth": {
+            "description": "The number of blocks following a particular block on a block chain, including current one.",
+            "type": "number",
+            "example": 1567867
+          },
+          "version": {
+            "type": "number",
+            "description": "Block version.",
+            "example": 1
+          },
+          "prevBlock": {
+            "type": "string",
+            "description": "Hash of the previous block.",
+            "example": "000000006e79360d7b2519410fe5a73e8e08393fd7166620c73c711e4507d9fd"
+          },
+          "merkleRoot": {
+            "type": "string",
+            "description": "The root node of a merkle tree, a descendant of all the hashed pairs in the tree.",
+            "example": "480c227c5042377dbd54464d33e1f59c19fe02fe76d7f55b6955db438479aece"
+          },
+          "time": {
+            "type": "number",
+            "description": "Time of the block.",
+            "example": 1338861927
+          },
+          "bits": {
+            "type": "number",
+            "example": 486604799
+          },
+          "nonce": {
+            "type": "number",
+            "description": "Arbitrary number that is used in Bitcoin's proof of work consensus algorithm.",
+            "example": 1193572362
+          },
+          "txs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTx"
+            }
+          }
+        }
+      },
+      "BtcInfo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Chain of the blockchain, main or test.",
+            "example": "test"
+          },
+          "blocks": {
+            "type": "number",
+            "description": "Last block.",
+            "example": 1579820
+          },
+          "headers": {
+            "type": "number",
+            "description": "Last headers.",
+            "example": 1579820
+          },
+          "bestblockhash": {
+            "description": "Hash of the last block.",
+            "type": "string",
+            "example": "0000000000000106e4c03ca093ce0cf77e796ddff4f3cadc59ca6b0380e3eed4"
+          },
+          "difficulty": {
+            "type": "number",
+            "description": "Difficulty of the algorithm.",
+            "example": 6522714.521250089
+          }
+        }
+      },
+      "BtcBasedBalance": {
+        "type": "object",
+        "properties": {
+          "incoming": {
+            "type": "string",
+            "description": "Total sum of the assets that arrives to the address.",
+            "example": "0.1234"
+          },
+          "outgoing": {
+            "type": "string",
+            "description": "Total sum of the assets that leaves from the address.",
+            "example": "0.1"
+          }
+        }
+      },
+      "BtcTx": {
+        "type": "object",
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Transaction hash.",
+            "example": "4c7846a8ff8415945e96937dea27bdb3144c15d793648d725602784826052586"
+          },
+          "hex": {
+            "type": "string",
+            "description": "Transaction hex.",
+            "example": "020000000001072840e4f49e088d9ab233f6209aede5d91c44ecb59f490dbf289e7ef5028bc6aa0000000000ffffffffada5ca08d78992fac3bd48e1ac197c2b4bbd98b349d706ba7dd38c7c3dceed940000000000ffffffff0265691f1374c79a164186b6290a6bdf785561dcf5e3c155599dbaa646e2f06e0000000000ffffffff4f0b53ff85e10ff33c3cf95a1b650729c83b75d6b894d8224b40ca00b944a3ff0000000000ffffffff30aa398d22fd3b60534389c926093863d560eaeca4c6f85454b5fa0222f96db30000000000ffffffff9c02daa47a879222fc7e9d3c0ec7158d4853d3cc4a4465001412e5fc0371e7470100000000ffffffff78bdc156966a07d09f9bdb45ccb2e21765657f806b7e2ab7b7bb9dad5d5b5bc30000000000ffffffff010c2845000000000016001490a446c7f165cfd99dd5dd87a6bb83a17fd9e9f1024730440220384fa3d7935db56a637cf6c662dfc6990957e2838afa5db29e7569c996ba24930220567d4ed8ec36a940d871bc26d292656690e55bd10567c823af2c6ffab9a7868f012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c0247304402206b6db0dd0dd158835618613b952056327113374a8dec6be5f41c41a8ce552fe2022027c356009488123c27c98aa66080f6898484b7c098dc366540be8f6935feeefe012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c0247304402200baf8a00f9f767cc83c35e3a29a03a4f054c886fc07828481b83ae858eb5853902202f6d82ef65f64ac5db1db947aa03e1ed5f3b19710cf4c3e4448cd5a7f25277df012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c02483045022100b7d574102ede6a4d556269129592faa8f7ff54ca846c2516804811e06aca380202206a0e519a911e3fe130f1d446f5fd16b951fd25136b2f9b2980dd9eefe4f3a860012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c02473044022008548dc3eff2713011d3fad3e661918f51cd4a3b688f90326f5febf4dbb34c8f0220245e37520b501a7c429f9428c4892034d398c8198006fedd9fdb45790c8d0d23012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c02473044022044bd3552b24b49b2c9bc2acee7a8d587407070cb80e7c65cdefff78fe7df0f99022067581ae9d54d2fdedb9bcf69c2281830e165f9df631f6c889f98dfb7c1e4a78a012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c02483045022100a141642697ba55407e4d6d2b6d3d1b2f93d5126794e77028c00307835a4c71ce02202658200b9d779d0f6f169bdd27dc81cbbb10718e57754349e57e020ea6bf5cfb012103ccb40d87b4e847b970a9dd23c3d5078964213cf6a78257796d801316bb7bb60c00000000"
+          },
+          "witnessHash": {
+            "type": "string",
+            "description": "Witness hash in case of a SegWit transaction.",
+            "example": "4c7846a8ff8415945e96937dea27bdb3144c15d793648d725602784826052586"
+          },
+          "fee": {
+            "type": "number",
+            "description": "Fee paid for this transaction, in satoshis.",
+            "example": 4540
+          },
+          "rate": {
+            "type": "number",
+            "example": 20088
+          },
+          "mtime": {
+            "type": "number",
+            "example": 1575663337
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Height of the block this transaction belongs to.",
+            "example": 1611609
+          },
+          "block": {
+            "type": "string",
+            "description": "Hash of the block this transaction belongs to.",
+            "example": "00000000000001e13fe1eb3977f3379e3d0f6577fc6e087d27db46597ebddb8b"
+          },
+          "time": {
+            "type": "number",
+            "description": "Time of the transaction.",
+            "example": 1575663091
+          },
+          "index": {
+            "type": "number",
+            "description": "Index of the transaction in the block.",
+            "example": 1
+          },
+          "version": {
+            "type": "number",
+            "description": "Index of the transaction.",
+            "example": 2
+          },
+          "inputs": {
+            "description": "List of transactions, from which assets are being sent.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTxInput"
+            }
+          },
+          "outputs": {
+            "type": "array",
+            "description": "List of recipient addresses and amounts to send to each of them.",
+            "items": {
+              "$ref": "#/components/schemas/BtcTxOutput"
+            }
+          },
+          "locktime": {
+            "type": "number",
+            "description": "Block this transaction was included in.",
+            "example": 1611608
+          }
+        }
+      },
+      "BtcTxOutput": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Sent amount in satoshis.",
+            "example": 2068942
+          },
+          "script": {
+            "type": "string",
+            "description": "Transaction script.",
+            "example": "a914eaf2ad7e161c3ce7092bde14dc5842b642fe925187"
+          },
+          "address": {
+            "type": "string",
+            "description": "Recipient address.",
+            "example": "2NEfWpiQwLEcHGbX2Fwij16NDxTEZwHk4BH"
+          }
+        }
+      },
+      "BtcTxInput": {
+        "type": "object",
+        "properties": {
+          "prevout": {
+            "$ref": "#/components/schemas/BtcTxInputPrevOut"
+          },
+          "script": {
+            "type": "string",
+            "description": "Data generated by a spender which is almost always used as variables to satisfy a pubkey script.",
+            "example": "1600148c65244f095f3689aebb70981d102e33036fe786"
+          },
+          "witness": {
+            "type": "string",
+            "description": "Transaction witness.",
+            "example": "0247304402207d7af97665ef5502c957f76a9fcdde2c228b6a8dc9951d45c318e6dfca0fcd2802207519528d6b61cc044800ab2cb499ef5f31d4decdc327c14fad4abbc3dd6e0190012102861d682cfd3bec8cbed98f5162299ba613bc5f352dd0d51961a5d81359fbc0af"
+          },
+          "sequence": {
+            "type": "number",
+            "example": 4294967294
+          },
+          "coin": {
+            "$ref": "#/components/schemas/BtcTxInputCoin"
+          }
+        }
+      },
+      "BtcTxInputCoin": {
+        "properties": {
+          "version": {
+            "type": "number",
+            "example": 2
+          },
+          "blockNumber": {
+            "type": "number",
+            "example": 1611608
+          },
+          "value": {
+            "type": "number",
+            "description": "Amount of the transaction, in Satoshis (1 BTC = 100 000 000 Satoshis)",
+            "example": 1341956178
+          },
+          "script": {
+            "type": "string",
+            "example": "0014049a97d91d4e1123899bf48c5ba6ce3fd959664e"
+          },
+          "address": {
+            "type": "string",
+            "description": "Sender address.",
+            "example": "tb1qqjdf0kgafcgj8zvm7jx9hfkw8lv4jejw6wsmjg"
+          },
+          "coinbase": {
+            "type": "boolean",
+            "description": "Coinbase transaction - miner fee.",
+            "example": false
+          }
+        },
+        "type": "object"
+      },
+      "BtcTxInputPrevOut": {
+        "properties": {
+          "hash": {
+            "type": "string",
+            "description": "Transaction hash of the input.",
+            "example": "60bc8445c11318e45a72a3259e65118d2f352568757e6ceb8bf1b527ce68379f"
+          },
+          "index": {
+            "type": "number",
+            "description": "Transaction index of the input.",
+            "example": 1
+          }
+        },
+        "type": "object"
+      },
+      "BtcUTXO": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number",
+            "description": "The version of the transaction",
+            "example": 1
+          },
+          "height": {
+            "type": "number",
+            "description": "The height (number) of the block where the transaction is included in",
+            "example": 210000
+          },
+          "value": {
+            "type": "number",
+            "description": "The amount of the UTXO (in satoshis)",
+            "example": 30000000
+          },
+          "script": {
+            "type": "string",
+            "description": "Data generated by the spender; is almost always used as variables to satisfy the conditions in the pubkey script",
+            "example": "76a91400ba915c3d18907b79e6cfcd8b9fdf69edc7a7db88ac"
+          },
+          "address": {
+            "type": "string",
+            "description": "The blockchain address of the UTXO owner",
+            "example": "R9M3aUWCcKoiqDPusJvqNkAbjffLgCqYip"
+          },
+          "coinbase": {
+            "type": "boolean",
+            "description": "If set to \"true\", the transaction is a coinbase transaction (a transaction created by a Bitcoin miner to collect their reward)",
+            "example": false
+          },
+          "hash": {
+            "type": "string",
+            "description": "The hash of the transaction",
+            "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc"
+          },
+          "index": {
+            "type": "number",
+            "description": "The index of the transaction output checked for the UTXO",
+            "example": 0
+          }
+        }
+      },
+      "BtcTransactionFromAddress": {
+        "type": "object",
+        "required": [
+          "to",
+          "fromAddress"
+        ],
+        "properties": {
+          "fromAddress": {
+            "description": "The array of blockchain addresses to send the assets from and their private keys. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromAddressSource"
+            }
+          },
+          "to": {
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromAddress</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromAddressTarget"
+            }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromAddressSource": {
+        "type": "object",
+        "required": [
+          "address",
+          "privateKey"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to send the assets from",
+            "type": "string",
+            "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
+            "minimum": 30,
+            "maximum": 50
+          },
+          "privateKey": {
+            "description": "The private key of the address to send the assets from",
+            "type": "string",
+            "minimum": 52,
+            "maximum": 52,
+            "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf"
+          }
+        }
+      },
+      "BtcTransactionFromAddressTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
+          }
+        }
+      },
+      "BtcTransactionFromUTXO": {
+        "type": "object",
+        "required": [
+          "to",
+          "fromUTXO"
+        ],
+        "properties": {
+          "fromUTXO": {
+            "description": "The array of transaction hashes, indexes of its UTXOs, and the private keys of the associated blockchain addresses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOSource"
+            }
+          },
+          "to": {
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromUTXO</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOTarget"
+            }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaining after covering the fee; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromUTXOSource": {
+        "type": "object",
+        "required": [
+          "txHash",
+          "index",
+          "privateKey"
+        ],
+        "properties": {
+          "txHash": {
+            "description": "The transaction hash of the UTXO to be spent",
+            "type": "string",
+            "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "index": {
+            "description": "The index of the UTXO to be spent",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "privateKey": {
+            "description": "The private key of the blockchain address that holds the UTXO to be spent",
+            "type": "string",
+            "example": "cVX7YtgL5muLTPncHFhP95oitV1mqUUA5VeSn8HeCRJbPqipzobf",
+            "minLength": 52,
+            "maxLength": 52
+          }
+        }
+      },
+      "BtcTransactionFromUTXOTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
+          }
+        }
+      },
+      "BtcTransactionFromAddressKMS": {
+        "type": "object",
+        "required": [
+          "to",
+          "fromAddress"
+        ],
+        "properties": {
+          "fromAddress": {
+            "description": "The array of blockchain addresses to send the assets from and their signature IDs. For each address, the last 100 transactions are scanned for any UTXO to be included in the transaction.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromAddressKMSSource"
+            }
+          },
+          "to": {
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromAddress</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromAddressKMSTarget"
+            }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee to; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromAddressKMSSource": {
+        "type": "object",
+        "required": [
+          "address",
+          "signatureId"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to send the assets from",
+            "type": "string",
+            "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
+            "minimum": 30,
+            "maximum": 50
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "description": "The KMS identifier of the private key of the address to send the assets from"
+          },
+          "index": {
+            "description": "(Only if the signature ID is mnemonic-based and you run KMS v6.2 or later) The index of the address to send the assets from that was generated from the mnemonic",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          }
+        }
+      },
+      "BtcTransactionFromAddressKMSTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
+          }
+        }
+      },
+      "BtcTransactionFromUTXOKMS": {
+        "type": "object",
+        "required": [
+          "to",
+          "fromUTXO"
+        ],
+        "properties": {
+          "fromUTXO": {
+            "description": "The array of transaction hashes, indexes of its UTXOs, and the signature IDs of the associated blockchain addresses",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOKMSSource"
+            }
+          },
+          "to": {
+            "description": "The array of blockchain addresses to send the assets to and the amounts that each address should receive (in BTC). The difference between the UTXOs calculated in the <code>fromUTXO</code> section and the total amount to receive calculated in the <code>to</code> section will be used as the gas fee. To explicitly specify the fee amount and the blockchain address where any extra funds remaining after covering the fee will be sent, set the <code>fee</code> and <code>changeAddress</code> parameters.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BtcTransactionFromUTXOKMSTarget"
+            }
+          },
+          "fee": {
+            "type": "string",
+            "description": "The fee to be paid for the transaction (in BTC); if you are using this parameter, you have to also use the <code>changeAddress</code> parameter because these two parameters only work together.",
+            "example": "0.0015"
+          },
+          "changeAddress": {
+            "description": "The blockchain address to send any extra assets remaning after covering the fee; if you are using this parameter, you have to also use the <code>fee</code> parameter because these two parameters only work together.",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          }
+        }
+      },
+      "BtcTransactionFromUTXOKMSSource": {
+        "type": "object",
+        "required": [
+          "txHash",
+          "signatureId",
+          "index"
+        ],
+        "properties": {
+          "txHash": {
+            "description": "The transaction hash of the UTXO to be spent",
+            "type": "string",
+            "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
+            "minLength": 64,
+            "maxLength": 64
+          },
+          "index": {
+            "description": "The index of the UTXO to be spent",
+            "type": "number",
+            "example": 0,
+            "minimum": 0,
+            "maximum": 2147483647
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "description": "The KMS identifier of the private key of the blockchain address that holds the UTXO to be spent"
+          }
+        }
+      },
+      "BtcTransactionFromUTXOKMSTarget": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "The blockchain address to receive the assets",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "The amount to receive (in BTC)",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
+          }
+        }
+      },
+      "BroadcastKMS": {
+        "properties": {
+          "txData": {
+            "description": "Raw signed transaction to be published to network.",
+            "example": "62BD544D1B9031EFC330A3E855CC3A0D51CA5131455C1AB3BCAC6D243F65460D",
+            "maxLength": 500000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "signatureId": {
+            "description": "ID of prepared payment template to sign. Required only, when broadcasting transaction signed by Tatum KMS.",
+            "format": "uuid",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txData"
+        ],
+        "type": "object"
+      },
+      "PrivKey": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "description": "Generated private key.",
+            "example": "cTmS2jBWXgFaXZ2xG9jhn67TiyTshnMp3UedamzEhGm6BZV1vLgQ",
+            "type": "string"
+          }
+        }
+      },
+      "PrivKeyRequest": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "description": "Derivation index of private key to generate.",
+            "example": 0,
+            "maximum": 2147483647,
+            "type": "integer"
+          },
+          "mnemonic": {
+            "maxLength": 500,
+            "minLength": 1,
+            "description": "Mnemonic to generate private key from.",
+            "example": "urge pulp usage sister evidence arrest palm math please chief egg abuse",
+            "type": "string"
+          }
+        },
+        "required": [
+          "mnemonic",
+          "index"
+        ]
+      },
+      "TransactionHash": {
+        "type": "object",
+        "properties": {
+          "txId": {
+            "description": "The hash (ID) of the transaction",
+            "example": "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txId"
+        ]
+      },
+      "SignatureId": {
+        "type": "object",
+        "properties": {
+          "signatureId": {
+            "format": "uuid",
+            "description": "The internal Tatum ID of the prepared transaction for Key Management Sysytem (KMS) to sign<br/>This is different from the <code>signatureId</code> parameter that you provided in the request body. The <code>signatureId</code> parameter in the request body specifies the signature ID associated with the private key in KMS.",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "type": "string"
+          }
+        },
+        "required": [
+          "signatureId"
+        ]
+      },
+      "Wallet": {
+        "type": "object",
+        "properties": {
+          "mnemonic": {
+            "description": "Generated mnemonic for wallet.",
+            "example": "urge pulp usage sister evidence arrest palm math please chief egg abuse",
+            "type": "string"
+          },
+          "xpub": {
+            "description": "Generated Extended public key for wallet with derivation path according to BIP44. This key can be used to generate addresses.",
+            "example": "xpub6EsCk1uU6cJzqvP9CdsTiJwT2rF748YkPnhv5Qo8q44DG7nn2vbyt48YRsNSUYS44jFCW9gwvD9kLQu9AuqXpTpM1c5hgg9PsuBLdeNncid",
+            "type": "string"
+          }
+        }
+      },
+      "GeneratedAddressBtc": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Bitcoin address",
+            "example": "0xa7673161CbfE0116A4De9E341f8465940c2211d4"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "X-API-Key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api-eu1.tatum.io/v3/ledger/account?type=testnet`\n"
+      }
+    }
+  }
+}

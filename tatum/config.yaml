@@ -9,7 +9,5 @@ globalProperties:
   modelDocs: false
 additionalProperties: 
   licenseId: MIT
-  packageName: Tatum.CSharp.Core
   sourceFolder: ""
-  chainsToInclude: ETH-BTC-MATIC-BSC-ONE
 releaseNote: "Fungible tokens introduced. New Fungible Tokens package."

@@ -330,4 +330,6 @@ public interface CodegenConfig {
     boolean getUseInlineModelResolver();
 
     boolean getAddSuffixToDuplicateOperationNicknames();
+
+    void setTatumChains(Set<String> chainsToInclude);
 }

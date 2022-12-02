@@ -118,6 +118,10 @@ public class CodegenModel implements IJsonSchemaValidationProperties {
     private LinkedHashMap<String, List<String>> dependentRequired;
     private CodegenProperty contains;
 
+    public CodegenProperty tatumChain;
+
+    public String chain;
+
     /**
      * The type of the value for the additionalProperties keyword in the OAS document.
      * Used in map like objects, including composed schemas.

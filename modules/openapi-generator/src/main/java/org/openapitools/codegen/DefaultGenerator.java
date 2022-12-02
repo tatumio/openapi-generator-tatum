@@ -569,6 +569,37 @@ public class DefaultGenerator implements Generator {
                             continue;  // Don't create user-defined classes for aliases
                         }
                     }
+
+                    boolean dontGenerate = false;
+
+                    if (modelTemplate.getModel().getVars() != null && !modelName.equals("BtcInfo")) {
+                        for (CodegenProperty property : modelTemplate.getModel().getVars()) {
+                            if (property.name.equals("Chain") && (property.get_enum() == null || property.get_enum().isEmpty())){
+                                dontGenerate = true;
+                                continue;
+                            }
+                        }
+                    }
+
+                    if(modelTemplate.getModel().tatumChain != null) {
+                        if (modelTemplate.getModel().tatumChain.get_enum() != null){
+                            boolean found = false;
+                            for (String chain : chainsToInclude) {
+                                if (modelTemplate.getModel().tatumChain.get_enum().contains(chain)) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                dontGenerate = true;
+                            }
+                        }
+                    }
+
+                    if(dontGenerate){
+                        continue;
+                    }
+
                     allModels.add(modelTemplate);
                 }
 
@@ -616,8 +647,6 @@ public class DefaultGenerator implements Generator {
             LOGGER.info("Skipping generation of APIs.");
             return;
         }
-
-        this.setChainsToInclude();
 
         this.setModelNameToCodegenModel(allModels);
 
@@ -803,6 +832,10 @@ public class DefaultGenerator implements Generator {
                 }
 
                 CodegenModel requestToCheckForChain = modelNameToCodegenModel.get(name);
+
+                if(requestToCheckForChain == null){
+                    continue;
+                }
 
                 if(requestToCheckForChain.getMandatory().contains("Chain"))
                 {
@@ -1040,6 +1073,7 @@ public class DefaultGenerator implements Generator {
             }
         }
 
+        this.setChainsToInclude();
         configureGeneratorProperties();
         configureOpenAPIInfo();
 
@@ -1052,6 +1086,7 @@ public class DefaultGenerator implements Generator {
         List<String> filteredSchemas = ModelUtils.getSchemasUsedOnlyInFormParam(openAPI);
         List<ModelMap> allModels = new ArrayList<>();
         generateModels(files, allModels, filteredSchemas);
+
         // apis
         List<OperationsMap> allOperations = new ArrayList<>();
         generateApis(files, allOperations, allModels);
@@ -1354,9 +1389,17 @@ public class DefaultGenerator implements Generator {
 
             CodegenModel requestToCheckForChain = modelNameToCodegenModel.get(getNameFromRef(oneOfSchema));
 
+            if(requestToCheckForChain == null){
+                continue;
+            }
+
             if(requestToCheckForChain.getMandatory().contains("Chain"))
             {
                 CodegenProperty chainParam = getChainProperty(requestToCheckForChain);
+
+                if(chainParam == null){
+                    chainParam = requestToCheckForChain.tatumChain;
+                }
 
                 if(chainParam == null){
                     throw new RuntimeException("Trying to chain map method without chain param: " + operation.getOperationId());
@@ -1729,6 +1772,7 @@ public class DefaultGenerator implements Generator {
             Schema schema = definitionsEntry.getValue();
             if (schema == null)
                 throw new RuntimeException("schema cannot be null in processModels");
+            config.setTatumChains(chainsToInclude);
             CodegenModel cm = config.fromModel(key, schema);
             ModelMap mo = new ModelMap();
             mo.setModel(cm);

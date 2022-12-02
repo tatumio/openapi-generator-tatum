@@ -287,6 +287,8 @@ public class DefaultCodegen implements CodegenConfig {
     // A cache to efficiently lookup schema `toModelName()` based on the schema Key
     private final Map<String, String> schemaKeyToModelNameCache = new HashMap<>();
 
+    protected Set<String> tatumChains;
+
     protected boolean loadDeepObjectIntoItems = true;
 
     // if true then baseTypes will be imported
@@ -303,6 +305,11 @@ public class DefaultCodegen implements CodegenConfig {
 
     public boolean getAddSuffixToDuplicateOperationNicknames() {
         return addSuffixToDuplicateOperationNicknames;
+    }
+
+    @Override
+    public void setTatumChains(Set<String> chainsToInclude) {
+        tatumChains = chainsToInclude;
     }
 
     @Override
@@ -5596,9 +5603,51 @@ public class DefaultCodegen implements CodegenConfig {
             }
         }
 
+        if (tatumChains != null) {
+            for (Map.Entry<String, Schema> entry : properties.entrySet()) {
+                final String key = entry.getKey();
+                final Schema prop = entry.getValue();
+                if (m instanceof CodegenModel) {
+
+                    cm = (CodegenModel) m;
+                    if (key.equals("chain") && prop.getEnum() != null && !prop.getEnum().isEmpty()) {
+                        if( tatumChains.size() == 1){
+                            properties.remove(entry.getKey());
+
+                            CodegenProperty cp;
+
+                            if (cm != null && cm.allVars == vars && varsMap.keySet().contains(key)) {
+                                cp = varsMap.get(key);
+                            } else {
+                                // properties in the parent model only
+                                cp = fromProperty(key, prop, mandatory.contains(key));
+                            }
+
+                            cm.tatumChain = cp;
+                            cm.chain = tatumChains.iterator().next();
+
+                            break;
+                        }
+
+                        // remove enums from the prop that doesn't match tatum chains
+                        List<String> enumValues = prop.getEnum();
+                        List<String> newEnumValues = new ArrayList<>();
+                        for (String enumValue : enumValues) {
+                            if (tatumChains.contains(enumValue)) {
+                                newEnumValues.add(enumValue);
+                            }
+                        }
+                        prop.setEnum(newEnumValues);
+
+                        break;
+                    }
+                }
+            }
+        }
         for (Map.Entry<String, Schema> entry : properties.entrySet()) {
             final String key = entry.getKey();
             final Schema prop = entry.getValue();
+
             if (prop == null) {
                 LOGGER.warn("Please report the issue. There shouldn't be null property for {}", key);
             } else {

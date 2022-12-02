@@ -43,6 +43,7 @@
         [Obsolete]
         {{/deprecated}}
         public {{{complexType}}}{{^complexType}}{{{datatypeWithEnum}}}{{/complexType}}{{^isContainer}}{{^required}}?{{/required}}{{/isContainer}} {{name}} { get; set; }
+
         {{#isReadOnly}}
 
         /// <summary>
@@ -200,6 +201,16 @@
             this.AdditionalProperties = new Dictionary<string, object>();
             {{/isAdditionalPropertiesTrue}}
         }
+
+        {{#tatumChain}}
+        /// <summary>
+        /// {{description}}{{^description}}Gets or Sets {{{name}}}{{/description}}
+        /// </summary>{{#description}}
+        /// <value>{{.}}</value>{{/description}}
+        [DataMember(Name = "{{baseName}}"{{#required}}, IsRequired = true{{/required}}, EmitDefaultValue = {{#required}}true{{/required}}{{^required}}{{#vendorExtensions.x-emit-default-value}}true{{/vendorExtensions.x-emit-default-value}}{{^vendorExtensions.x-emit-default-value}}{{#isBoolean}}true{{/isBoolean}}{{^isBoolean}}{{#isNullable}}true{{/isNullable}}{{^isNullable}}false{{/isNullable}}{{/isBoolean}}{{/vendorExtensions.x-emit-default-value}}{{/required}})]
+        public {{{dataType}}} {{name}} { get; } = "{{chain}}";
+
+        {{/tatumChain}}
 
         {{#vars}}
         {{^isInherited}}
