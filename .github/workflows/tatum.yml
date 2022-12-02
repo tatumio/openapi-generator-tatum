@@ -66,7 +66,7 @@ jobs:
           git config user.name "generator-workflow"
           git config user.email "csharp-generator@tatum.io"
           git checkout develop
-          rm -r ./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core || true
+          if [ -d "./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core" ]; then rm -Rf ./${{ matrix.arrays.package }}/Tatum.CSharp.${{ matrix.arrays.package }}.Core; fi
           mv ../Tatum.CSharp.${{ matrix.arrays.package }}.Core ./${{ matrix.arrays.package }}
           if ! git diff --quiet
           then
