@@ -15,26 +15,9 @@ env:
   CONFIG_PATH: ./tatum/config.yaml
 
 jobs:
-  Build_Version:
-    name: Get Version
-    uses: ./.github/workflows/calculateBuildVersion.yml
-
   Generate_Cores:
-    strategy:
-      max-parallel: 1
-      matrix:
-        arrays: [
-          { package: "Ethereum", chains: "ETH" },
-          { package: "Bitcoin", chains: "BTC" },
-          { package: "Nft", chains: "ETH-BTC-MATIC-BSC-ONE" },
-          { package: "FungibleTokens", chains: "ETH-BTC-MATIC-BSC-ONE" },
-          { package: "Polygon", chains: "MATIC" },
-          { package: "Bsc", chains: "BSC" },
-          { package: "Harmony", chains: "ONE" }
-        ]
-    name: ${{ matrix.arrays.package }} - Generate Core
+    name: Generate Cores
     runs-on: ubuntu-latest
-    needs: Build_Version
 
     steps:
     - uses: actions/checkout@v3
