@@ -83,6 +83,7 @@ jobs:
         chains: SOL
     - name: Push to SDK repo
       run: |
+          cd tatum-csharp
           git add .
           git status
           if [[ `git status --porcelain` ]]; then
