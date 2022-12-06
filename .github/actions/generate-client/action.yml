@@ -22,5 +22,5 @@ runs:
       run: |
         cd tatum-csharp
         if [ -d "./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}.Core" ]; then rm -Rf ./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}.Core; fi
-        mv ../Tatum.CSharp.${{ inputs.package }}.Core ./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}
+        mv ../Tatum.CSharp.${{ inputs.package }}.Core ./${{ inputs.package }}
       shell: bash
