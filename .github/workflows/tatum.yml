@@ -35,6 +35,7 @@ jobs:
       run: mvn clean package -f pom.xml -DskipTests
     - name: Prepare version control
       run: |
+        git config --unset-all http.https://github.com/.extraheader
         git clone https://user:${{ secrets.DISPATCH_TOKEN }}@github.com/tatumio/tatum-csharp.git
         cd tatum-csharp
         git checkout develop
@@ -85,7 +86,6 @@ jobs:
           if [[ `git status --porcelain` ]]; then
             echo "Changes detected, committing"
         
-            git config --unset-all http.https://github.com/.extraheader
             git config user.name "generator-workflow"
             git config user.email "csharp-generator@tatum.io"
         
