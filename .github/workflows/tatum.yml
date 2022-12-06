@@ -81,8 +81,6 @@ jobs:
       with:
         package: Solana
         chains: SOL
-    - name: Generate Clients
-      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/Tatum.CSharp.${{ matrix.arrays.package }}_trim_trans.json -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }},chainsToInclude=${{ matrix.arrays.chains }},packageName=Tatum.CSharp.${{ matrix.arrays.package }}.Core
     - name: Push to SDK repo
       run: |
           git add .
