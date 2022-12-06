@@ -670,6 +670,11 @@
       "SolanaWallet": {
         "type": "object",
         "properties": {
+          "mnemonic": {
+            "description": "Generated mnemonic for wallet.",
+            "example": "urge pulp usage sister evidence arrest palm math please chief egg abuse",
+            "type": "string"
+          },
           "address": {
             "description": "Generated account address.",
             "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ",
