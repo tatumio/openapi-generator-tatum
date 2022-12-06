@@ -1,0 +1,22 @@
+name: ${{ inputs.package }} - Generate Core Client
+inputs:
+  package:
+    description: 'package name'
+    required: true
+  chains:
+    description: 'supported chains'
+    required: true
+runs:
+  env:
+    MAPPING_PATH: ./tatum/oneOfMapping.json
+    CONFIG_PATH: ./tatum/config.yaml
+  using: "composite"
+  steps:
+    - name: Generate Clients
+      run: java -jar ./modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./tatum/Tatum.CSharp.${{ inputs.package }}_trim_trans.json -c ${{ env.CONFIG_PATH }} --additional-properties=oneOfMappingFilePath=${{ env.MAPPING_PATH }},chainsToInclude=${{ inputs.chains }},packageName=Tatum.CSharp.${{ inputs.package }}.Core
+    - name: Build
+      run: dotnet build ./Tatum.CSharp.${{ inputs.package }}.Core/Tatum.CSharp.${{ inputs.package }}.Core.csproj --configuration Release
+    - name: Move to SDK repo
+      run: |
+        if [ -d "./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}.Core" ]; then rm -Rf ./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}.Core; fi
+        mv ../Tatum.CSharp.${{ inputs.package }}.Core ./${{ inputs.package }}/Tatum.CSharp.${{ inputs.package }}
