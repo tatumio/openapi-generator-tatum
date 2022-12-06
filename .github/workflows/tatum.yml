@@ -42,42 +42,42 @@ jobs:
         git config user.email "csharp-generator@tatum.io"
         git checkout develop
     - name: Generate Ethereum Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Ethereum
         chains: ETH
     - name: Generate Bitcoin Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Bitcoin
         chains: BTC
     - name: Generate Nft Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Nft
         chains: ETH-BTC-MATIC-BSC-ONE
     - name: Generate FungibleTokens Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: FungibleTokens
         chains: ETH-BTC-MATIC-BSC-ONE
     - name: Generate Polygon Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Polygon
         chains: MATIC
     - name: Generate Bsc Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Bsc
         chains: BSC
     - name: Generate Harmony Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Harmony
         chains: ONE
     - name: Generate Solana Core
-      uses: actions/generateClient@develop
+      uses: ./generate-client@develop
       with:
         package: Solana
         chains: SOL
