@@ -1,0 +1,1078 @@
+{
+  "openapi": "3.0.0",
+  "security": [
+    {
+      "X-API-Key": []
+    }
+  ],
+  "info": {
+    "title": "Tatum API Reference",
+    "version": "3.17.0",
+    "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
+    "x-logo": {
+      "url": "https://tatum.io/images/Light.svg",
+      "altText": "Tatum"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.tatum.io"
+    }
+  ],
+  "tags": [
+    {
+      "description": "<p>Interact with the blockchain directly by connecting to the blockchain node and communicating with it through JSON-RPC.</p>\n<p>Each node-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Node RPC"
+    },
+    {
+      "description": "<p>A Tatum Account is the primary building block of Tatum-powered applications. It is an envelope that holds essential information about balances, the state of the account or customer, and to whom the account belongs.<br/><br/>\nAccounts in Tatum are stored within Tatum Private Ledger. Tatum Private Ledger contains information about accounts, the customers that own the accounts, transactions that affect the accounts or virtual currencies present in the ledger.<br/><br/>\nBy default, the private ledger is not connected to any blockchain. It is possible to create an application on it without any blockchain at all. Using Tatum Private Ledger and the building blocks included within it, it is possible to quickly swap the whole application from the ledger to any blockchain supported by Tatum. All of the API calls will remain the same, the only thing that changes is the blockchain the application lives on.<br/><br/>\nMost blockchains do not have any compliance layer at all. It is not possible to freeze funds at a blockchain address or deactivate an address. The Tatum Account has built-in compliance, and it is possible to block funds in the account, freeze outgoing transactions from the account or even completely deactivate the account.\n</p>\n",
+      "name": "Account"
+    },
+    {
+      "description": "<p>An endpoint used to create and list transactions within Tatum Private Ledger. A transaction is performed between 2 accounts with the same currency. To perform an exchange operation between accounts with different currencies, API calls from <a href=\"#tag/Order-BookLedger-Order-Book\">Order Book</a> sections are available. Transactions in the ledger are instant, with a settlement time of below 200ms.<br/>\nTatum Private Ledger supports microtransactions - a transaction of an amount as little as 1e-30 (30 decimal places). Transactions are atomic.<br/>\nWhen there is an insufficient balance in the sender account, or recipient account cannot receive funds, the transaction is not settled.</p>\n",
+      "name": "Transaction"
+    },
+    {
+      "description": "<p>An endpoint used to handle customer operations, like updating customer information, enabling/disabling etc.\nWithin Tatum API, a customer represents a client of the entity that communicates with Tatum.<br/>\nCustomers cannot be created via any other operation than Create Ledger Account.<br/>\nDue to compliance restrictions, it is recommended to enter the country of residence of the customer and the country of the provider. The Tatum compliance engine operates based on this information.\n</p>\n",
+      "name": "Customer"
+    },
+    {
+      "description": "<p>Register and use Tatum Private Ledger's virtual currencies. You can create your own virtual currency and distribute it amongst your customers.<br/>\nVirtual currencies are used to support FIAT currencies. When a virtual currency is created with basePair of the FIAT currency, it is possible to perform transactions in the private ledger in FIAT.\n</p>\n",
+      "name": "Virtual Currency"
+    },
+    {
+      "description": "<p>The gas pump is Tatum's feature that helps you manage gas fees in a custodial application. When you use the gas pump, gas fees for any transaction made by your customers (users of your custodial application) are automatically deducted from the master address instead of the customer's address. This eliminates the need to send crypto to each customer's address to pay for gas fees.</p>\n<p>For more information about the gas pump, see <a href=\"https://docs.tatum.io/gas-pump/pay-gas-fees-with-tatum-gas-pump\" target=\"_blank\">our user documentation</a>.</p>\n<p>Each API related to the gas pump supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Gas pump"
+    },
+    {
+      "description": "<p>Endpoints to handle subscriptions to the Tatum Platform. Subscriptions allow users to enable some additional features or reports that are not enabled by default,\nlike outgoing off-chain transaction scanning, accounts with balances above the limit, etc.</p>\n",
+      "name": "Notification subscriptions"
+    },
+    {
+      "description": "<p>Endpoint to handle Order book operations like creating BID / ASK trades between Tatum Private Virtual accounts, obtaining trade histories, creating futures etc. It is possible to build an exchange based on the Ledger Accounts.</p>",
+      "name": "Order Book"
+    },
+    {
+      "description": "<p><a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System</a> (KMS) is a comprehensive solution for building custodial applications. KMS runs locally on your server and provides security for generating wallets, addresses, and private keys, and for signing transactions.</p>\n<p>KMS builds a list of pending transaction to sign and provides the options to complete a transaction after it has been signed and to obtain transaction details with the result of the blockchain operation via the transaction ID.</p>\n<p>In KMS, each managed wallet or private key is assigned a unique signature ID (<code>signatureId</code>) that represents that wallet or private key. This signature ID is then used in an API request to identify the wallet.</p>\n<p>Depending on the API, you can use the signature ID in an API call request in the following ways:</p>\n<ul>\n<li>\nTo represent the <b>mnemonic</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/BtcTransfer\" target=\"_blank\">API for sending BTC from a virtual account to the blockchain</a> (see the <code>transferBtcKMS</code> request schema).</li>\n<li>To represent the <b>privateKey</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Bitcoin#operation/BtcTransferBlockchain\" target=\"_blank\">API for sending BTC to a blockchain address</a> (see the <code>BtcTransactionFromUTXOKMS</code> request schema).</li>\n<li>To represent the <b>mnemonic</b> and <b>index</b> type of the wallet; for example, in the <a href=\"https://apidoc.tatum.io/tag/Blockchain-operations#operation/EthTransfer\" target=\"_blank\">API for sending ETH from a virtual account to the blockchain</a> (see the <code>transferEthKMS</code> request schema).<br />In this case, the index of the specific private key generated from the mnemonic must be used in addition to the signature ID.</li>\n</ul>\n<p>You can run KMS on the following operating systems:</p>\n<ul>\n<li><b>macOS:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>Unix:</b> Natively or via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n<li><b>MS Windows:</b> Only via <a href=\"https://hub.docker.com/repository/docker/tatumio/tatum-kms\" target=\"_blank\">Docker</a></li>\n</ul>\n<p>For more information about KMS, see the <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">KMS GitHub repository</a> and the <a href=\"https://docs.tatum.io/private-key-management/private-key-management\" target=\"_blank\">user documentation</a>.</p>\n</ul></p>\n",
+      "name": "Key Management System"
+    },
+    {
+      "description": "<p>An endpoint to check if the blockchain address is safe to work with or not.</p>\n",
+      "name": "Malicious address"
+    },
+    {
+      "description": "<p>Manage deposit addresses associated with your virtual account.</p>\n<p>Depending on how virtual accounts are connected to the blockchain, the virtual accounts can be:</p>\n<ul>\n<li><b>Virtual accounts with associated deposit addresses</b>\n<br/>Customers can send funds to and receive funds from other blockchain addresses.</li>\n<li><b>Virtual accounts with no deposit addresses</b>\n<br/>These accounts have a cryptocurrency assigned but do not have any associated deposit addresses. The customers can send funds to and receive funds from another virtual accounts and can send funds to blockchain addresses. However, the customers cannot receive funds from blockchain addresses.</li>\n</ul>\n",
+      "name": "Blockchain addresses"
+    },
+    {
+      "description": "<p>An endpoint to handle operations between Tatum Private Ledger and the blockchain, e.g. to create blockchain transactions from ledger accounts,\ncreate custom Ethereum ERC20 tokens, Stellar XLM, or Ripple XRP custom assets and register them as regular currency into the Tatum Private Ledger.</p>\n",
+      "name": "Blockchain operations"
+    },
+    {
+      "description": "<p>An endpoint used to create, cancel, or complete withdrawals by customers from Tatum to supported blockchains.\nWithdrawals are always multi-step operations that consist of the following steps:\n<ul>\n<li><b>create withdrawal</b></li>\n<li><b>perform blockchain transaction</b></li>\n<li><b>complete withdrawal</b></li>\n<li><b>cancel withdrawal</b>, when any of the previous operations fail</li>\n</ul>\n</p>\n",
+      "name": "Withdrawals"
+    },
+    {
+      "description": "<p>Bitcoin Blockchain enables access to the most commonly used Bitcoin methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet3 - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.mempool.co/\">https://testnet-faucet.mempool.co/</a></li></ul><br/>\n",
+      "name": "Bitcoin"
+    },
+    {
+      "description": "<p><a href=\"https://ethereum.org/\" target=\"_blank\">Ethereum</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Ethereum methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports the following Ethereum networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Sepolia</b>, a proof-of-work testnet and the default testnet for Ethereum. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, <a target=\"_blank\" href=\"https://fauceth.komputing.org/\">FaucETH</a>).</li>\n</ul>\n",
+      "name": "Ethereum"
+    },
+    {
+      "description": "<p>IPFS is a distributed file storage. You can store data to IPFS and read from them.</p>\n",
+      "name": "IPFS"
+    },
+    {
+      "description": "<p>Bitcoin Cash Blockchain enables access to the most commonly used Bitcoin Cash methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://faucet.fullstack.cash/\">https://faucet.fullstack.cash/</a></li></ul>\n  </ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Bitcoin Cash"
+    },
+    {
+      "description": "<p>Build a peer-to-peer NFT marketplace and allow your customers to sell and buy assets. When an asset is sold, the creator is automatically paid, the asset is instantly transferred to the buyer, and you as the owner of the marketplace automatically receive a percentage of the transaction.</p>\n<p>Each marketplace-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Marketplace"
+    },
+    {
+      "description": "<p>The utility APIs help you use some native blockchain features such as getting the address of a smart contract or estimating the block number.</p>\n<p>Each utility API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Blockchain utils"
+    },
+    {
+      "description": "<p>Litecoin Blockchain enables access to the most commonly used Litecoin methods. These methods bring a small level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"http://testnet.litecointools.com/\">http://testnet.litecointools.com/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Litecoin"
+    },
+    {
+      "description": "<p>Dogecoin Blockchain enables access to the most commonly used Dogecoin methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.com/doge-testnet/\">https://testnet-faucet.com/doge-testnet/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Dogecoin"
+    },
+    {
+      "description": "<p>Flow Blockchain enables access to the most commonly used Flow methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports FLOW and FUSD stable coin.<br/>\nTatum supports 2 chains:\n  <ul><li>Mainnet - a regular live chain</li>\n  <li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a target=\"_blank\" href=\"https://testnet-faucet.onflow.org/\">https://testnet-faucet.onflow.org/</a>\n<br/>To obtain FUSD on testnet, you can swap them using <a target=\"_blank\" href=\"https://swap-testnet.blocto.app/#/swap\">https://swap-testnet.blocto.app/#/swap</a></li></ul>\nTo create accounts or mint NFTs on <b>mainnet</b>, you have to have paid API Key. Tatum covers the transaction fees on FLOW blockchain out of the box, so mainnet operations are available only on the paid API Key.<br/>\nTatum handles automatically proposal key management - we internally rotate the proposal keys for you, so you don't have to take care of that and can easily scale your transaction throughput.<br/>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.<br/>\nIt's not possible to pregenerate addresses on the Flow blockchain. You can generate only public keys, which are used to generate address using a create account transaction to the Flow blockchain.\nYou have to have existing account on the Flow to initialize new address creation. Transactions on the Flow blockchain are free.</p>\n",
+      "name": "Flow"
+    },
+    {
+      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
+      "name": "XRP"
+    },
+    {
+      "description": "<p>XLM Blockchain enables access to the most commonly used XLM methods. These methods bring a small level of abstraction\nand are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\nto connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\nTatum supports 2 chains:\n<ul><li> Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://friendbot.stellar.org/?addr=address\" target=\"_blank\">https://friendbot.stellar.org/?addr=address</a>.</li></ul>\n<br/>In order to start using the XLM blockchain, we first need to create an XLM account. In order to have the account activated, it must be credited with 0.5 XLM.  Because of this requirement, it is common to use one account for all customers and differentiate them using a memo - a short text/number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a memo is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the memo as an account distinguisher.</p>\n",
+      "name": "Stellar"
+    },
+    {
+      "description": "<p>The Record section enables the storing of records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever. Tatum supports storing data on the following blockchains:</p>\n<ul>\n<li>Ethereum</li>\n</ul>\n",
+      "name": "Blockchain storage"
+    },
+    {
+      "description": "<p>Binance Blockchain enables access to most commonly used Binance methods.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://www.binance.com/en/dex/testnet/address\">https://www.binance.com/en/dex/testnet/address</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "BNB Beacon Chain"
+    },
+    {
+      "description": "<p>VeChain Blockchain enables access to the most commonly used VeChain methods. Tatum does not support off-chain capabilities for the VET blockchain.\nTatum KMS is not supported for VET transactions. VET supports 2 native assets - VET and VTHO. VTHO is used for paying transaction fees.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a test chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.vecha.in/\">https://faucet.vecha.in/</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "VeChain"
+    },
+    {
+      "description": "<p><b>Support for Cardano is deprecated.</b></p>\n<s><p><b>Cardano is in maintenance mode.</b></p>\n<p><a href=\"https://cardano.org/\" target=\"_blank\">Cardano</a> is a decentralized, open-source blockchain. With Tatum, you can access the most commonly used Cardano methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports Cardano mainnet and <a href=\"https://docs.cardano.org/cardano-testnet/getting-started\" target=\"_blank\">Cardano preproduction testnet</a>.</p></s>\n",
+      "name": "Cardano"
+    },
+    {
+      "description": "<p>Custodial API is a set of operations, which allows you to work with managed blockchain addresses without having its private key.\nYou can easily create new managed address and export its details - with private key as well - once required.<br/>\nThis features are currently in <b>Alpha version</b>.</p>\n",
+      "name": "Custodial managed wallets"
+    },
+    {
+      "description": "<p>\"NFT\" stands for \"Non-Fungible Token\", which means that each token is unique and irreplaceable. NFTs are described by the ERC-721 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>NFTs can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> NFTs can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> NFTs can be used to create rare and unique collectible digital releases. Similarly, NFTs can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as NFTs.</li>\n</ul>\n<p>Each NFT-related API its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "NFT (ERC-721 or compatible)"
+    },
+    {
+      "description": "<p>Fungible tokens are interchangeable and are used as a blockchain representation of the currency. Fungible tokens are described by the ERC-20 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.</p>\n<p>Each API related to fungible tokens supports its own set of the blockchains. The list of the supported blockchains is provided in the operation description further in this section.</p>\n",
+      "name": "Fungible Tokens (ERC-20 or compatible)"
+    },
+    {
+      "description": "<p>A Multi Token combines characteristics of fungible and non-fungible tokens. A single Multi Token smart contract allows you to mint fungible, non-fungible, and semi-fungible tokens and process different types of the tokens in a single transaction. Multi Tokens are described by the ERC-1155 standard on the Ethereum blockchain or by the equivalent standard on the other blockchains.<p/>\n<p>Multi Tokens can be used for nearly any digital asset or good to ensure authenticity and scarcity, for example:<p>\n<ul>\n<li><b>In-game assets:</b> Multi Tokens can be used to create unique collectibles in the form of characters, weapons, skins, or other equipment. Players can resell or trade assets directly as they choose, and their authenticity is easily verifiable.</li>\n<li><b>Music and other digital media:</b> Multi Tokens can be used to create rare and unique collectible digital releases. Similarly, Multi Tokens can be used to sell videos, art, or any other type of digital media. Collectors can own digital originals of their favorite songs, movies, and so on.</li>\n<li><b>Digital sports merchandise:</b> Trading cards, memorabilia, classic moments in sports history, and one-of-a-kind experiences can be sold as Multi Tokens.</li>\n</ul>\n<p>Each Multi Token-related API supports its own set of the blockchains. The list of the supported blockchains is provided in the API description further in this section.</p>\n",
+      "name": "Multi Tokens (ERC-1155 or compatible)"
+    },
+    {
+      "description": "<p>Solana is a blockchain network focused on fast transactions and high throughput. It uses a unique method of ordering transactions to improve its speed. Users can pay their transaction fees and interact with smart contracts with SOL, the network's native cryptocurrency.<br/>\n<b>For now, Solana is in <b>BETA</b> and there is a rate limitation applied for all projects for Solana to 40 req/s on the platform.</b><br/>\nTatum supports 2 chains:\n<ul><li>Mainnet BETA - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://solfaucet.com/\">https://solfaucet.com/</a></li></ul></p>\n",
+      "name": "Solana"
+    },
+    {
+      "description": "<p>Binance Smart Chain is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://testnet.binance.org/faucet-smart\">https://testnet.binance.org/faucet-smart</a></li></ul></p>\n",
+      "name": "BNB Smart Chain"
+    },
+    {
+      "description": "<p>Polygon (Matic) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.matic.network/\">https://faucet.matic.network/</a></li></ul></p>\n",
+      "name": "Polygon"
+    },
+    {
+      "description": "<p>Celo is fork of Celo with more than 1000 tps and possibility to pay for\ntransactions in it's own stable coin, cUSD. Celo Blockchain enables access to most commonly used Celo methods.\nThese methods bring small level of abstraction,\n       and are used for the type of applications that want to communicate with blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n       to connect blockchain and private ledger together, like wallet generation or getting information about transactions.<br/>\n      Tatum supports 2 chains:\n      <ul><li>Mainnet - regular live chain\n      <li>Alfajorec - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\n      Faucet, e.g. <a target=\"_blank\" href=\"https://celo.org/developers/faucet\">https://celo.org/developers/faucet</a></li></ul><br/>\n      Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "name": "Celo"
+    },
+    {
+      "description": "<p>Elrond (EGLD) is a distributed transactional computation protocol which relies on a sharded state architecture and a secure Proof of Stake consensus mechanism.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Devnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://r3d4.fr/elrond/devnet/index.php\">https://r3d4.fr/elrond/devnet/</a></li></ul></p>\n",
+      "name": "Elrond"
+    },
+    {
+      "description": "<p>Algorand is a decentralized blockchain technology network. Algorand is enabling the simple creation of next generation financial products, protocols and exchange of value across defi, financial institutions and governments.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://bank.testnet.algorand.network/\">https://bank.testnet.algorand.network/</a></li></ul></p>\n",
+      "name": "Algorand"
+    },
+    {
+      "description": "<p>Tron Blockchain enables access to most commonly used Tron methods. It's possible to generate TRON account, send TRX, TRC10 and TRC20 assets. It's also possible to generate custom TRC10 or TRC20 tokens using API.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - regular live chain\n<li>Shasta Testnet - test chain used for testing purposes. Coins on test chain have no value and can be obtained from\nFaucet, e.g. <a target=\"_blank\" href=\"https://www.trongrid.io/shasta/\">https://www.trongrid.io/shasta/</a></li></ul>\n",
+      "name": "Tron"
+    },
+    {
+      "description": "<p>Klaytn is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Baobab Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://baobab.wallet.klaytn.com/access?next=faucet\">https://baobab.wallet.klaytn.com/access?next=faucet</a></li></ul></p>\n",
+      "name": "Klaytn"
+    },
+    {
+      "description": "<p>Harmony.ONE is an Oneeum L2 scaling solution 100% EVM compatible, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet.pops.one/\">https://faucet.pops.one/</a></li></ul></p>\n",
+      "name": "Harmony"
+    },
+    {
+      "description": "<p>XDC Network (XinFin) is enterprise ready hybrid blockchain for global trade and finance, combining the power of Public & Private blockchains with interoperable Smart Contracts.\n<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://apothem.network/#getTestXDC\">https://apothem.network/#getTestXDC</a></li></ul></p>\n",
+      "name": "XinFin"
+    },
+    {
+      "description": "<p>Kcs (KCS) is an Ethereum EVM 100% compatible blockchain, and is very good for decentralized application (Dapp) development within many possible verticals including DeFi, NFT, Gaming, and many others.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Mumbai Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://faucet-testnet.kcc.network/\">https://faucet-testnet.kcc.network/</a></li></ul></p>\n",
+      "name": "KuCoin"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Blockchain",
+      "tags": [
+        "Node RPC",
+        "Algorand",
+        "Bitcoin",
+        "Bitcoin Cash",
+        "BNB Smart Chain",
+        "BNB Beacon Chain",
+        "Cardano",
+        "Celo",
+        "Dogecoin",
+        "Elrond",
+        "Ethereum",
+        "Flow",
+        "Harmony",
+        "Klaytn",
+        "KuCoin",
+        "Litecoin",
+        "Polygon",
+        "Solana",
+        "Stellar",
+        "Tron",
+        "VeChain",
+        "XinFin",
+        "XRP"
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "tags": [
+        "Notification subscriptions"
+      ]
+    },
+    {
+      "name": "Fee estimation",
+      "tags": [
+        "Blockchain fees",
+        "Virtual account blockchain fees"
+      ]
+    },
+    {
+      "name": "Smart Contracts",
+      "tags": [
+        "NFT (ERC-721 or compatible)",
+        "Fungible Tokens (ERC-20 or compatible)",
+        "Multi Tokens (ERC-1155 or compatible)",
+        "Gas pump",
+        "Marketplace",
+        "Auction"
+      ]
+    },
+    {
+      "name": "Security",
+      "tags": [
+        "Key Management System",
+        "Malicious address",
+        "Custodial managed wallets"
+      ]
+    },
+    {
+      "name": "Storage",
+      "tags": [
+        "IPFS",
+        "Blockchain storage"
+      ]
+    },
+    {
+      "name": "Virtual Accounts",
+      "tags": [
+        "Account",
+        "Transaction",
+        "Customer",
+        "Virtual Currency",
+        "Order Book",
+        "Withdrawal",
+        "Blockchain addresses",
+        "Blockchain operations",
+        "Deposit"
+      ]
+    },
+    {
+      "name": "Utils",
+      "tags": [
+        "Blockchain utils",
+        "Exchange rate",
+        "Service utils"
+      ]
+    }
+  ],
+  "paths": {
+    "/v3/solana/wallet": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Generate Solana private key and account address.</p>\n",
+        "operationId": "SolanaGenerateWallet",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaWallet"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Generate Solana wallet",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/web3/{xApiKey}": {
+      "post": {
+        "deprecated": true,
+        "description": "<p><b>2 credits per API call</b></p>\n<p><b>This endpoint is deprecated. Use the <a href=\"https://apidoc.tatum.io/tag/Node-RPC\" target=\"_blank\">HTTP-based JSON RPC driver</a> instead.</b></p><br/>\n<p>Use this endpoint URL as a http-based JSON RPC driver to connect directly to the Solana node provided by Tatum.\nTo learn more about Solana JSON RPC, visit the <a href=\"https://docs.solana.com/developing/clients/jsonrpc-api\" target=\"_blank\">Solana developer's guide</a>.</p>\n",
+        "operationId": "SolanaWeb3Driver",
+        "parameters": [
+          {
+            "description": "Tatum X-API-Key used for authorization.",
+            "in": "path",
+            "name": "xApiKey",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "asdlkfjnqunalkwjfnq2oi303294857k"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Any valid JSON RPC method content body.",
+                "example": {
+                  "jsonrpc": "2.0",
+                  "method": "getVersion",
+                  "params": [],
+                  "id": 2
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Any valid JSON RPC response.",
+                  "example": {
+                    "jsonrpc": "2.0",
+                    "result": {
+                      "solana-core": "1.8.5"
+                    },
+                    "id": 1
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "x-codeSamples": [],
+        "summary": "JSON RPC HTTP driver",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/block/current": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Get Solana current block number. This is the number of the latest block in the blockchain.</p>",
+        "operationId": "SolanaGetCurrentBlock",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number",
+                  "description": "Current block number",
+                  "example": 6491272
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get current block number",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/block/{height}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/>\n<p>Get Solana block by block hash or block number. <br/>\nYou can find full data description here - <a target=\"blank\" href=\"https://docs.solana.com/developing/clients/jsonrpc-api#getblock\">https://docs.solana.com/developing/clients/jsonrpc-api#getblock</a>\n</p>\n",
+        "operationId": "SolanaGetBlock",
+        "parameters": [
+          {
+            "description": "Block number",
+            "in": "path",
+            "name": "height",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 6470657
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaBlock"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Solana block by number",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/account/balance/{address}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Get Solana account balance in SOL. This method does not prints any balance of the SPL or NFT tokens on the account.</p>",
+        "operationId": "SolanaGetBalance",
+        "parameters": [
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolBalance"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Solana Account balance",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/transaction/{hash}": {
+      "get": {
+        "description": "<h4>2 credit per API call.</h4><br/><p>Get Solana transaction by transaction hash.<br/>\nYou can find full data description here - <a target=\"blank\" href=\"https://docs.solana.com/developing/clients/jsonrpc-api#gettransaction\">https://docs.solana.com/developing/clients/jsonrpc-api#gettransaction</a>\n</p>\n",
+        "operationId": "SolanaGetTransaction",
+        "parameters": [
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5oSXZkPregqGhHrTcbWhgHQJETvBHtBYssuuCMJ3qroAgHsHndsr8fyY8kY76AgwmMaZBZW8ThHAXwjDaUSweApS"
+            }
+          },
+          {
+            "description": "Commitment of the transaction. If not defined, all transactions are being scanned.",
+            "in": "query",
+            "name": "commitment",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "finalized",
+                "confirmed"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTx"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Solana Transaction",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/transaction": {
+      "post": {
+        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Send SOL from account to account.<br/><br/>\nThis operation needs the private key of the blockchain address. Every time the funds are transferred, the transaction must be signed with the corresponding private key.\nNo one should ever send it's own private keys to the internet because there is a strong possibility of stealing keys and loss of funds. In this method, it is possible to enter privateKey\nor signatureId. PrivateKey should be used only for quick development on testnet versions of blockchain when there is no risk of losing funds. In production,\n<a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Tatum KMS</a> should be used for the highest security standards, and signatureId should be present in the request.\nAlternatively, using the Tatum client library for supported languages.\n</p>\n",
+        "operationId": "SolanaBlockchainTransfer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferSolanaBlockchain"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferSolanaBlockchainKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Send SOL from account to account",
+        "tags": [
+          "Solana"
+        ]
+      }
+    },
+    "/v3/solana/broadcast/confirm": {
+      "post": {
+        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Broadcast signed custom transactions to Solana blockchain and waits for transaction confirmation depending on the commitment given. More information about commitment levels <a target=\"_blank\" href=\"https://docs.solana.com/ru/developing/clients/jsonrpc-api#configuring-state-commitment\">here</a></p>\n",
+        "operationId": "SolanaBroadcastConfirm",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolanaBroadcastConfirm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SolanaTransactionHashWithConfirm"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Broadcast and confirm signed Solana transaction",
+        "tags": [
+          "Solana"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TransactionHash": {
+        "type": "object",
+        "properties": {
+          "txId": {
+            "description": "The hash (ID) of the transaction",
+            "example": "c83f8818db43d9ba4accfe454aa44fc33123d47a4f89d47b314d6748eb0e9bc9",
+            "type": "string"
+          }
+        },
+        "required": [
+          "txId"
+        ]
+      },
+      "SignatureId": {
+        "type": "object",
+        "properties": {
+          "signatureId": {
+            "format": "uuid",
+            "description": "The internal Tatum ID of the prepared transaction for Key Management Sysytem (KMS) to sign<br/>This is different from the <code>signatureId</code> parameter that you provided in the request body. The <code>signatureId</code> parameter in the request body specifies the signature ID associated with the private key in KMS.",
+            "example": "1f7f7c0c-3906-4aa1-9dfe-4b67c43918f6",
+            "type": "string"
+          }
+        },
+        "required": [
+          "signatureId"
+        ]
+      },
+      "SolBalance": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "string",
+            "description": "Balance in SOL",
+            "example": "10.52"
+          }
+        }
+      },
+      "SolanaWallet": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "description": "Generated account address.",
+            "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ",
+            "type": "string"
+          },
+          "privateKey": {
+            "description": "Generated private key for account.",
+            "example": "zgsAKfjuXrAxEyuYRxbbxPM3rdsPbJPnGreaGMbcdUApJ6wHnCqQnf9b1RNPdeZxsRMkezh4VgXQ7YrbpndGtEv",
+            "type": "string"
+          }
+        }
+      },
+      "SolanaBlockReward": {
+        "type": "object",
+        "properties": {
+          "commission": {
+            "type": "string",
+            "format": "nullable"
+          },
+          "lamports": {
+            "type": "number",
+            "example": 7
+          },
+          "postBalance": {
+            "type": "number",
+            "example": 10149491708073344
+          },
+          "pubkey": {
+            "type": "string",
+            "example": "ETSKPSzESbVdmtUn67LA2p9J1gPCSEgYvmJS9pNNWQqR"
+          },
+          "rewardType": {
+            "type": "string",
+            "example": "Rent"
+          }
+        }
+      },
+      "SolanaTxMeta": {
+        "type": "object",
+        "properties": {
+          "err": {
+            "type": "string",
+            "format": "nullable"
+          },
+          "fee": {
+            "type": "number",
+            "example": 5000
+          },
+          "innerInstructions": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "logMessages": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Program Vote111111111111111111111111111111111111111 invoke [1]"
+            }
+          },
+          "postBalances": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "example": 1101768559544744
+            }
+          },
+          "postTokenBalances": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "example": 1101768559549744
+            }
+          },
+          "preBalances": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "example": 1101768559549744
+            }
+          },
+          "preTokenBalances": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "example": 1101768559549744
+            }
+          }
+        }
+      },
+      "SolanaTxMessageHeader": {
+        "type": "object",
+        "properties": {
+          "numReadonlySignedAccounts": {
+            "type": "number",
+            "example": 0
+          },
+          "numReadonlyUnsignedAccounts": {
+            "type": "number",
+            "example": 3
+          },
+          "numRequiredSignatures": {
+            "type": "number",
+            "example": 1
+          }
+        }
+      },
+      "SolanaTxMessageAccountKey": {
+        "type": "object",
+        "properties": {
+          "_bn": {
+            "type": "string",
+            "example": "0974de54f77afa9ad3d474909f6ce095b9623a359a5d08cc807b8a92dd5e1f96"
+          }
+        }
+      },
+      "SolanaTxMessageInstruction": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          "data": {
+            "type": "string",
+            "example": "2ZjTR1vUs2pHXyTM4rXnJowxekwfBcBJwsE4EameG3Sapvgfit27vrBd8k8QYCoTtMgfHEJLDqWEWBYUYVd"
+          },
+          "programIdIndex": {
+            "type": "number",
+            "example": 4
+          }
+        }
+      },
+      "SolanaTxMessage": {
+        "type": "object",
+        "properties": {
+          "header": {
+            "$ref": "#/components/schemas/SolanaTxMessageHeader"
+          },
+          "accountKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolanaTxMessageAccountKey"
+            }
+          },
+          "recentBlockhash": {
+            "type": "string",
+            "example": "C3vsoVwVWx7yPRhsNoKpcm2CJTrnVcvimdC4bd3jTPbj"
+          },
+          "instructions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolanaTxMessageInstruction"
+            }
+          },
+          "indexToProgramIds": {
+            "type": "object"
+          }
+        }
+      },
+      "SolanaTxTransaction": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/SolanaTxMessage"
+          },
+          "signatures": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "5FPSzkTsjZDBigU3ZagvkcwSPimt4K6voqrN9uUNVzWDBeRXWVH3uMarDPpSfrS7sFQeyKyDd5KpbdCrL3EWEP59"
+            }
+          }
+        }
+      },
+      "SolanaTx": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/SolanaTxMeta"
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/SolanaTxTransaction"
+          }
+        }
+      },
+      "SolanaBlock": {
+        "type": "object",
+        "properties": {
+          "blockHeight": {
+            "type": "number",
+            "example": 94778421
+          },
+          "blockTime": {
+            "type": "number",
+            "example": 1638279333
+          },
+          "blockhash": {
+            "type": "string",
+            "example": "Ch7qVhCkSqEvhWE8xzJZbJKRcsH6wtTjfiMJdt9eKiD7"
+          },
+          "parentSlot": {
+            "type": "number",
+            "example": 97742681
+          },
+          "previousBlockhash": {
+            "type": "string",
+            "example": "C3vsoVwVWx7yPRhsNoKpcm2CJTrnVcvimdC4bd3jTPbj"
+          },
+          "rewards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolanaBlockReward"
+            }
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SolanaTx"
+            }
+          }
+        }
+      },
+      "TransferSolanaBlockchain": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "description": "Blockchain address to send assets from",
+            "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ",
+            "maxLength": 44,
+            "minLength": 44,
+            "type": "string"
+          },
+          "to": {
+            "description": "Blockchain address to send assets to",
+            "example": "FZAS4mtPvswgVxbpc117SqfNgCDLTCtk5CoeAtt58FWU",
+            "maxLength": 44,
+            "minLength": 44,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in SOL.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 128,
+            "example": "zgsAKfjuXrAxEyuYRxbbxPM3rdsPbJPnGreaGMbcdUApJ6wHnCqQnf9b1RNPdeZxsRMkezh4VgXQ7YrbpndGtEv",
+            "minLength": 87,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "feePayer": {
+            "description": "Address on the Solana blockchain, from which the fee will be paid for transaction. Defaults to from.",
+            "maxLength": 44,
+            "minLength": 43,
+            "example": "BL4Xgn1jkuU4Yr3SQ4HG8cD5SBrsSk7BihKzkb5zTUfs",
+            "type": "string"
+          },
+          "feePayerPrivateKey": {
+            "type": "string",
+            "maxLength": 87,
+            "example": "YdQ1iy2NYs93dtkHdz3ijDuhRJj6uXYAUZmixirCrgCsTMj42BN1Q1buYcGZaMxw5buk9VU5ogQ6zuzn8DMsGaf",
+            "minLength": 128,
+            "description": "Private key of the fee payer address."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "from",
+          "fromPrivateKey"
+        ]
+      },
+      "TransferSolanaBlockchainKMS": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "description": "Blockchain address to send assets from",
+            "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ",
+            "maxLength": 44,
+            "minLength": 43,
+            "type": "string"
+          },
+          "to": {
+            "description": "Blockchain address to send assets to",
+            "example": "FZAS4mtPvswgVxbpc117SqfNgCDLTCtk5CoeAtt58FWU",
+            "maxLength": 44,
+            "minLength": 43,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in SOL.",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "feePayer": {
+            "description": "Blockchain address to pay the fee for the transaction from",
+            "example": "FykfMwA9WNShzPJbbb9DNXsfgDgS3XZzWiFgrVXfWoPJ",
+            "maxLength": 44,
+            "minLength": 43,
+            "type": "string"
+          },
+          "feePayerSignatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key used for paying the gas costs in signing application. Defaults to the signatureId."
+          }
+        },
+        "required": [
+          "to",
+          "amount",
+          "from",
+          "signatureId"
+        ]
+      },
+      "SolanaBroadcastConfirmOptions": {
+        "description": "Options for sending and waiting for a transaction",
+        "type": "object",
+        "properties": {
+          "commitment": {
+            "type": "string",
+            "description": "Commitment to waiting for transaction confirmation",
+            "example": "confirmed",
+            "enum": [
+              "confirmed",
+              "finalized"
+            ]
+          },
+          "preflightCommitment": {
+            "type": "string",
+            "description": "Preflight Commitment.",
+            "example": "finalized",
+            "enum": [
+              "confirmed",
+              "finalized",
+              "processed",
+              "recent",
+              "single",
+              "singleGossip",
+              "max"
+            ]
+          }
+        }
+      },
+      "SolanaBroadcastConfirm": {
+        "properties": {
+          "txData": {
+            "description": "Raw signed transaction to be published to network.",
+            "example": "01de391b34567fc65080dfe9e27170e2f9ac1cd1719878719feb74bb422d1795201df71fcf7349f5",
+            "maxLength": 500000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "options": {
+            "$ref": "#/components/schemas/SolanaBroadcastConfirmOptions"
+          }
+        },
+        "required": [
+          "txData"
+        ],
+        "type": "object"
+      },
+      "SolanaTransactionHashWithConfirm": {
+        "type": "object",
+        "properties": {
+          "txId": {
+            "description": "TX hash of successful transaction.",
+            "example": "5Sh63rNFg6iR9YUGPwEkbAg4kYSWnf5eRS2wcLG1Gc6psj27SGK3LNuN9jNSPKn3JoChgmq8pSirHWsPPWzy2PFw",
+            "type": "string"
+          },
+          "confirmed": {
+            "description": "Indicates whether or not the transferred commitment has been fulfilled",
+            "example": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "txId",
+          "confirmed"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "X-API-Key": {
+        "type": "apiKey",
+        "name": "x-api-key",
+        "in": "header",
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api-eu1.tatum.io/v3/ledger/account?type=testnet`\n"
+      }
+    }
+  }
+}
