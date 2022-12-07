@@ -716,8 +716,7 @@
         "type": "object",
         "properties": {
           "err": {
-            "type": "string",
-            "format": "nullable"
+            "type": "object"
           },
           "fee": {
             "type": "number",
