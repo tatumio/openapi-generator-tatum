@@ -783,15 +783,6 @@
           }
         }
       },
-      "SolanaTxMessageAccountKey": {
-        "type": "object",
-        "properties": {
-          "_bn": {
-            "type": "string",
-            "example": "0974de54f77afa9ad3d474909f6ce095b9623a359a5d08cc807b8a92dd5e1f96"
-          }
-        }
-      },
       "SolanaTxMessageInstruction": {
         "type": "object",
         "properties": {
@@ -821,7 +812,8 @@
           "accountKeys": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SolanaTxMessageAccountKey"
+              "type": "string",
+              "example": "0974de54f77afa9ad3d474909f6ce095b9623a359a5d08cc807b8a92dd5e1f96"
             }
           },
           "recentBlockhash": {
