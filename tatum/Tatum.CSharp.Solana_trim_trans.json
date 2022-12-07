@@ -712,6 +712,60 @@
           }
         }
       },
+      "TokenBalance": {
+        "type": "object",
+        "properties": {
+          "accountIndex": {
+            "description": "Index of the account in which the token balance is provided for.",
+            "type": "number",
+            "example": 1
+          },
+          "mint": {
+            "description": "Pubkey of the token's mint.",
+            "type": "string",
+            "example": "So11111111111111111111111111111111111111112"
+          },
+          "owner": {
+            "description": "Pubkey of token balance's owner.",
+            "type": "string",
+            "example": "BYM81n8HvTJuqZU1PmTVcwZ9G8uoji7FKM6EaPkwphPt"
+          },
+          "programId": {
+            "description": "Pubkey of the Token program that owns the account.",
+            "type": "string",
+            "example": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          },
+          "uiTokenAmount": {
+            "$ref": "#/components/schemas/UiTokenAmount"
+          }
+        }
+      },
+      "UiTokenAmount": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "Raw amount of tokens as a string, ignoring decimals.",
+            "type": "string",
+            "example": 2653579503
+          },
+          "decimals": {
+            "description": "Number of decimals configured for token's mint.",
+            "type": "number",
+            "example": 9
+          },
+          "uiAmount": {
+            "description": "Token amount as a float, accounting for decimals.",
+            "type": "number",
+            "format": "nullable",
+            "example": 2.653579503
+          },
+          "uiAmountString": {
+            "description": "Token amount as a string, accounting for decimals.",
+            "type": "string",
+            "example": 2.653579503
+          }
+        }
+      },
       "SolanaTxMeta": {
         "type": "object",
         "properties": {
@@ -745,8 +799,7 @@
           "postTokenBalances": {
             "type": "array",
             "items": {
-              "type": "number",
-              "example": 1101768559549744
+              "$ref": "#/components/schemas/TokenBalance"
             }
           },
           "preBalances": {
@@ -759,8 +812,7 @@
           "preTokenBalances": {
             "type": "array",
             "items": {
-              "type": "number",
-              "example": 1101768559549744
+              "$ref": "#/components/schemas/TokenBalance"
             }
           }
         }
