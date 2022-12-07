@@ -755,9 +755,9 @@
           },
           "uiAmount": {
             "description": "Token amount as a float, accounting for decimals.",
+            "example": 2.653579503,
             "type": "number",
-            "format": "nullable",
-            "example": 2.653579503
+            "nullable": true
           },
           "uiAmountString": {
             "description": "Token amount as a string, accounting for decimals.",
