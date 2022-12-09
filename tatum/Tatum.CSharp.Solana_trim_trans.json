@@ -117,7 +117,7 @@
       "name": "Stellar"
     },
     {
-      "description": "<p>The Record section enables the storing of records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever. Tatum supports storing data on the following blockchains:</p>\n<ul>\n<li>Ethereum</li>\n</ul>\n",
+      "description": "<p>You can store data records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever.\n",
       "name": "Blockchain storage"
     },
     {
@@ -814,6 +814,21 @@
             "items": {
               "$ref": "#/components/schemas/TokenBalance"
             }
+          },
+          "rewards": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "Ok": {
+                "type": "string",
+                "format": "nullable"
+              }
+            }
           }
         }
       },
@@ -897,7 +912,7 @@
           }
         }
       },
-      "SolanaTx": {
+      "SolanaBlockTx": {
         "type": "object",
         "properties": {
           "meta": {
@@ -905,6 +920,25 @@
           },
           "transaction": {
             "$ref": "#/components/schemas/SolanaTxTransaction"
+          }
+        }
+      },
+      "SolanaTx": {
+        "type": "object",
+        "properties": {
+          "blockTime": {
+            "type": "number",
+            "example": 1638279975
+          },
+          "meta": {
+            "$ref": "#/components/schemas/SolanaTxMeta"
+          },
+          "transaction": {
+            "$ref": "#/components/schemas/SolanaTxTransaction"
+          },
+          "slot": {
+            "type": "number",
+            "example": 97744333
           }
         }
       },
@@ -940,7 +974,7 @@
           "transactions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SolanaTx"
+              "$ref": "#/components/schemas/SolanaBlockTx"
             }
           }
         }
@@ -1119,7 +1153,7 @@
         "type": "apiKey",
         "name": "x-api-key",
         "in": "header",
-        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api-eu1.tatum.io/v3/ledger/account?type=testnet`\n"
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api.tatum.io/v3/ledger/account?type=testnet`\n"
       }
     }
   }

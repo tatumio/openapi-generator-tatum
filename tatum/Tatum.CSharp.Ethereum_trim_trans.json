@@ -117,7 +117,7 @@
       "name": "Stellar"
     },
     {
-      "description": "<p>The Record section enables the storing of records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever. Tatum supports storing data on the following blockchains:</p>\n<ul>\n<li>Ethereum</li>\n</ul>\n",
+      "description": "<p>You can store data records on the blockchain. A record is stored permanently: it cannot be changed,\ndeleted, or modified by anyone and will be stored on the blockchain forever.\n",
       "name": "Blockchain storage"
     },
     {
@@ -3136,7 +3136,7 @@
     },
     "/v3/blockchain/token/approve": {
       "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Allow another blockchain address (the <code>spender</code> parameter in the request body) to spend and burn fungible tokens on behalf of the smart contract owner.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b><br/>\nWhen approving spending of fungible tokens, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Allow a blockchain address (the <code>spender</code> parameter in the request body) to transfer and burn fungible tokens on behalf of the smart contract owner.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b><br/>\nWhen allowing a blockchain address to transfer and burn fungible tokens, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
         "parameters": [
           {
             "description": "Type of Ethereum testnet. Defaults to Sepolia. Valid only for ETH invocations for testnet API Key. For mainnet API Key, this value is ignored.",
@@ -3201,7 +3201,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Approve spending of fungible tokens",
+        "summary": "Allow a blockchain address to transfer and burn fungible tokens",
         "tags": [
           "Fungible Tokens (ERC-20 or compatible)"
         ]
@@ -3508,7 +3508,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Get the number of fungible tokens from a specific smart contract that a blockchain address holds",
+        "summary": "Get the number of fungible tokens that a blockchain address holds in a smart contract",
         "tags": [
           "Fungible Tokens (ERC-20 or compatible)"
         ]
@@ -4159,7 +4159,7 @@
         ]
       },
       "CustomFee": {
-        "description": "The custom defined fee; if not present, will be calculated automatically.",
+        "description": "The custom defined fee; if not present, will be calculated automatically",
         "type": "object",
         "required": [
           "gasLimit",
@@ -4300,8 +4300,8 @@
           "data": {
             "type": "string",
             "maxLength": 50000,
-            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
-            "example": "My note to recipient."
+            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
+            "example": "4d79206e6f746520746f2074686520726563697069656e74"
           },
           "nonce": {
             "type": "number",
@@ -4398,8 +4398,8 @@
           "data": {
             "type": "string",
             "maxLength": 50000,
-            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
-            "example": "My note to recipient.",
+            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
+            "example": "4d79206e6f746520746f2074686520726563697069656e74",
             "pattern": "^(0x|0h)?[0-9A-F]+$"
           }
         },
@@ -4578,8 +4578,8 @@
           "data": {
             "type": "string",
             "maxLength": 50000,
-            "description": "Additinal data, that can be passed to blockchain transaction as data property. Only for ETH transactions.",
-            "example": "My note to recipient."
+            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
+            "example": "4d79206e6f746520746f2074686520726563697069656e74"
           },
           "nonce": {
             "type": "number",
@@ -4771,7 +4771,7 @@
           },
           "balances": {
             "type": "array",
-            "description": "On Algorand, this is an array of <code>1</code> to indicate that the NFTs with the specified IDs exist; on the other blockchains, this is an array of the IDs of the NFTs.",
+            "description": "On Algorand, an array of \"1\" to indicate that the NFTs with the specified IDs exist, or array with amount of fractions for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>; on the other blockchains, this is an array of the IDs of the NFTs.",
             "items": {
               "type": "string",
               "maxLength": 78,
@@ -4792,6 +4792,16 @@
             "items": {
               "$ref": "#/components/schemas/NftTokenByAddressErc721TokenMetadata"
             }
+          },
+          "supply": {
+            "type": "number",
+            "example": 10,
+            "description": "Only on Algorand, shows supply of <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>"
+          },
+          "decimals": {
+            "type": "number",
+            "example": 1,
+            "description": "Only on Algorand, shows decimals of <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>"
           }
         }
       },
@@ -4951,7 +4961,8 @@
           "to",
           "contractAddress",
           "tokenId",
-          "fromPrivateKey"
+          "fromPrivateKey",
+          "feeCurrency"
         ]
       },
       "TransferNftTron": {
@@ -7768,7 +7779,7 @@
             "description": "Private key of sender address."
           },
           "amount": {
-            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transferred. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
             "example": 1,
             "default": 1,
             "minimum": 1,
@@ -7807,7 +7818,7 @@
             "maxLength": 256
           },
           "amount": {
-            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transfered. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
             "example": 1,
             "default": 1,
             "type": "number",
@@ -7906,7 +7917,7 @@
             "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
           },
           "amount": {
-            "description": "The total amount of the NFTs to transfer. Defaults to 1 - which means 1 NFT will be transfered. Value above 1 means, you are going to transfer <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
             "example": 1,
             "default": 1,
             "type": "number",
@@ -9064,7 +9075,7 @@
           },
           "sellerFeeBasisPoints": {
             "type": "number",
-            "description": "The basis points of the seller fee",
+            "description": "The royalty that will be paid to the authors of the minted NFT every time the NFT is transferred<br/>The royalty is calculated as a percentage of the NFT price. To set the royalty to 1%, set this parameter to <code>100</code>; to set 10%, set this parameter to <code>1000</code>; to set 50%, set this parameter to <code>5000</code>, and so on.<br/>To specify the NFT authors and their shares in the royalty, set the <code>creators</code> parameter.<br/>To disable the royalty for the NFT completely, set <code>sellerFeeBasisPoints</code> to <code>0</code> and do not set <code>creators</code>.",
             "example": 0
           },
           "uri": {
@@ -9117,7 +9128,7 @@
           },
           "sellerFeeBasisPoints": {
             "type": "number",
-            "description": "The basis points of the seller fee",
+            "description": "The royalty that will be paid to the authors of the minted NFT every time the NFT is transferred<br/>The royalty is calculated as a percentage of the NFT price. To set the royalty to 1%, set this parameter to <code>100</code>; to set 10%, set this parameter to <code>1000</code>; to set 50%, set this parameter to <code>5000</code>, and so on.<br/>To specify the NFT authors and their shares in the royalty, set the <code>creators</code> parameter.<br/>To disable the royalty for the NFT completely, set <code>sellerFeeBasisPoints</code> to <code>0</code> and do not set <code>creators</code>.",
             "example": 0
           },
           "uri": {
@@ -9170,7 +9181,7 @@
           },
           "sellerFeeBasisPoints": {
             "type": "number",
-            "description": "The basis points of the seller fee",
+            "description": "The royalty that will be paid to the authors of the minted NFT every time the NFT is transferred<br/>The royalty is calculated as a percentage of the NFT price. To set the royalty to 1%, set this parameter to <code>100</code>; to set 10%, set this parameter to <code>1000</code>; to set 50%, set this parameter to <code>5000</code>, and so on.<br/>To specify the NFT authors and their shares in the royalty, set the <code>creators</code> parameter.<br/>To disable the royalty for the NFT completely, set <code>sellerFeeBasisPoints</code> to <code>0</code> and do not set <code>creators</code>.",
             "example": 0
           },
           "uri": {
@@ -11131,32 +11142,32 @@
               "ONE"
             ]
           },
-          "amount": {
-            "description": "Amount to be approved for the spender.",
-            "example": "100000",
-            "type": "string",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
+          "contractAddress": {
+            "maxLength": 43,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
           },
           "spender": {
             "maxLength": 43,
             "minLength": 42,
-            "description": "Blockchain address of the new spender.",
+            "description": "The blockchain address to be allowed to transfer or burn the fungible tokens",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "type": "string"
           },
-          "contractAddress": {
-            "maxLength": 43,
-            "minLength": 42,
-            "description": "Address of ERC-20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "type": "string"
+          "amount": {
+            "description": "The amount of the tokens allowed to be transferred or burnt",
+            "example": "100000",
+            "type": "string",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
           },
           "fromPrivateKey": {
             "type": "string",
             "maxLength": 66,
             "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
             "minLength": 66,
-            "description": "Private key of sender address. Private key, or signature Id must be present."
+            "description": "The private key of the smart contract's owner; the fee will be deducted from the owner's address"
           },
           "fee": {
             "$ref": "#/components/schemas/CustomFee"
@@ -11190,31 +11201,31 @@
               "ONE"
             ]
           },
-          "amount": {
-            "description": "Amount to be approved for the spender.",
-            "example": "100000",
-            "type": "string",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
+          "contractAddress": {
+            "maxLength": 43,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
           },
           "spender": {
             "maxLength": 43,
             "minLength": 42,
-            "description": "Blockchain address of the new spender.",
+            "description": "The blockchain address to be allowed to transfer or burn the fungible tokens",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "type": "string"
           },
-          "contractAddress": {
-            "maxLength": 43,
-            "minLength": 42,
-            "description": "Address of ERC-20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "type": "string"
+          "amount": {
+            "description": "The amount of the tokens allowed to be transferred or burnt",
+            "example": "100000",
+            "type": "string",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
           },
           "signatureId": {
             "type": "string",
             "format": "uuid",
             "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
-            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+            "description": "The KMS identifier of the private key of the smart contract's owner; the fee will be deducted from the owner's address"
           },
           "fee": {
             "$ref": "#/components/schemas/CustomFee"
@@ -11244,40 +11255,32 @@
               "CELO"
             ]
           },
-          "amount": {
-            "description": "Amount to be approved for the spender.",
-            "example": "100000",
-            "type": "string",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
           },
           "spender": {
             "maxLength": 42,
             "minLength": 42,
-            "description": "Blockchain address of the new spender.",
+            "description": "The blockchain address to be allowed to transfer or burn the fungible tokens",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "type": "string"
           },
-          "contractAddress": {
-            "maxLength": 42,
-            "minLength": 42,
-            "description": "Address of ERC-20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "type": "string"
+          "amount": {
+            "description": "The amount of the tokens allowed to be transferred or burnt",
+            "example": "100000",
+            "type": "string",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
           },
           "fromPrivateKey": {
             "type": "string",
             "maxLength": 66,
             "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
             "minLength": 66,
-            "description": "Private key of sender address. Private key, or signature Id must be present."
-          },
-          "fee": {
-            "$ref": "#/components/schemas/CustomFee"
-          },
-          "nonce": {
-            "type": "number",
-            "minimum": 0,
-            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
+            "description": "The private key of the smart contract's owner; the fee will be deducted from the owner's address"
           },
           "feeCurrency": {
             "type": "string",
@@ -11287,6 +11290,14 @@
               "CUSD",
               "CEUR"
             ]
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           }
         },
         "required": [
@@ -11309,39 +11320,31 @@
               "CELO"
             ]
           },
-          "amount": {
-            "description": "Amount to be approved for the spender.",
-            "example": "100000",
-            "type": "string",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
           },
           "spender": {
             "maxLength": 42,
             "minLength": 42,
-            "description": "Blockchain address of the new spender.",
+            "description": "The blockchain address to be allowed to transfer or burn the fungible tokens",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "type": "string"
           },
-          "contractAddress": {
-            "maxLength": 42,
-            "minLength": 42,
-            "description": "Address of ERC-20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "type": "string"
+          "amount": {
+            "description": "The amount of the tokens allowed to be transferred or burnt",
+            "example": "100000",
+            "type": "string",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$"
           },
           "signatureId": {
             "type": "string",
             "format": "uuid",
             "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
-            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
-          },
-          "fee": {
-            "$ref": "#/components/schemas/CustomFee"
-          },
-          "nonce": {
-            "type": "number",
-            "minimum": 0,
-            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
+            "description": "The KMS identifier of the private key of the smart contract's owner; the fee will be deducted from the owner's address"
           },
           "feeCurrency": {
             "type": "string",
@@ -11351,6 +11354,14 @@
               "CUSD",
               "CEUR"
             ]
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           }
         },
         "required": [
@@ -12597,7 +12608,7 @@
         "type": "apiKey",
         "name": "x-api-key",
         "in": "header",
-        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api-eu1.tatum.io/v3/ledger/account?type=testnet`\n"
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api.tatum.io/v3/ledger/account?type=testnet`\n"
       }
     }
   }
