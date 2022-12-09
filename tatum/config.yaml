@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Request models simplified. Solana package."
+releaseNote: "Fixed missing GET api calls for NTF and FT functionalities in blockchain packages."
