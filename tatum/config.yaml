@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Fixed missing GET api calls for NTF and FT functionalities in blockchain packages."
+releaseNote: "Remove GET api calls for NTF and FT functionalities in blockchain packages that aren't supported by particular chain."

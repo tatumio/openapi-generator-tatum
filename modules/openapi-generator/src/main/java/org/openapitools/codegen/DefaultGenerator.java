@@ -1388,6 +1388,11 @@ public class DefaultGenerator implements Generator {
     }
 
     private static Parameter getChainParam(Operation operation) {
+
+        if(operation.getParameters() == null){
+            return null;
+        }
+
         return operation
                 .getParameters()
                 .stream()
@@ -1460,15 +1465,22 @@ public class DefaultGenerator implements Generator {
     private void handlePerChainOperation(String resourcePath, String httpMethod, Operation operation, Map<String, List<CodegenOperation>> operations, PathItem path) {
         String tag = operation.getTags().get(0);
 
-        if(this.chainsPerTag.containsKey(tag) && getChainParam(operation) != null)
+        Parameter chainParam = getChainParam(operation);
+
+        if(this.chainsPerTag.containsKey(tag) && chainParam != null)
         {
             List<String> chains = this.chainsPerTag.get(tag);
 
-            operation.getParameters().remove(getChainParam(operation));
+            operation.getParameters().remove(chainParam);
 
             for (String chain : chains) {
                 if(!this.chainsToInclude.contains(chain)){
                     continue;
+                }
+
+                // We don't want to have methods not supporting particular chain
+                if(!chainParam.getSchema().getEnum().contains(chain)){
+                    return;
                 }
 
                 resourcePath = resourcePath.replace("{chain}", chain);
