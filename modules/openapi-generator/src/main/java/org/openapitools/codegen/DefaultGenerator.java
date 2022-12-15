@@ -1480,7 +1480,7 @@ public class DefaultGenerator implements Generator {
 
                 // We don't want to have methods not supporting particular chain
                 if(!chainParam.getSchema().getEnum().contains(chain)){
-                    return;
+                    continue;
                 }
 
                 resourcePath = resourcePath.replace("{chain}", chain);
