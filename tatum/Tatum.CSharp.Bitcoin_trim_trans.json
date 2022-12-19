@@ -913,6 +913,133 @@
           "Bitcoin"
         ]
       }
+    },
+    "/v3/blockchain/fee/{chain}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get recommended blockchain fee / gas price</p>\n",
+        "operationId": "getBlockchainFee",
+        "parameters": [
+          {
+            "description": "Chain",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "BTC",
+              "enum": [
+                "ETH",
+                "BTC",
+                "LTC",
+                "DOGE"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlockchainFee"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get recommended blockchain fee / gas price",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
+    "/v3/blockchain/estimate": {
+      "post": {
+        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Estimate current transaction fee for different operations.<br/>\nSupported blockchains:\n<ul>\n<li>Bitcoin</li>\n<li>Litecoin</li>\n<li>Harmony.ONE</li>\n<li>The XDC Network</li>\n<li>Ethereum</li>\n<li>Celo</li>\n<li>Klaytn</li>\n<li>Binance Smart Chain</li>\n<li>Polygon</li>\n</ul>\n</p>\n",
+        "operationId": "EstimateFeeBlockchain",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/EstimateFee"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EstimateFeeBatchMintNft"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EstimateFeeDeployCustodialWallet"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EstimateFeeTransferFromCustodial"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EstimateFeeFromAddress"
+                  },
+                  {
+                    "$ref": "#/components/schemas/EstimateFeeFromUTXO"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "headers": {
+              "x-current-block": {
+                "schema": {
+                  "type": "number",
+                  "example": 15632152
+                },
+                "description": "Current block of the blockchain."
+              },
+              "x-current-block-time": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2021-11-11T11:54:49Z"
+                },
+                "description": "Current block time."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FeeBtc"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FeeETH"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate the fee for a transaction",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
     }
   },
   "components": {
@@ -1602,6 +1729,485 @@
           "txData"
         ],
         "type": "object"
+      },
+      "FeeETH": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "number",
+            "description": "Gas limit for transaction in gas price.",
+            "example": 40000
+          },
+          "gasPrice": {
+            "type": "number",
+            "description": "Gas price in Gwei.",
+            "example": 20
+          }
+        }
+      },
+      "FeeBtc": {
+        "type": "object",
+        "required": [
+          "fast",
+          "medium",
+          "slow"
+        ],
+        "properties": {
+          "fast": {
+            "type": "string",
+            "description": "Transaction fee in BTC|LTC to be paid, if transaction should be included in next 1-2 blocks.",
+            "example": "0.006584"
+          },
+          "medium": {
+            "type": "string",
+            "description": "Transaction fee in BTC|LTC to be paid, if transaction should be included in next 5-6 blocks.",
+            "example": "0.004584"
+          },
+          "slow": {
+            "type": "string",
+            "description": "Transaction fee in BTC|LTC to be paid, if transaction should be included in next 7+ blocks.",
+            "example": "0.002584"
+          }
+        }
+      },
+      "EstimateFee": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "CELO",
+              "ETH",
+              "BSC",
+              "XDC",
+              "ONE",
+              "MATIC",
+              "KLAY"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "DEPLOY_ERC20",
+              "DEPLOY_NFT",
+              "MINT_NFT",
+              "BURN_NFT",
+              "TRANSFER_NFT",
+              "TRANSFER_ERC20",
+              "DEPLOY_AUCTION",
+              "DEPLOY_MARKETPLACE"
+            ]
+          },
+          "sender": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "description": "Sender address, if type is TRANSFER_ERC20"
+          },
+          "recipient": {
+            "description": "Blockchain address to send assets, if type is TRANSFER_ERC20",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "contractAddress": {
+            "description": "Contract address of ERC20 token, if type is TRANSFER_ERC20",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in ERC20, if type is TRANSFER_ERC20",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          }
+        }
+      },
+      "EstimateFeeDeployCustodialWallet": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type",
+          "batchCount"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "CELO",
+              "ETH",
+              "BSC",
+              "XDC",
+              "ONE",
+              "MATIC",
+              "KLAY"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "DEPLOY_CUSTODIAL_WALLET_BATCH"
+            ]
+          },
+          "batchCount": {
+            "description": "Number of addresses to create",
+            "example": 10,
+            "minimum": 1,
+            "maximum": 300,
+            "type": "number"
+          }
+        }
+      },
+      "EstimateFeeBatchMintNft": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type",
+          "sender",
+          "recipients",
+          "tokenIds",
+          "urls"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "CELO",
+              "ETH",
+              "BSC",
+              "XDC",
+              "ONE",
+              "MATIC",
+              "KLAY"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "MINT_NFT_BATCH"
+            ]
+          },
+          "sender": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 43,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "description": "Address of the minter"
+          },
+          "recipients": {
+            "type": "array",
+            "description": "Blockchain addresses to mint tokens to",
+            "items": {
+              "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+              "maxLength": 42,
+              "minLength": 43,
+              "type": "string"
+            }
+          },
+          "contractAddress": {
+            "description": "Contract address of NFT token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 43,
+            "type": "string"
+          },
+          "tokenIds": {
+            "type": "array",
+            "description": "Token IDs",
+            "items": {
+              "example": "100000",
+              "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+              "type": "string"
+            }
+          },
+          "urls": {
+            "type": "array",
+            "description": "Metadata URLs",
+            "items": {
+              "example": "ipfs://QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj",
+              "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EstimateFeeTransferFromCustodial": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type",
+          "sender",
+          "recipient",
+          "contractAddress",
+          "custodialAddress",
+          "amount",
+          "tokenType"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "CELO",
+              "ETH",
+              "BSC",
+              "XDC",
+              "KLAY",
+              "ONE",
+              "MATIC"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "TRANSFER_CUSTODIAL"
+            ]
+          },
+          "sender": {
+            "type": "string",
+            "maxLength": 42,
+            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
+            "minLength": 42,
+            "description": "Sender address"
+          },
+          "recipient": {
+            "description": "Blockchain address to send assets",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "contractAddress": {
+            "description": "Contract address of the token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "custodialAddress": {
+            "description": "Contract address of custodial wallet contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
+          },
+          "amount": {
+            "description": "Amount to be sent in native asset, ERC20 or ERC1155",
+            "example": "100000",
+            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
+            "type": "string"
+          },
+          "tokenType": {
+            "description": "Type of the token to transfer from gas pump wallet. 0 - ERC20, 1 - ERC721, 2 - ERC1155, 3 - native asset",
+            "example": 0,
+            "type": "number",
+            "minimum": 0,
+            "maximum": 3
+          }
+        }
+      },
+      "EstimateFeeFromAddress": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type",
+          "fromAddress",
+          "to"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "BTC",
+              "LTC"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "TRANSFER"
+            ]
+          },
+          "fromAddress": {
+            "description": "Array of addresses. Tatum will automatically scan last 100 transactions for each address and will use all of the unspent values. We advise to use this option if you have 1 address per 1 transaction only.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "2N9bBiH2qrTDrPCzrNhaFGdkNKS86PJAAAS",
+              "minimum": 30,
+              "maximum": 50
+            }
+          },
+          "to": {
+            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "address",
+                "value"
+              ],
+              "properties": {
+                "address": {
+                  "description": "Destination address.",
+                  "type": "string",
+                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+                  "minimum": 30,
+                  "maximum": 60
+                },
+                "value": {
+                  "description": "Amount to be sent, in BTC.",
+                  "type": "number",
+                  "minimum": 0,
+                  "example": 0.02969944
+                }
+              }
+            }
+          }
+        }
+      },
+      "EstimateFeeFromUTXO": {
+        "type": "object",
+        "required": [
+          "chain",
+          "type",
+          "fromUTXO",
+          "to"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Blockchain to estimate fee for.",
+            "enum": [
+              "BTC",
+              "LTC"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of transaction",
+            "enum": [
+              "TRANSFER"
+            ]
+          },
+          "fromUTXO": {
+            "description": "Array of transaction hashes, index of UTXO in it and corresponding private keys. Use this option if you want to calculate amount to send manually. Either fromUTXO or fromAddress must be present.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "txHash",
+                "index"
+              ],
+              "properties": {
+                "txHash": {
+                  "description": "Transaction hash of the UTXO to be spent.",
+                  "type": "string",
+                  "example": "53faa103e8217e1520f5149a4e8c84aeb58e55bdab11164a95e69a8ca50f8fcc",
+                  "minLength": 64,
+                  "maxLength": 64
+                },
+                "index": {
+                  "description": "Index of the UTXO to be spent.",
+                  "type": "number",
+                  "example": 0,
+                  "minimum": 0,
+                  "maximum": 2147483647
+                }
+              }
+            }
+          },
+          "to": {
+            "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "address",
+                "value"
+              ],
+              "properties": {
+                "address": {
+                  "description": "Destination address.",
+                  "type": "string",
+                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+                  "minimum": 30,
+                  "maximum": 60
+                },
+                "value": {
+                  "description": "Amount to be sent, in BTC.",
+                  "type": "number",
+                  "minimum": 0,
+                  "example": 0.02969944
+                }
+              }
+            }
+          }
+        }
+      },
+      "BlockchainFee": {
+        "description": "Recommended fees to perform blockchain transaction",
+        "properties": {
+          "fast": {
+            "description": "Fast transaction acceptance time into block. For btc-based chains - fee per byte. For evm-based chains - gas price in wei",
+            "example": 14766927339,
+            "type": "number"
+          },
+          "medium": {
+            "description": "Medium transaction acceptance time into block. For btc-based chains - fee per byte. For evm-based chains - gas price in wei",
+            "example": 13333333333,
+            "type": "number"
+          },
+          "slow": {
+            "description": "Slow transaction acceptance time into block. For btc-based chains - fee per byte. For evm-based chains - gas price in wei",
+            "example": 12953333333,
+            "type": "number"
+          },
+          "baseFee": {
+            "description": "(evm-based only) This is the minimum fee needs to paid in order for the tx to be accepted into block.",
+            "example": 12657357496,
+            "type": "number"
+          },
+          "time": {
+            "description": "Last time fees were recalculated",
+            "example": "2022-12-08T08:42:04.518Z",
+            "type": "string"
+          },
+          "block": {
+            "description": "Last used to calculate fee from",
+            "example": "16138867",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fast",
+          "medium",
+          "slow",
+          "time",
+          "block"
+        ]
       },
       "PrivKey": {
         "type": "object",

@@ -59,6 +59,11 @@ jobs:
       with:
         package: FungibleTokens
         chains: ETH-BTC-MATIC-BSC-ONE
+    - name: Generate BlockchainFees Core
+      uses: ./.github/actions/generate-client
+      with:
+        package: BlockchainFees
+        chains: ETH-BTC-MATIC-BSC-ONE
     - name: Generate Polygon Core
       uses: ./.github/actions/generate-client
       with:

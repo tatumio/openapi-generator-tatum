@@ -26,7 +26,13 @@
     "TransferNftFlowMnemonic": "TransactionHash",
     "MintMultipleNftFlowPK": "TransactionHash",
     "MintMultipleNftFlowMnemonic": "TransactionHash",
-    "MintMultipleNftFlowKMS": "SignatureId"
+    "MintMultipleNftFlowKMS": "SignatureId",
+    "EstimateFee": "FeeETH",
+    "EstimateFeeBatchMintNft": "FeeETH",
+    "EstimateFeeDeployCustodialWallet": "FeeETH",
+    "EstimateFeeTransferFromCustodial": "FeeETH",
+    "EstimateFeeFromAddress": "FeeBtc",
+    "EstimateFeeFromUTXO": "FeeBtc"
   },
   "ReturnPerChainMappings":
     {
