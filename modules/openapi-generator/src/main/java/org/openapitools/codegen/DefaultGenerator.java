@@ -1458,6 +1458,11 @@ public class DefaultGenerator implements Generator {
     }
 
     private static void addChainToOperationTag(Operation operation, String tag, String chain) {
+        // if tag is 'Blockchain Fee' we skip this to merge all operations into one client
+        if(tag.equals("Blockchain Fee")){
+            return;
+        }
+
         String chainName = chain.substring(0,1).toUpperCase() + chain.substring(1).toLowerCase();
         operation.getTags().set(0, tag +chainName);
     }
