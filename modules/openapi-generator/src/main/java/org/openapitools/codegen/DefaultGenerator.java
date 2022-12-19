@@ -1457,9 +1457,8 @@ public class DefaultGenerator implements Generator {
                 .orElse(null);
     }
 
-    private static void addChainToOperationTag(Operation operation, String tag, String chain) {
-        // if tag is 'Blockchain Fee' we skip this to merge all operations into one client
-        if(tag.equals("Blockchain fees")){
+    private void addChainToOperationTag(Operation operation, String tag, String chain) {
+        if(chainsToInclude.size() == 1){
             return;
         }
 
