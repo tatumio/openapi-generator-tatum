@@ -288,7 +288,7 @@
     "/v3/blockchain/fee/{chain}": {
       "get": {
         "description": "<p><b>1 credit per API call</b></p>\n<p>Get recommended blockchain fee / gas price</p>\n",
-        "operationId": "getBlockchainFee",
+        "operationId": "GetBlockchainFee",
         "parameters": [
           {
             "description": "Chain",
