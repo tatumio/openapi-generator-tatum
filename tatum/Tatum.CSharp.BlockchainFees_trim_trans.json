@@ -7,7 +7,7 @@
   ],
   "info": {
     "title": "Tatum API Reference",
-    "version": "3.17.0",
+    "version": "3.17.1",
     "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
     "x-logo": {
       "url": "https://tatum.io/images/Light.svg",
@@ -121,7 +121,7 @@
       "name": "Blockchain storage"
     },
     {
-      "description": "<p>Binance Blockchain enables access to most commonly used Binance methods.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://www.binance.com/en/dex/testnet/address\">https://www.binance.com/en/dex/testnet/address</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "description": "<p><a href=\"https://docs.bnbchain.org/docs/learn/beaconIntro\" target=\"_blank\">BNB Beacon Chain</a> is a blockchain developed by <a href=\"https://www.bnbchain.org/\" target=\"_blank\">Binance</a>. With Tatum, you can access the most commonly used BNB Beacon Chain methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly.</p>\n<p>BNB Beacon Chain does not provide the smart contract functionality.</p>\n<p>Tatum supports the following BNB Beacon Chain networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Testnet</b>, a chain used for testing purposes. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, get it from the <a target=\"_blank\" href=\"https://testnet.bnbchain.org/faucet-smart\">BNB Smart Chain Faucet</a> and transfer it to your BNB Beacon Chain address using the <a target=\"_blank\" href=\"https://www.bnbchain.org/en/binance-wallet\">Binance Wallet</a>).</li>\n</ul>\n",
       "name": "BNB Beacon Chain"
     },
     {
@@ -569,23 +569,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PolygonGasEstimation"
                 }
               }
             },
@@ -599,60 +583,6 @@
         ],
         "x-codeSamples": [],
         "summary": "Estimate Polygon transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/celo/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the CELO transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/celo_rc1/gas\" target=\"_blank\">https://explorer.bitquery.io/celo_rc1/gas</a>.\n</p>\n",
-        "operationId": "CeloEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CeloEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "number",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": 40000
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate Celo Chain transaction fees",
         "tags": [
           "Blockchain fees"
         ]
@@ -677,23 +607,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BscGasEstimation"
                 }
               }
             },
@@ -711,299 +625,10 @@
           "Blockchain fees"
         ]
       }
-    },
-    "/v3/klaytn/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Klaytn transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/klaytn/gas\" target=\"_blank\">https://explorer.bitquery.io/klaytn/gas</a>.\n</p>\n",
-        "operationId": "KlaytnEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KlaytnEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in peb.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate Klaytn transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/xdc/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the XDC transaction. Gas price is obtained from <a href=\"https://rpc.xinfin.network/gasPrice\" target=\"_blank\">https://rpc.xinfin.network/gasPrice</a>.\n</p>\n",
-        "operationId": "XdcEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/XdcEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "5"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate XinFin transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/kcs/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Kcs transaction.\n</p>\n",
-        "operationId": "KcsEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KcsEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate KuCoin Community Chain transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/vet/transaction/gas": {
-      "post": {
-        "description": "<h4>5 credits per API call.</h4><br/><p>Estimate gas required for transaction.</p>",
-        "operationId": "VetEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VetEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number",
-                  "example": 21000
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate VeChain Gas for transaction",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/egld/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the EGLD transaction. Gas limit is obtained from <a href=\"https://gateway.elrond.com/transaction/cost\" target=\"_blank\">https://gateway.elrond.com/transaction/cost</a>.\nGas price is obtained from <a href=\"https://gateway.elrond.com/network/config\" target=\"_blank\">https://gateway.elrond.com/network/config</a>.\n</p>\n",
-        "operationId": "EgldEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TransactionFeeEgldBlockchain"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "number",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": 77000
-                    },
-                    "gasPrice": {
-                      "type": "number",
-                      "description": "Gas price.",
-                      "example": 1000000000
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate EGLD transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
     }
   },
   "components": {
     "schemas": {
-      "TransactionFeeEgldBlockchain": {
-        "type": "object",
-        "properties": {
-          "sender": {
-            "description": "Account address of the sender",
-            "example": "erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7",
-            "maxLength": 62,
-            "minLength": 62,
-            "type": "string"
-          },
-          "receiver": {
-            "description": "Account address of the receiver or smart contract",
-            "example": "erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq6",
-            "maxLength": 62,
-            "minLength": 62,
-            "type": "string"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value to be sent.",
-            "example": "0.1"
-          },
-          "data": {
-            "type": "string",
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74"
-          }
-        },
-        "required": [
-          "sender",
-          "receiver",
-          "value"
-        ]
-      },
       "FeeETH": {
         "type": "object",
         "required": [
@@ -1156,7 +781,8 @@
           "sender",
           "recipients",
           "tokenIds",
-          "urls"
+          "urls",
+          "contractAddress"
         ],
         "properties": {
           "chain": {
@@ -1470,8 +1096,8 @@
           },
           "block": {
             "description": "Last used to calculate fee from",
-            "example": "16138867",
-            "type": "string"
+            "example": 16138867,
+            "type": "number"
           }
         },
         "type": "object",
@@ -1538,6 +1164,44 @@
             "items": {
               "$ref": "#/components/schemas/EthEstimateGas"
             }
+          }
+        }
+      },
+      "PolygonGasEstimation": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "string",
+            "description": "Gas limit for transaction in gas price.",
+            "example": "40000"
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price in wei.",
+            "example": "20"
+          }
+        }
+      },
+      "BscGasEstimation": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice"
+        ],
+        "properties": {
+          "gasLimit": {
+            "type": "string",
+            "description": "Gas limit for transaction in gas price.",
+            "example": "40000"
+          },
+          "gasPrice": {
+            "type": "string",
+            "description": "Gas price in wei.",
+            "example": "20"
           }
         }
       },
@@ -1690,44 +1354,6 @@
           }
         }
       },
-      "VetEstimateGas": {
-        "type": "object",
-        "required": [
-          "from",
-          "to",
-          "value"
-        ],
-        "properties": {
-          "from": {
-            "description": "Sender account address.",
-            "type": "string",
-            "maxLength": 50,
-            "example": "0x5034aa590125b64023a0262112b98d72e3c8e40e"
-          },
-          "to": {
-            "type": "string",
-            "description": "Recipient account address.",
-            "maxLength": 50,
-            "example": "0x5034aa590125b64023a0262112b98d72e3c8e40e"
-          },
-          "value": {
-            "type": "string",
-            "description": "Amount to send.",
-            "maxLength": 50,
-            "example": "140"
-          },
-          "data": {
-            "type": "string",
-            "description": "Data to send to Smart Contract",
-            "maxLength": 10000
-          },
-          "nonce": {
-            "type": "number",
-            "description": "Nonce",
-            "example": 12345
-          }
-        }
-      },
       "BscEstimateGas": {
         "type": "object",
         "properties": {
@@ -1784,147 +1410,6 @@
           },
           "amount": {
             "description": "Amount to be sent in MATIC.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "CeloEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "KlaytnEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in KLAY.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "XdcEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 43,
-            "example": "xdcfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "xdc687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 43,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in XDC.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "KcsEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in KCS.",
             "example": "100000",
             "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
             "type": "string"

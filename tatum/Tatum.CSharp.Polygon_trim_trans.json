@@ -7,7 +7,7 @@
   ],
   "info": {
     "title": "Tatum API Reference",
-    "version": "3.17.0",
+    "version": "3.17.1",
     "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
     "x-logo": {
       "url": "https://tatum.io/images/Light.svg",
@@ -121,7 +121,7 @@
       "name": "Blockchain storage"
     },
     {
-      "description": "<p>Binance Blockchain enables access to most commonly used Binance methods.<br/>\nTatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from\na faucet, e.g. <a target=\"_blank\" href=\"https://www.binance.com/en/dex/testnet/address\">https://www.binance.com/en/dex/testnet/address</a></li></ul>\nTatum supports BIP44 HD wallets. Because they can generate 2^31 addresses from 1 mnemonic phrase, they are very convenient and secure. It is possible to generate this type of wallet with 1 simple API call.</p>\n",
+      "description": "<p><a href=\"https://docs.bnbchain.org/docs/learn/beaconIntro\" target=\"_blank\">BNB Beacon Chain</a> is a blockchain developed by <a href=\"https://www.bnbchain.org/\" target=\"_blank\">Binance</a>. With Tatum, you can access the most commonly used BNB Beacon Chain methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly.</p>\n<p>BNB Beacon Chain does not provide the smart contract functionality.</p>\n<p>Tatum supports the following BNB Beacon Chain networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Testnet</b>, a chain used for testing purposes. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, get it from the <a target=\"_blank\" href=\"https://testnet.bnbchain.org/faucet-smart\">BNB Smart Chain Faucet</a> and transfer it to your BNB Beacon Chain address using the <a target=\"_blank\" href=\"https://www.bnbchain.org/en/binance-wallet\">Binance Wallet</a>).</li>\n</ul>\n",
       "name": "BNB Beacon Chain"
     },
     {
@@ -412,144 +412,6 @@
         ]
       }
     },
-    "/v3/ethereum/gas": {
-      "post": {
-        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state. The <b>fast</b> one is used by default.\n</p>\n",
-        "operationId": "EthEstimateGas",
-        "parameters": [
-          {
-            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
-            "in": "header",
-            "name": "x-testnet-type",
-            "required": false,
-            "schema": {
-              "default": "ethereum-sepolia",
-              "type": "string",
-              "enum": [
-                "ethereum-sepolia"
-              ]
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EthEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "headers": {
-              "x-current-block": {
-                "schema": {
-                  "type": "number"
-                },
-                "description": "Current block of the blockchain."
-              },
-              "x-current-block-time": {
-                "schema": {
-                  "type": "string",
-                  "format": "date-time",
-                  "example": "2021-11-11T11:54:49Z"
-                },
-                "description": "Current block time."
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EthGasEstimation"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate Ethereum transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/ethereum/gas/batch": {
-      "post": {
-        "description": "<h4>10 credits per API call + 10 credits per each gas estimation.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state.\nThe <b>fast</b> one is used by default.<br/>\nResult is calculated  in the order of the request array items.\n</p>\n",
-        "operationId": "EthEstimateGasBatch",
-        "parameters": [
-          {
-            "description": "Type of Ethereum testnet. Defaults to ethereum-sepolia.",
-            "in": "header",
-            "name": "x-testnet-type",
-            "required": false,
-            "schema": {
-              "default": "ethereum-sepolia",
-              "type": "string",
-              "enum": [
-                "ethereum-sepolia"
-              ]
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EthEstimateGasArray"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "headers": {
-              "x-current-block": {
-                "schema": {
-                  "type": "number"
-                },
-                "description": "Current block of the blockchain."
-              },
-              "x-current-block-time": {
-                "schema": {
-                  "type": "string",
-                  "format": "date-time",
-                  "example": "2021-11-11T11:54:49Z"
-                },
-                "description": "Current block time."
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EthGasEstimationBatch"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate multiple Ethereum transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
     "/v3/polygon/gas": {
       "post": {
         "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Polygon transaction. Gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.\n</p>\n",
@@ -569,23 +431,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PolygonGasEstimation"
                 }
               }
             },
@@ -599,369 +445,6 @@
         ],
         "x-codeSamples": [],
         "summary": "Estimate Polygon transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/celo/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the CELO transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/celo_rc1/gas\" target=\"_blank\">https://explorer.bitquery.io/celo_rc1/gas</a>.\n</p>\n",
-        "operationId": "CeloEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CeloEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "number",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": 40000
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate Celo Chain transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/bsc/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the BSC transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.\n</p>\n",
-        "operationId": "BscEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BscEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate BNB Smart Chain transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/klaytn/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Klaytn transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/klaytn/gas\" target=\"_blank\">https://explorer.bitquery.io/klaytn/gas</a>.\n</p>\n",
-        "operationId": "KlaytnEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KlaytnEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in peb.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate Klaytn transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/xdc/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the XDC transaction. Gas price is obtained from <a href=\"https://rpc.xinfin.network/gasPrice\" target=\"_blank\">https://rpc.xinfin.network/gasPrice</a>.\n</p>\n",
-        "operationId": "XdcEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/XdcEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "5"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate XinFin transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/kcs/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Kcs transaction.\n</p>\n",
-        "operationId": "KcsEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/KcsEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "string",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": "40000"
-                    },
-                    "gasPrice": {
-                      "type": "string",
-                      "description": "Gas price in wei.",
-                      "example": "20"
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate KuCoin Community Chain transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/vet/transaction/gas": {
-      "post": {
-        "description": "<h4>5 credits per API call.</h4><br/><p>Estimate gas required for transaction.</p>",
-        "operationId": "VetEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VetEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "number",
-                  "example": 21000
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate VeChain Gas for transaction",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/egld/gas": {
-      "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the EGLD transaction. Gas limit is obtained from <a href=\"https://gateway.elrond.com/transaction/cost\" target=\"_blank\">https://gateway.elrond.com/transaction/cost</a>.\nGas price is obtained from <a href=\"https://gateway.elrond.com/network/config\" target=\"_blank\">https://gateway.elrond.com/network/config</a>.\n</p>\n",
-        "operationId": "EgldEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TransactionFeeEgldBlockchain"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "gasLimit",
-                    "gasPrice"
-                  ],
-                  "properties": {
-                    "gasLimit": {
-                      "type": "number",
-                      "description": "Gas limit for transaction in gas price.",
-                      "example": 77000
-                    },
-                    "gasPrice": {
-                      "type": "number",
-                      "description": "Gas price.",
-                      "example": 1000000000
-                    }
-                  }
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate EGLD transaction fees",
         "tags": [
           "Blockchain fees"
         ]
@@ -1124,7 +607,7 @@
     },
     "/v3/nft/mint": {
       "post": {
-        "description": "<p><b>100 credits per API call on Flow<br/>\n2 credits per API call on the other blockchains</b></p>\n<p>You can mint NFTs using either of the following methods:</p>\n<ul>\n<li><a href=\"#NftExpress\">Using NFT Express</a></li>\n<li><a href=\"#NftNative\">Natively on a blockchain</a></li>\n</ul>\n<h3 id=\"NftExpress\">Minting NFTs using NFT Express</h3>\n<p>NFT Express is Tatum's feature that helps you mint NFTs easier than minting natively on a blockchain.</p>\n<ul>\n<li><b>You do not need to enter your private key or signature ID.</b><br/>NFT Express uses the private key provided by Tatum.</li>\n<li><b>You do not need to hold crypto or keep addresses topped up with crypto to pay for minting transactions.</b>\n<ul>\n<li>To use NFT Express on the <b>mainnet</b>, you have to have a <a href=\"https://tatum.io/pricing\" target=\"_blank\">paid pricing plan</a>.<br/>Tatum covers your transaction fees for NFT minting and pays for them from its own blockchain address. Then, the fee amount paid by Tatum is converted to the number of credits, and these credits are deducted from the monthly credit allowance of your paid pricing plan.<br/>The transaction fees and the corresponding numbers of credits deducted from your allowance vary depending on what blockchain you mint NFTs on.</li>\n<li>On the <b>testnet</b>, no credits are deducted from the monthly credit allowance. You can mint NFTs with NFT Express regardless of your pricing plan.</li>\n</ul>\n</li>\n</ul>\n<p>With NFT Express, you can choose whether to mint NFTs on the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a> or on <a href=\"#NftExpressOwn\">your own smart contract</a>.</p>\n<h4 id=\"NftExpressPrebuilt\">Use the pre-built smart contract provided by Tatum to mint NFTs</h4>\n<p>If you want to mint NFTs using the pre-built smart contract, you do not need to deploy your own NFT smart contract. You do not need to provide the address of the NFT smart contract and the token ID in the request body either. The address of the smart contract and the token ID are provided automatically by Tatum.<br/>The token ID is autogenerated. It starts with 0 and is increased by 1 for each new NFT. The token ID is calculated separately for each supported blockchain and its mainnet and testnet.<br/>\nFor more information, see <a href=\"https://docs.tatum.io/nft-express/mint-nfts-with-tatums-nft-express\" target=\"_blank\">our user documentation</a>.</p>\n<p>You can mint NFTs on the pre-built smart contract provided by Tatum on the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n<p>Depending on what blockchain you use, choose the request body schema to use in the API call.</p>\n<ul>\n<li>To mint NFTs on <b>BNB Smart Chain</b>, <b>Celo</b>, <b>Ethereum</b>, <b>Harmony</b>, <b>Klaytn</b>, or <b>Polygon</b>, use this API with the <code>MintNftExpress</code> schema of the request body.</li>\n<li>To mint NFTs on <b>Algorand</b>, use this API with the <code>MintNftExpressAlgorand</code> schema of the request body.<br/>To be able to <a href=\"#operation/NftBurnErc721\">burn the minted NFTs</a> any time later, specify the address of the manager account in the <code>manager</code> parameter.<br/>An NFT minted on Algorand is automatically transferred to your blockchain address. After the NFT is minted, you have to transfer it to the recipient's address. The recipient has to agree in advance to receive your NFT because Algorand charges users for storing NFTs on their addresses, and an Algorand blockchain address by default does not receive NFTs unless explicitly agreed.<br/>This how it works:\n<ol>\n<li>The recipient <a href=\"https://apidoc.tatum.io/tag/Algorand#operation/AlgorandBlockchainReceiveAsset\" target=\"_blank\">agrees to receive the NFT</a> to their address.</li>\n<li>You <a href=\"#operation/NftTransferErc721\">transfer the NFT</a> to the recipient's address (use the <code>transferNftAlgoExpress</code> schema of the request body).<br /><b>NOTE:</b> On the <b>mainnet</b>, Tatum covers your transaction fees for the NFT transfer and pays for them from its own blockchain address. Then, the fee amount paid by Tatum is converted to the number of credits, and these credits are deducted from the monthly credit allowance of your paid pricing plan. On the <b>testnet</b>, no credits are deducted from the monthly credit allowance.</li>\n</ol></li>\n<li>To mint NFTs on <b>Solana</b>, use this API with the <code>MintNftExpressSolana</code> schema of the request body.<br/>Solana uses the <a href=\"https://www.metaplex.com/\" target=\"_blank\">Metaplex Protocol</a>, a smart contract and metadata standard for creating and working with NFTs. When you mint an NFT on Solana with NFT Express, the pre-built smart contract based on the Metaplex Protocol is used.<br/>When an NFT is minted on Solana, a new blockchain address is created to receive the NFT under the recipient's account address (the one in the <code>to</code> parameter of the request body). This address is returned in the <code>nftAccountAddress</code> parameter in the response body, is owned by the recipient's address, and has the same private key.<br/>The response body also returns the address of the minted NFT itself, which is held in the <code>nftAddress</code> parameter.<br/>After the NFT is minted, you have to <a href=\"#operation/NftTransferErc721\">transfer it</a> to the recipient's address (use the <code>transferNftSolana</code> or <code>transferNftSolanaKMS</code> schema of the request body). In the request body of the transfer call:\n<ul>\n<li>Set the <code>from</code> parameter to the address that you used in the <code>to</code> parameter in the request body of the minting call.</li>\n<li>Set the <code>to</code> parameter to the recipient's address.</li>\n<li>Set the <code>contractAddress</code> parameter to the address from the <code>nftAddress</code> parameter returned in the response body of the minting call.</li>\n<li>Set the <code>fromPrivateKey</code>/<code>signatureId</code> parameter to the private key/signature ID of the blockchain address that you specified in the <code>from</code> parameter.</li>\n</ul></li></ul>\n<h4 id=\"NftExpressOwn\">Use your own smart contract to mint NFTs</h4>\n<p>If you want to mint NFTs using your own smart contract, you are going to use an <b>NTF minter</b>, a special blockchain address provided by Tatum that will cover the minting fees. The number of credits equivalent to the fees will be then deducted from the monthly credit allowance of your paid pricing plan.</br>\n<b>IMPORTANT!</b> Your smart contract must be deployed as a <a href=\"#operation/NftDeployErc721\">general NFT smart contract</a>. You cannot use cashback and provenance smart contracts with NFT Express.</p>\n<p>For more information, see <a href=\"https://docs.tatum.io/nft-express/use-nft-express-with-your-own-smart-contract\" target=\"_blank\">our user documentation</a> and the <a href=\"https://blog.tatum.io/how-to-mint-nfts-using-tatums-nft-minter-965194d53c9f\" target=\"_blank\">article in the Tatum blog</a>.</p>\n<p>You can mint NFTs on your own smart contract on the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n</ul>\n<p>To mint NFTs using your own smart contract, do the following:</p>\n<ol>\n<li>In the table located under this section, find the blockchain address of the Tatum NFT minter for your blockchain and network (mainnet or testnet).</li>\n<li><a href=\"#operation/NftAddMinter\">Add the minter address as an NFT minter to your smart contract</a>.</li>\n<li>Use this API with the <code>MintNftMinter</code> schema of the request body.<br />In the request body, enter the following information:\n<ul>\n<li><code>chain</code> is the blockchain that you use.</li>\n<li><code>to</code> is the blockchain address where to send the minted NFT to.</li>\n<li><code>url</code> is the URL of the NFT metadata.</li>\n<li><code>minter</code> is the address of the NFT minter that you found in Step 1.</li>\n<li><code>contractAddress</code> is the address of your NFT smart contract.</li>\n<li><code>tokenId</code> is the the token ID of the NFT.<br />For example:\n<pre>\n{\n  \"chain\": \"CELO\",\n  \"to\": \"0x8ce4e40889a13971681391aad29e88efaf91f784\",\n  \"url\": \"ipfs://QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj\",\n  \"contractAddress\": \"0x687422eEA2cB73B5d3e242bA5456b782919AFc85\",\n  \"tokenId\": \"0123\",\n  \"minter\": \"0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F\"\n}\n</pre>\nWhen you make an API call with this request body, the private key of the NFT minter will be added to the request body automatically:\n<pre>\n{\n  \"chain\": \"CELO\",\n  \"to\": \"0x8ce4e40889a13971681391aad29e88efaf91f784\",\n  \"url\": \"ipfs://QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj\",\n  \"contractAddress\": \"0x687422eEA2cB73B5d3e242bA5456b782919AFc85\",\n  \"tokenId\": \"0123\",\n  \"minter\": \"0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F\",\n  \"fromPrivateKey\": \"0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2\"\n}\n</pre>                               \n</li></ul></li>\n</ol>\n<p>The following table lists the blockchain addresses of the Tatum NFT minters for the testnet and mainnet of the supported blockchains:</p>\n<table>\n  <tr>\n    <th>Blockchain</th>\n    <th>Minter address - testnet*</th>\n    <th>Minter address - mainnet</th>\n  </tr>\n  <tr>\n    <td>BNB Smart Chain</td>\n    <td>0xc16ae5e8c985b906935a0cadf4e24f0400531883</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Celo</td>\n    <td>0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Ethereum</td>\n    <td>0x53e8577C4347C365E4e0DA5B57A589cB6f2AB848</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Harmony</td>\n    <td>0x8906f62d40293ddca77fdf6714c3f63265deddf0</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Klaytn</td>\n    <td>0x80d8bac9a6901698b3749fe336bbd1385c1f98f2</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Polygon</td>\n    <td>0x542b9ac4945a3836fd12ad98acbc76a0c8b743f5</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n</table>\n<p>*If a minter blockchain address on the testnet does not have sufficient funds to cover the transaction fee, add some amount to it using a crypto faucet of the blockchain.</p>\n<h3 id=\"NftNative\">Minting NFTs natively on a blockchain</h3>\n<p>When minting an NFT natively on a blockchain, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n<p>You can mint NFTs natively on the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Flow</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n<li>Solana</li>\n<li>TRON</li>\n</ul>        \n<p>Depending on what blockchain you use, choose the request body schema to use in the API call.</p>\n<ul>\n<li>To mint NFTs natively on <b>Algorand</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftAlgorand</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftAlgorandKMS</code> schema of the request body.<br/><b>NOTE:</b><ul><li>To be able to <a href=\"#operation/NftBurnErc721\">burn the minted NFTs</a> any time later, specify the address of the manager account in the <code>manager</code> parameter.</li><li>An NFT minted on Algorand is automatically transferred to your blockchain address. After the NFT is minted, you have to transfer it to the recipient's address. The recipient has to agree in advance to receive your NFT because Algorand charges users for storing NFTs on their addresses, and an Algorand blockchain address by default does not receive NFTs unless explicitly agreed. For more information about how it works, see the section about minting NFTs on Algorand using the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a>.</li></ul></li></ul></li>\n<li>To mint NFTs natively on <b>BNB Smart Chain</b>, <b>Ethereum</b>, <b>Harmony</b>, <b>Klaytn</b>, <b>KuCoin Community Chain</b>, or <b>Polygon</b>, and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNft</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMS</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Celo</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftCelo</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMSCelo</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Flow</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftFlowPK</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftFlowMnemonic</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>wallet mnemonic</b>, use this API the <code>MintNftFlowKMS</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Solana</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftSolana</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftSolanaKMS</code> schema of the request body.<br/><b>NOTE:</b> When an NFT is minted on Solana, a new blockchain address is created to receive the NFT under the recipient's account address. After the NFT is minted, you have to transfer it to the recipient's address. For more information about how it works, see the section about minting NFTs on Solana using the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a>.</li></ul></li>\n<li>To mint NFTs natively on <b>TRON</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftTron</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMSTron</code> schema of the request body.</li></ul></li>\n</ul>\n",
+        "description": "<p><b>100 credits per API call on Flow<br/>\n2 credits per API call on the other blockchains</b></p>\n<p>You can mint NFTs using either of the following methods:</p>\n<ul>\n<li><a href=\"#NftExpress\">Using NFT Express</a></li>\n<li><a href=\"#NftNative\">Natively on a blockchain</a></li>\n</ul>\n<h3 id=\"NftExpress\">Minting NFTs using NFT Express</h3>\n<p>NFT Express is Tatum's feature that helps you mint NFTs easier than minting natively on a blockchain.</p>\n<ul>\n<li><b>You do not need to enter your private key or signature ID.</b><br/>NFT Express uses the private key provided by Tatum.</li>\n<li><b>You do not need to hold crypto or keep addresses topped up with crypto to pay for minting transactions.</b>\n<ul>\n<li>To use NFT Express on the <b>mainnet</b>, you have to have a <a href=\"https://tatum.io/pricing\" target=\"_blank\">paid pricing plan</a>.<br/>Tatum covers your transaction fees for NFT minting and pays for them from its own blockchain address. Then, the fee amount paid by Tatum is converted to the number of credits, and these credits are deducted from the monthly credit allowance of your paid pricing plan.<br/>The transaction fees and the corresponding numbers of credits deducted from your allowance vary depending on what blockchain you mint NFTs on.</li>\n<li>On the <b>testnet</b>, no credits are deducted from the monthly credit allowance. You can mint NFTs with NFT Express regardless of your pricing plan.</li>\n</ul>\n</li>\n</ul>\n<p>With NFT Express, you can choose whether to mint NFTs on the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a> or on <a href=\"#NftExpressOwn\">your own smart contract</a>.</p>\n<h4 id=\"NftExpressPrebuilt\">Use the pre-built smart contract provided by Tatum to mint NFTs</h4>\n<p>If you want to mint NFTs using the pre-built smart contract, you do not need to deploy your own NFT smart contract. You do not need to provide the address of the NFT smart contract and the token ID in the request body either. The address of the smart contract and the token ID are provided automatically by Tatum.<br/>The token ID is autogenerated. It starts with 0 and is increased by 1 for each new NFT. The token ID is calculated separately for each supported blockchain and its mainnet and testnet.<br/>\nFor more information, see <a href=\"https://docs.tatum.io/nft-express/mint-nfts-with-tatums-nft-express\" target=\"_blank\">our user documentation</a>.</p>\n<p>You can mint NFTs on the pre-built smart contract provided by Tatum on the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n<p>Depending on what blockchain you use, choose the request body schema to use in the API call.</p>\n<ul>\n<li>To mint NFTs on <b>BNB Smart Chain</b>, <b>Celo</b>, <b>Ethereum</b>, <b>Harmony</b>, <b>Klaytn</b>, or <b>Polygon</b>, use this API with the <code>MintNftExpress</code> schema of the request body.</li>\n<li>To mint NFTs on <b>Algorand</b>, use this API with the <code>MintNftExpressAlgorand</code> schema of the request body.<br/>To be able to <a href=\"#operation/NftBurnErc721\">burn the minted NFTs</a> any time later, specify the address of the manager account in the <code>manager</code> parameter.<br/>An NFT minted on Algorand is automatically transferred to your blockchain address. After the NFT is minted, you have to transfer it to the recipient's address. The recipient has to agree in advance to receive your NFT because Algorand charges users for storing NFTs on their addresses, and an Algorand blockchain address by default does not receive NFTs unless explicitly agreed.<br/>This how it works:\n<ol>\n<li>The recipient <a href=\"https://apidoc.tatum.io/tag/Algorand#operation/AlgorandBlockchainReceiveAsset\" target=\"_blank\">agrees to receive the NFT</a> to their address.</li>\n<li>You <a href=\"#operation/NftTransferErc721\">transfer the NFT</a> to the recipient's address (use the <code>transferNftAlgoExpress</code> schema of the request body).<br /><b>NOTE:</b> On the <b>mainnet</b>, Tatum covers your transaction fees for the NFT transfer and pays for them from its own blockchain address. Then, the fee amount paid by Tatum is converted to the number of credits, and these credits are deducted from the monthly credit allowance of your paid pricing plan. On the <b>testnet</b>, no credits are deducted from the monthly credit allowance.</li>\n</ol></li>\n<li>To mint NFTs on <b>Solana</b>, use this API with the <code>MintNftExpressSolana</code> schema of the request body.<br/>Solana uses the <a href=\"https://www.metaplex.com/\" target=\"_blank\">Metaplex Protocol</a>, a smart contract and metadata standard for creating and working with NFTs. When you mint an NFT on Solana with NFT Express, the pre-built smart contract based on the Metaplex Protocol is used.<br/>When an NFT is minted on Solana, a new blockchain address is created to receive the NFT under the recipient's account address (the one in the <code>to</code> parameter of the request body). This address is returned in the <code>nftAccountAddress</code> parameter in the response body, is owned by the recipient's address, and has the same private key.<br/>The response body also returns the address of the minted NFT itself, which is held in the <code>nftAddress</code> parameter.<br/>After the NFT is minted, you have to <a href=\"#operation/NftTransferErc721\">transfer it</a> to the recipient's address (use the <code>transferNftSolana</code> or <code>transferNftSolanaKMS</code> schema of the request body). In the request body of the transfer call:\n<ul>\n<li>Set the <code>from</code> parameter to the address that you used in the <code>to</code> parameter in the request body of the minting call.</li>\n<li>Set the <code>to</code> parameter to the recipient's address.</li>\n<li>Set the <code>contractAddress</code> parameter to the address from the <code>nftAddress</code> parameter returned in the response body of the minting call.</li>\n<li>Set the <code>fromPrivateKey</code>/<code>signatureId</code> parameter to the private key/signature ID of the blockchain address that you specified in the <code>from</code> parameter.</li>\n</ul></li></ul>\n<h4 id=\"NftExpressOwn\">Use your own smart contract to mint NFTs</h4>\n<p>If you want to mint NFTs using your own smart contract, you are going to use an <b>NTF minter</b>, a special blockchain address provided by Tatum that will cover the minting fees. The number of credits equivalent to the fees will be then deducted from the monthly credit allowance of your paid pricing plan.</br>\n<b>IMPORTANT!</b> Your smart contract must be deployed as a <a href=\"#operation/NftDeployErc721\">general NFT smart contract</a>. You cannot use cashback and provenance smart contracts with NFT Express.</p>\n<p>For more information, see <a href=\"https://docs.tatum.io/nft-express/use-nft-express-with-your-own-smart-contract\" target=\"_blank\">our user documentation</a> and the <a href=\"https://blog.tatum.io/how-to-mint-nfts-using-tatums-nft-minter-965194d53c9f\" target=\"_blank\">article in the Tatum blog</a>.</p>\n<p>You can mint NFTs on your own smart contract on the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Polygon</li>\n</ul>\n<p>To mint NFTs using your own smart contract, do the following:</p>\n<ol>\n<li>In the table located under this section, find the blockchain address of the Tatum NFT minter for your blockchain and network (mainnet or testnet).</li>\n<li><a href=\"#operation/NftAddMinter\">Add the minter address as an NFT minter to your smart contract</a>.</li>\n<li>Use this API with the <code>MintNftMinter</code> schema of the request body.<br />In the request body, enter the following information:\n<ul>\n<li><code>chain</code> is the blockchain that you use.</li>\n<li><code>to</code> is the blockchain address where to send the minted NFT to.</li>\n<li><code>url</code> is the URL of the NFT metadata.</li>\n<li><code>minter</code> is the address of the NFT minter that you found in Step 1.</li>\n<li><code>contractAddress</code> is the address of your NFT smart contract.</li>\n<li><code>tokenId</code> is the the token ID of the NFT.<br />For example:\n<pre>\n{\n  \"chain\": \"CELO\",\n  \"to\": \"0x8ce4e40889a13971681391aad29e88efaf91f784\",\n  \"url\": \"ipfs://QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj\",\n  \"contractAddress\": \"0x687422eEA2cB73B5d3e242bA5456b782919AFc85\",\n  \"tokenId\": \"0123\",\n  \"minter\": \"0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F\"\n}\n</pre>\nWhen you make an API call with this request body, the private key of the NFT minter will be added to the request body automatically:\n<pre>\n{\n  \"chain\": \"CELO\",\n  \"to\": \"0x8ce4e40889a13971681391aad29e88efaf91f784\",\n  \"url\": \"ipfs://QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj\",\n  \"contractAddress\": \"0x687422eEA2cB73B5d3e242bA5456b782919AFc85\",\n  \"tokenId\": \"0123\",\n  \"minter\": \"0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F\",\n  \"fromPrivateKey\": \"0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2\"\n}\n</pre>                               \n</li></ul></li>\n</ol>\n<p>The following table lists the blockchain addresses of the Tatum NFT minters for the testnet and mainnet of the supported blockchains:</p>\n<table>\n  <tr>\n    <th>Blockchain</th>\n    <th>Minter address - testnet*</th>\n    <th>Minter address - mainnet</th>\n  </tr>\n  <tr>\n    <td>BNB Smart Chain</td>\n    <td>0xc16ae5e8c985b906935a0cadf4e24f0400531883</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Celo</td>\n    <td>0xBC2eBA680EE50d685cc4Fe65f102AA70AfB27D3F</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Ethereum</td>\n    <td>0x53e8577C4347C365E4e0DA5B57A589cB6f2AB848</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Harmony</td>\n    <td>0x8906f62d40293ddca77fdf6714c3f63265deddf0</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Klaytn</td>\n    <td>0x80d8bac9a6901698b3749fe336bbd1385c1f98f2</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n  <tr>\n    <td>Polygon</td>\n    <td>0x542b9ac4945a3836fd12ad98acbc76a0c8b743f5</td>\n    <td>0x49678AAB11E001eb3cB2cBD9aA96b36DC2461A94</td>\n  </tr>\n</table>\n<p>*If a minter blockchain address on the testnet does not have sufficient funds to cover the transaction fee, add some amount to it using a crypto faucet of the blockchain.</p>\n<h3 id=\"NftNative\">Minting NFTs natively on a blockchain</h3>\n<p>When minting an NFT natively on a blockchain, you are using your own smart contract. You are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n<p>You can mint NFTs natively on the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Flow</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n<li>Solana</li>\n<li>TRON</li>\n</ul>        \n<p>Depending on what blockchain you use, choose the request body schema to use in the API call.</p>\n<ul>\n<li>To mint NFTs natively on <b>Algorand</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftAlgorand</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftAlgorandKMS</code> schema of the request body.<br/><b>NOTE:</b><ul><li>To be able to <a href=\"#operation/NftBurnErc721\">burn the minted NFTs</a> any time later, specify the address of the manager account in the <code>manager</code> parameter.</li><li>An NFT minted on Algorand is automatically transferred to your blockchain address. After the NFT is minted, you have to transfer it to the recipient's address. The recipient has to agree in advance to receive your NFT because Algorand charges users for storing NFTs on their addresses, and an Algorand blockchain address by default does not receive NFTs unless explicitly agreed. For more information about how it works, see the section about minting NFTs on Algorand using the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a>.</li></ul></li></ul></li>\n<li>To mint NFTs natively on <b>BNB Smart Chain</b>, <b>Ethereum</b>, <b>Harmony</b>, <b>Klaytn</b>, <b>KuCoin Community Chain</b>, or <b>Polygon</b>, and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNft</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMS</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Celo</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftCelo</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMSCelo</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Flow</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftFlowPK</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftFlowMnemonic</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>wallet mnemonic</b>, use this API the <code>MintNftFlowKMS</code> schema of the request body.</li></ul></li>\n<li>To mint NFTs natively on <b>Solana</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftSolana</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftSolanaKMS</code> schema of the request body.<br/><b>NOTE:</b> When an NFT is minted on Solana, a new blockchain address is created to receive the NFT under the recipient's account address. After the NFT is minted, you have to transfer it to the recipient's address. For more information about how it works, see the section about minting NFTs on Solana using the <a href=\"#NftExpressPrebuilt\">pre-built NFT smart contract provided by Tatum</a>.</li></ul></li>\n<li>To mint NFTs natively on <b>TRON</b> and:\n<ul><li>To sign the transaction with your <b>private key</b>, use this API with the <code>MintNftTron</code> schema of the request body.</li>\n<li>To sign the transaction with your <b>signature ID</b>, use this API the <code>MintNftKMSTron</code> schema of the request body.</li></ul></li>\n</ul>\n",
         "operationId": "NftMintErc721",
         "parameters": [
           {
@@ -2249,7 +1732,7 @@
             }
           },
           {
-            "description": "The ID of the NFT to get provenance information for.",
+            "description": "The ID of the NFT to get provenance information for",
             "in": "path",
             "name": "tokenId",
             "required": true,
@@ -3177,7 +2660,7 @@
     },
     "/v3/blockchain/token/address/{chain}/{address}": {
       "get": {
-        "description": "<p><b>1 credit per API call</b></p>\n<p>Get the number of fungible tokens that a blockchain address holds across a blockchain. The tokens are returned grouped by the smart contracts they were minted on.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n",
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get the number of all fungible tokens that a blockchain address holds across a blockchain. The tokens are returned grouped by the smart contracts they were minted on.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Algorand</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n<li>Solana</li>\n</ul>\n",
         "operationId": "Erc20GetBalanceAddress",
         "parameters": [
           {
@@ -3229,7 +2712,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Get the number of fungible tokens that a blockchain address holds across a blockchain",
+        "summary": "Get the total number of fungible tokens that a blockchain address holds",
         "tags": [
           "Fungible Tokens (ERC-20 or compatible)"
         ]
@@ -3769,7 +3252,7 @@
     },
     "/v3/polygon/smartcontract": {
       "post": {
-        "description": "<b><p>2 credits per API call</p></b>\n<p>Invoke a method in an existing smart contract on Polygon.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Signing a transaction</b></p>\n<p>When invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>If <b>caller</b> field is present instead of the private key, Tatum will sign the transaction with the managed private key connected to the caller address. This is applicable only for paid mainnet plans and all testnet plans. Keep in mind that the caller address must have enough access right to perform the action in the smart contract method.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "description": "<b><p>2 credits per API call</p></b>\n<p>Invoke a method in an existing smart contract on Polygon.</p>\n<p>You can call a read-only or write method.</p>\n<ul>\n<li>For <b>read-only</b> methods, the output of the invoked method is returned.</li>\n<li>For <b>write</b> methods, the ID of the associated transaction is returned.</li>\n</ul>        \n<p><b>Troubleshooting a failed transaction</b><br/>\nTatum ensures that this API works against the blockchain (accesses the blockchain, finds the specified smart contract, and executes the specified ABI method with the provided parameters).<br/>However, because this API can be run against any smart contract on the blockchain, Tatum cannot in any way guarantee that the method itself will be executed successfully.</p>\n<p>If you have issues with invoking the method, refer to the user documentation for this method, or contact the author of the smart contract.</p>\n<p>For more information about invoking methods in smart contracts, see <a href=\"https://support.tatum.io/support/solutions/articles/80001052441\" target=\"_blank\">this article</a> on our Support Portal.</p>\n<p><b>Signing a transaction</b><br/>\nWhen invoking a method in a smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>If <b>caller</b> field is present instead of the private key, Tatum will sign the transaction with the managed private key connected to the caller address. This is applicable only for paid mainnet plans and all testnet plans. Keep in mind that the caller address must have enough access right to perform the action in the smart contract method.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
         "operationId": "PolygonBlockchainSmartContractInvocation",
         "requestBody": {
           "content": {
@@ -4259,40 +3742,6 @@
           }
         }
       },
-      "TransactionFeeEgldBlockchain": {
-        "type": "object",
-        "properties": {
-          "sender": {
-            "description": "Account address of the sender",
-            "example": "erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq7",
-            "maxLength": 62,
-            "minLength": 62,
-            "type": "string"
-          },
-          "receiver": {
-            "description": "Account address of the receiver or smart contract",
-            "example": "erd17k95m339aqzxzyvjjjfa3lka0yyeqgcsda50tw5z9g73ycfe2caq9e6jq6",
-            "maxLength": 62,
-            "minLength": 62,
-            "type": "string"
-          },
-          "value": {
-            "type": "string",
-            "description": "Value to be sent.",
-            "example": "0.1"
-          },
-          "data": {
-            "type": "string",
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74"
-          }
-        },
-        "required": [
-          "sender",
-          "receiver",
-          "value"
-        ]
-      },
       "FeeETH": {
         "type": "object",
         "required": [
@@ -4445,7 +3894,8 @@
           "sender",
           "recipients",
           "tokenIds",
-          "urls"
+          "urls",
+          "contractAddress"
         ],
         "properties": {
           "chain": {
@@ -4759,8 +4209,8 @@
           },
           "block": {
             "description": "Last used to calculate fee from",
-            "example": "16138867",
-            "type": "string"
+            "example": 16138867,
+            "type": "number"
           }
         },
         "type": "object",
@@ -4826,70 +4276,11 @@
           }
         }
       },
-      "EthEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "contractAddress": {
-            "description": "Contract address of ERC20 token, if transaction is ERC20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in Ether or ERC20.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "EthEstimateGasArray": {
-        "type": "object",
-        "required": [
-          "estimations"
-        ],
-        "properties": {
-          "estimations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EthEstimateGas"
-            }
-          }
-        }
-      },
-      "EthGasEstimation": {
+      "PolygonGasEstimation": {
         "type": "object",
         "required": [
           "gasLimit",
-          "gasPrice",
-          "estimations"
+          "gasPrice"
         ],
         "properties": {
           "gasLimit": {
@@ -4900,174 +4291,7 @@
           "gasPrice": {
             "type": "string",
             "description": "Gas price in wei.",
-            "example": "20000000000"
-          },
-          "estimations": {
-            "$ref": "#/components/schemas/EthGasEstimationDetails"
-          }
-        }
-      },
-      "EthGasEstimationDetails": {
-        "type": "object",
-        "description": "Detailed estimations for safe (under 30 minutes), standard (under 5 minutes) and fast (under 2 minutes) transaction times.",
-        "required": [
-          "safe",
-          "standard",
-          "fast",
-          "baseFee"
-        ],
-        "properties": {
-          "safe": {
-            "type": "string",
-            "description": "Safe gas price in wei.",
-            "example": "20000000000"
-          },
-          "standard": {
-            "type": "string",
-            "description": "Standard gas price in wei.",
-            "example": "40000000000"
-          },
-          "fast": {
-            "type": "string",
-            "description": "Fast gas price in wei.",
-            "example": "55000000000"
-          },
-          "baseFee": {
-            "type": "string",
-            "description": "Base fee for EIP-1559 transactions in wei.",
-            "example": "55000000000"
-          }
-        }
-      },
-      "EthGasEstimationBatch": {
-        "type": "object",
-        "required": [
-          "error",
-          "result"
-        ],
-        "properties": {
-          "error": {
-            "type": "boolean",
-            "description": "If all estimations succeeded.",
-            "example": false
-          },
-          "result": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EthGasEstimationBatchResult"
-            }
-          }
-        },
-        "example": {
-          "error": true,
-          "result": [
-            {
-              "error": true,
-              "msg": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
-            },
-            {
-              "error": false,
-              "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-              "data": {
-                "gasLimit": "63185",
-                "gasPrice": "119104833751",
-                "estimations": {
-                  "safe": "100833333333",
-                  "standard": "104833333333",
-                  "fast": "119104833751",
-                  "baseFee": "119104833751"
-                }
-              }
-            }
-          ]
-        }
-      },
-      "EthGasEstimationBatchResult": {
-        "type": "object",
-        "required": [
-          "error"
-        ],
-        "properties": {
-          "error": {
-            "type": "boolean",
-            "description": "If estimation succeeded.",
-            "example": false
-          },
-          "contractAddress": {
-            "description": "Contract address of ERC20 token, if transaction is ERC20 token",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "data": {
-            "$ref": "#/components/schemas/EthGasEstimationBatchResultData"
-          },
-          "msg": {
-            "type": "string",
-            "description": "Error message. Present only if error - true.",
-            "example": "Provided address 0xt16360210b423d3a5205923d6e64a2d142d9f426 is invalid, the capitalization checksum test failed, or it's an indirect IBAN address which can't be converted."
-          }
-        }
-      },
-      "EthGasEstimationBatchResultData": {
-        "type": "object",
-        "required": [
-          "gasLimit",
-          "gasPrice",
-          "estimations"
-        ],
-        "properties": {
-          "gasLimit": {
-            "type": "string",
-            "description": "Gas limit for transaction in gas price.",
-            "example": "40000"
-          },
-          "gasPrice": {
-            "type": "string",
-            "description": "Gas price in wei.",
-            "example": "20000000000"
-          },
-          "estimations": {
-            "$ref": "#/components/schemas/EthGasEstimationDetails"
-          }
-        }
-      },
-      "VetEstimateGas": {
-        "type": "object",
-        "required": [
-          "from",
-          "to",
-          "value"
-        ],
-        "properties": {
-          "from": {
-            "description": "Sender account address.",
-            "type": "string",
-            "maxLength": 50,
-            "example": "0x5034aa590125b64023a0262112b98d72e3c8e40e"
-          },
-          "to": {
-            "type": "string",
-            "description": "Recipient account address.",
-            "maxLength": 50,
-            "example": "0x5034aa590125b64023a0262112b98d72e3c8e40e"
-          },
-          "value": {
-            "type": "string",
-            "description": "Amount to send.",
-            "maxLength": 50,
-            "example": "140"
-          },
-          "data": {
-            "type": "string",
-            "description": "Data to send to Smart Contract",
-            "maxLength": 10000
-          },
-          "nonce": {
-            "type": "number",
-            "description": "Nonce",
-            "example": 12345
+            "example": "20"
           }
         }
       },
@@ -5181,11 +4405,11 @@
           "contractAddress": {
             "type": "string",
             "example": "43821281",
-            "description": "On Algorand, this is the asset ID (the ID of the NFT); on the other blockchains, this is the address of the NFT smart contract"
+            "description": "On Algorand, this is the asset ID (the ID of the NFT); on the other blockchains, this is the address of the NFT smart contract."
           },
           "balances": {
             "type": "array",
-            "description": "On Algorand, an array of \"1\" to indicate that the NFTs with the specified IDs exist, or array with amount of fractions for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>; on the other blockchains, this is an array of the IDs of the NFTs.",
+            "description": "On Algorand, this is either an array of \"1\" to indicate that the NFTs with the specified IDs exist, or an array with the number of NFT fractions if the NFTs are <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional</a>; on the other blockchains, this is an array of the IDs of the NFTs.",
             "items": {
               "type": "string",
               "maxLength": 78,
@@ -5195,7 +4419,7 @@
           },
           "blockNumber": {
             "type": "array",
-            "description": "(EVM-based blockchains only) On EVM-based blockchains like Celo, Polygon or Ethereum, this is an array of block numbers, in which the NFT was received by the address",
+            "description": "(EVM-based blockchains only) An array of the numbers of the blocks in which the NFT was received by the address",
             "items": {
               "type": "number",
               "example": 13816552
@@ -5210,12 +4434,12 @@
           "supply": {
             "type": "number",
             "example": 10,
-            "description": "Only on Algorand, shows supply of <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>"
+            "description": "(Algorand only) The number of fractions in the NFT if the NFT is <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional</a>"
           },
           "decimals": {
             "type": "number",
             "example": 1,
-            "description": "Only on Algorand, shows decimals of <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>"
+            "description": "(Algorand only) The number of decimal places in an NFT fraction if the NFT is <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional</a>"
           }
         }
       },
@@ -5223,7 +4447,7 @@
         "type": "object",
         "properties": {
           "tokenId": {
-            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address.",
+            "description": "(EVM-based blockchains only) The ID of the NFT owned by this address",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7295,7 +6519,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7356,7 +6580,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7408,7 +6632,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7473,7 +6697,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7711,7 +6935,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7820,7 +7044,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -7900,7 +7124,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -8014,7 +7238,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -8175,12 +7399,12 @@
           "to": {
             "maxLength": 58,
             "minLength": 58,
-            "description": "Blockchain address to send NFT token to",
+            "description": "The blockchain address to transfer the NFT to",
             "example": "TMETT6BXL3QUH7AH5TS6IONU7LVTLKIGG54CFCNPMQXWGRIZFIESZBYWP4",
             "type": "string"
           },
           "contractAddress": {
-            "description": "AssetID of token.",
+            "description": "The asset ID (the ID of the NFT)",
             "example": "100000",
             "type": "string",
             "maxLength": 256
@@ -8190,10 +7414,10 @@
             "maxLength": 103,
             "example": "72TCV5BRQPBMSAFPYO3CPWVDBYWNGAYNMTW5QHENOMQF7I6QLNMJWCJZ7A3V5YKD7QD6ZZPEHG2PV2ZVVEDDO6BCRGXWIL3DIUMSUCI",
             "minLength": 106,
-            "description": "Private key of sender address."
+            "description": "The private key of the sender's blockchain address"
           },
           "amount": {
-            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "(For <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFTs</a> only) The number of NFT fractions to transfer; if not set, defaults to 1, which means that one fraction of the NFT will be transferred",
             "example": 1,
             "default": 1,
             "minimum": 1,
@@ -8221,18 +7445,18 @@
           "to": {
             "maxLength": 58,
             "minLength": 58,
-            "description": "Blockchain address to send NFT token to",
+            "description": "The blockchain address to transfer the NFT to",
             "example": "TMETT6BXL3QUH7AH5TS6IONU7LVTLKIGG54CFCNPMQXWGRIZFIESZBYWP4",
             "type": "string"
           },
           "contractAddress": {
-            "description": "AssetID of token.",
+            "description": "The asset ID (the ID of the NFT)",
             "example": "100000",
             "type": "string",
             "maxLength": 256
           },
           "amount": {
-            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "(For <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFTs</a> only) The number of NFT fractions to transfer; if not set, defaults to 1, which means that one fraction of the NFT will be transferred",
             "example": 1,
             "default": 1,
             "type": "number",
@@ -8307,19 +7531,19 @@
           "from": {
             "maxLength": 58,
             "minLength": 58,
-            "description": "Blockchain address to send NFT token from",
+            "description": "The blockchain address to transfer the NFT from",
             "example": "TMETT6BXL3QUH7AH5TS6IONU7LVTLKIGG54CFCNPMQXWGRIZFIESZBYWP4",
             "type": "string"
           },
           "to": {
             "maxLength": 58,
             "minLength": 58,
-            "description": "Blockchain address to send NFT token to",
+            "description": "The blockchain address to transfer the NFT to",
             "example": "TMETT6BXL3QUH7AH5TS6IONU7LVTLKIGG54CFCNPMQXWGRIZFIESZBYWP4",
             "type": "string"
           },
           "contractAddress": {
-            "description": "AssetID of token.",
+            "description": "The asset ID (the ID of the NFT)",
             "example": "100000",
             "type": "string",
             "maxLength": 256
@@ -8328,10 +7552,10 @@
             "type": "string",
             "format": "uuid",
             "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
-            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+            "description": "The KMS identifier of the private key of the sender's blockchain address"
           },
           "amount": {
-            "description": "The total amount of NFT fractions to transfer. Defaults to 1 - which means 1 fraction of NFT will be transferred. This is only valid for <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>",
+            "description": "(For <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFTs</a> only) The number of NFT fractions to transfer; if not set, defaults to 1, which means that one fraction of the NFT will be transferred",
             "example": 1,
             "default": 1,
             "type": "number",
@@ -8651,7 +7875,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -8765,7 +7989,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -8859,21 +8083,6 @@
                 "maxLength": 8,
                 "minLength": 1
               },
-              "total": {
-                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
-                "example": 10,
-                "default": 1,
-                "type": "number",
-                "minimum": 10
-              },
-              "decimals": {
-                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
-                "example": 1,
-                "default": 0,
-                "type": "number",
-                "minimum": 1,
-                "maximum": 15
-              },
               "clawback": {
                 "description": "The address of the clawback account that can claw back holdings of the NFT",
                 "example": "TMETT6BXL3QUH7AH5TS6IONU7LVTLKIGG54CFCNPMQXWGRIZFIESZBYWP4",
@@ -8901,6 +8110,21 @@
                 "type": "string",
                 "maxLength": 58,
                 "minLength": 58
+              },
+              "total": {
+                "description": "(For minting the NFT as a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of fractions that the minted NFT should be divided into<br/>The number must be a power of 10 and greater that 1, for example, 10, 100, 1000...<br/>If not set, the parameter defaults to 1, which means that one regular (not fractional) NFT will be minted.",
+                "example": 10,
+                "default": 1,
+                "type": "number",
+                "minimum": 10
+              },
+              "decimals": {
+                "description": "(For minting the NFT as a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of decimal places in a fraction of the minted NFT<br/>The number must be greater that 0 and equal to the logarithm in base 10 of the number of the fractions (see the <code>total</code> parameter); for example, if <code>total</code> is set to 10, <code>decimals</code> must be set to 1.<br/>If not set, the parameter defaults to 0, which means that one regular (not fractional) NFT will be minted.",
+                "example": 1,
+                "default": 0,
+                "type": "number",
+                "minimum": 1,
+                "maximum": 15
               }
             }
           }
@@ -8982,14 +8206,14 @@
                 "minLength": 58
               },
               "total": {
-                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
+                "description": "(For minting the a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of fractions that the minted NFT should be divided into<br/>The number must be a power of 10 and greater that 1, for example, 10, 100, 1000...<br/>If not set, the parameter defaults to 1, which means that one regular (not fractional) NFT will be minted.",
                 "example": 10,
                 "default": 1,
                 "type": "number",
                 "minimum": 10
               },
               "decimals": {
-                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
+                "description": "(For minting the NFT as a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of decimal places in a fraction of the minted NFT<br/>The number must be greater that 0 and equal to the logarithm in base 10 of the number of the fractions (see the <code>total</code> parameter); for example, if <code>total</code> is set to 10, <code>decimals</code> must be set to 1.<br/>If not set, the parameter defaults to 0, which means that one regular (not fractional) NFT will be minted.",
                 "example": 1,
                 "default": 0,
                 "type": "number",
@@ -9083,14 +8307,14 @@
                 "minLength": 58
               },
               "total": {
-                "description": "The total amount of the NFTs to mint. Defaults to 1 - which means 1 NFT will be minted.<br/>Value above 1 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be a power of 10 larger than 1 e.g. 10, 100, 1000...",
+                "description": "(For minting the NFT as a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of fractions that the minted NFT should be divided into<br/>The number must be a power of 10 and greater that 1, for example, 10, 100, 1000...<br/>If not set, the parameter defaults to 1, which means that one regular (not fractional) NFT will be minted.",
                 "example": 10,
                 "default": 1,
                 "type": "number",
                 "minimum": 10
               },
               "decimals": {
-                "description": "The decimal places of the NFT to mint. Defaults to 0 - which means 1 NFT will be minted.<br/>Value above 0 means, you are going to mint <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">Fractional NFTs.</a>In this case value must be equal to the logarithm in base 10 of total number of units (e.g. for total = 10, decimal will be 1)",
+                "description": "(For minting the NFT as a <a href=\"https://developer.algorand.org/docs/get-started/tokenization/nft/#fractional-nfts\" target=\"_blank\">fractional NFT</a>) The number of decimal places in a fraction of the minted NFT<br/>The number must be greater that 0 and equal to the logarithm in base 10 of the number of the fractions (see the <code>total</code> parameter); for example, if <code>total</code> is set to 10, <code>decimals</code> must be set to 1.<br/>If not set, the parameter defaults to 0, which means that one regular (not fractional) NFT will be minted.",
                 "example": 1,
                 "default": 0,
                 "type": "number",
@@ -9140,7 +8364,7 @@
             "type": "string"
           },
           "tokenId": {
-            "description": "The ID of the NFT.",
+            "description": "The ID of the NFT",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -9950,7 +9174,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn.",
+            "description": "The ID of the NFT to burn",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -10069,7 +9293,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -10134,7 +9358,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to update royalty information for.",
+            "description": "The ID of the NFT to update royalty information for",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -10195,7 +9419,7 @@
             ]
           },
           "tokenId": {
-            "description": "The ID of the NFT to burn.",
+            "description": "The ID of the NFT to burn",
             "type": "string",
             "maxLength": 78,
             "example": "123",
@@ -10312,7 +9536,7 @@
             "type": "array",
             "description": "The array returning the ID of the NFTs",
             "items": {
-              "description": "The ID of the NFT.",
+              "description": "The ID of the NFT",
               "type": "string",
               "maxLength": 78,
               "example": "123",
@@ -10937,7 +10161,9 @@
             "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "fee": {
-            "$ref": "#/components/schemas/CustomFee"
+            "description": "The transaction fee in ALGO",
+            "type": "string",
+            "example": "0.001"
           }
         },
         "required": [
@@ -10947,7 +10173,8 @@
           "address",
           "supply",
           "fromPrivateKey",
-          "digits"
+          "digits",
+          "fee"
         ]
       },
       "ChainDeployAlgoErc20KMS": {
@@ -11016,7 +10243,9 @@
             "description": "The nonce to be set to the transaction; if not present, the last known nonce will be used"
           },
           "fee": {
-            "$ref": "#/components/schemas/CustomFee"
+            "description": "The transaction fee in ALGO",
+            "type": "string",
+            "example": "0.001"
           }
         },
         "required": [
@@ -11026,7 +10255,8 @@
           "address",
           "supply",
           "signatureId",
-          "digits"
+          "digits",
+          "fee"
         ]
       },
       "ChainDeployCeloErc20": {
@@ -12897,43 +12127,6 @@
           "amount"
         ]
       },
-      "BscEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in BSC.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
       "MaticBalance": {
         "type": "object",
         "properties": {
@@ -13502,43 +12695,6 @@
           "signatureId"
         ]
       },
-      "CeloEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
       "CeloTx": {
         "type": "object",
         "properties": {
@@ -13657,110 +12813,6 @@
             }
           }
         }
-      },
-      "KlaytnEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in KLAY.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "XdcEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 43,
-            "example": "xdcfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "xdc687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 43,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in XDC.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
-      },
-      "KcsEstimateGas": {
-        "type": "object",
-        "properties": {
-          "from": {
-            "type": "string",
-            "maxLength": 42,
-            "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "minLength": 42,
-            "description": "Sender address."
-          },
-          "to": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "amount": {
-            "description": "Amount to be sent in KCS.",
-            "example": "100000",
-            "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
-            "type": "string"
-          },
-          "data": {
-            "type": "string",
-            "maxLength": 50000,
-            "description": "Additional data that can be passed to a blockchain transaction as a data property; must be in the hexadecimal format",
-            "example": "4d79206e6f746520746f2074686520726563697069656e74",
-            "pattern": "^(0x|0h)?[0-9A-F]+$"
-          }
-        },
-        "required": [
-          "to",
-          "amount",
-          "from"
-        ]
       }
     },
     "securitySchemes": {
