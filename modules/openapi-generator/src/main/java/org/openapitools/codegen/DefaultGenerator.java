@@ -1495,6 +1495,10 @@ public class DefaultGenerator implements Generator {
             }
         }
         else {
+            if(oneOfReturnTypeMap.ChainSpecificOperations.containsKey(operation.getOperationId())){
+                addChainToOperationTag(operation, tag, oneOfReturnTypeMap.ChainSpecificOperations.get(operation.getOperationId()));
+            }
+
             processOperation(resourcePath, httpMethod, operation, operations, path);
         }
     }

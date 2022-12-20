@@ -35,17 +35,24 @@
     "EstimateFeeFromUTXO": "FeeBtc"
   },
   "ReturnPerChainMappings":
+  {
+    "NftGetTransactErc721":
     {
-      "NftGetTransactErc721":
-      {
-        "*": "EthTx",
-        "FLOW": "FlowTx",
-        "CELO": "CeloTx"
-      },
-      "NftGetBalanceErc721":
-      {
-        "*": "NftGetBalanceSc",
-        "ALGO": "NftGetBalanceScAlgo"
-      }
+      "*": "EthTx",
+      "FLOW": "FlowTx",
+      "CELO": "CeloTx"
+    },
+    "NftGetBalanceErc721":
+    {
+      "*": "NftGetBalanceSc",
+      "ALGO": "NftGetBalanceScAlgo"
     }
+  },
+  "ChainSpecificOperations":
+  {
+    "EthEstimateGas": "ETH",
+    "EthEstimateGasBatch": "ETH",
+    "PolygonEstimateGas": "MATIC",
+    "BscEstimateGas": "BSC"
+  }
 }
