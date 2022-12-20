@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Include Blockchain Fees operations in packages."
+releaseNote: "Include Blockchain Fees operations in packages. Tatum.CSharp.BlockchainFees package released."
