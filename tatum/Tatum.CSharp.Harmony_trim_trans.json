@@ -4072,27 +4072,30 @@
             "description": "Array of addresses and values to send bitcoins to. Values must be set in BTC. Difference between from and to is transaction fee.",
             "type": "array",
             "items": {
-              "type": "object",
-              "required": [
-                "address",
-                "value"
-              ],
-              "properties": {
-                "address": {
-                  "description": "Destination address.",
-                  "type": "string",
-                  "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
-                  "minimum": 30,
-                  "maximum": 60
-                },
-                "value": {
-                  "description": "Amount to be sent, in BTC.",
-                  "type": "number",
-                  "minimum": 0,
-                  "example": 0.02969944
-                }
-              }
+              "$ref": "#/components/schemas/EstimateFeeFromAddressTo"
             }
+          }
+        }
+      },
+      "EstimateFeeFromAddressTo": {
+        "type": "object",
+        "required": [
+          "address",
+          "value"
+        ],
+        "properties": {
+          "address": {
+            "description": "Destination address.",
+            "type": "string",
+            "example": "2MzNGwuKvMEvKMQogtgzSqJcH2UW3Tc5oc7",
+            "minimum": 30,
+            "maximum": 60
+          },
+          "value": {
+            "description": "Amount to be sent, in BTC.",
+            "type": "number",
+            "minimum": 0,
+            "example": 0.02969944
           }
         }
       },
