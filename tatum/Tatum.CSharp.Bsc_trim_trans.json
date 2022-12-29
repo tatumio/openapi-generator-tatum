@@ -2718,6 +2718,1193 @@
         ]
       }
     },
+    "/v3/multitoken/deploy": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Deploy Multi Token Smart Contract. This method creates new ERC1155 Smart Contract (Multi Tokens) on the blockchain. Smart contract is standardized and audited.\nIt is possible to mint, burn and transfer tokens. It is also possible to mint multiple tokens at once.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When deploying a Multi Token smart contract, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "DeployMultiToken",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DeployMultiToken"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DeployMultiTokenKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DeployMultiTokenCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DeployMultiTokenCeloKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Deploy a Multi Token smart contract",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/mint": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Mint a fixed amount of Multi Token and transfer it to destination account. Create and transfer any Multi Token token from smart contract defined in contractAddress. It is possible to add Metadata to the created token with a more detailed information about instead.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When minting a Multi Token, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "MintMultiToken",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/MintMultiToken"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Mint a Multi Token",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/mint/batch": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Create a fixed amount of multiple Multi Tokens Tokens and transfer them to destination account in one transaction. Create and transfer Multi Tokens tokens from smart contract defined in contractAddress.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When minting multiple Multi Tokens, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "MintMultiTokenBatch",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenBatch"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenBatchKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenBatchCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/MintMultiTokenBatchKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Mint multiple Multi Tokens",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/burn": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Burn a fixed amount of Multi Tokens by id. This method destroys Multi Tokens from smart contract defined in contractAddress.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When burning a Multi Token, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "BurnMultiToken",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BurnMultiToken"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Burn a Multi Token",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/burn/batch": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Burn multiple Multi Token Tokens by id assigned to same address in one transaction. This method destroys any Multi Tokens token from smart contract defined in contractAddress.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When burning multiple Multi Tokens, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "BurnMultiTokenBatch",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenBatch"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenBatchKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenBatchCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/BurnMultiTokenBatchKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Burn multiple Multi Tokens",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/transaction": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Transfer a certain amount of Multi Token from account to another account. Transfer Multi Tokens token from smart contract defined in contractAddress.</p>\n<p>Only 1 specific token with specified tokenId and value can be transferred. This method invokes ERC1155 method safeTransfer() to transfer the token in case of ETH, Celo and blockchains.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When transferring a Multi Token, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "TransferMultiToken",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferMultiToken"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Transfer a Multi Token",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/transaction/batch": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Transfer Multi Token Batch from account to various other accounts in one transaction. Transfer multiple Multi Tokens token from smart contract defined in contractAddress.</p>\n<p>Multiple token with specified tokenIds and values can be transferred. This method invokes ERC1155 method safeTransfer() to transfer the token in case of ETH, Celo and BSC.</b>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When transferring multiple Multi Tokens, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "TransferMultiTokenBatch",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenBatch"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenBatchKMS"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenBatchCelo"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TransferMultiTokenBatchKMSCelo"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Transfer multiple Multi Tokens",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/mint/add": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Add Multi Token minter.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n<p><b>Signing a transaction</b></p>\n<p>When adding a Multi Token minter, you are charged a fee for the transaction, and you must sign the transaction with the private key of the blockchain address from which the fee will be deducted.</p>\n<p>Providing the private key in the API is not a secure way of signing transactions, because the private key can be stolen or exposed. Your private keys should never leave your security perimeter. You should use the private keys only for testing a solution you are building on the <b>testnet</b> of a blockchain.</p>\n<p>For signing transactions on the <b>mainnet</b>, we strongly recommend that you use the Tatum <a href=\"https://github.com/tatumio/tatum-kms\" target=\"_blank\">Key Management System (KMS)</a> and provide the signature ID instead of the private key in the API. Alternatively, you can use the <a href=\"https://github.com/tatumio/tatum-js\" target=\"_blank\">Tatum JavaScript client</a>.</p>\n",
+        "operationId": "AddMultiTokenMinter",
+        "parameters": [
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/AddMultiTokenMinter"
+                  },
+                  {
+                    "$ref": "#/components/schemas/AddMultiTokenMinterKMS"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/TransactionHash"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SignatureId"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Add a Multi Token minter",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/transaction/{chain}/{address}/{tokenAddress}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get incoming and outgoing Multi Token transactions on a blockchain address.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetTransactionByAddress",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CELO",
+                "ETH",
+                "MATIC"
+              ],
+              "example": "CELO"
+            }
+          },
+          {
+            "description": "Account address you want to get balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x8ce4e40889a13971681391aad29e88efaf91f784"
+            }
+          },
+          {
+            "description": "Address of the token smart contract",
+            "in": "path",
+            "name": "tokenAddress",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x1ce4e40889a13971681391aad29e88efaf91f784"
+            }
+          },
+          {
+            "description": "Max number of items per page is 50.",
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "number",
+              "example": 10,
+              "maximum": 50,
+              "minimum": 1
+            },
+            "required": true
+          },
+          {
+            "description": "Offset to obtain next page of the data.",
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number",
+              "example": 0
+            }
+          },
+          {
+            "description": "Transactions from this block onwards will be included.",
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "example": 1087623
+            }
+          },
+          {
+            "description": "Transactions up to this block will be included.",
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "number",
+              "minimum": 0,
+              "example": 1087823
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MultiTx"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Multi Token transactions on a blockchain address",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/transaction/{chain}/{hash}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get Multi Token transaction by transaction hash.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetTransaction",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "KCS",
+                "KLAY",
+                "ONE",
+                "CELO",
+                "BSC"
+              ]
+            }
+          },
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/CeloTx"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EthTx"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get a Multi Token transaction by its hash",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/address/balance/{chain}/{address}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get all Multi Tokens that a blockchain address holds. The Multi Tokens are returned grouped by the smart contracts they were minted on.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetAddressBalance",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "CELO"
+              ],
+              "example": "ETH"
+            }
+          },
+          {
+            "description": "Blockchain address",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MultiTokenAddressBalance"
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get all Multi Tokens that a blockchain address holds",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/balance/{chain}/{contractAddress}/{address}/{tokenId}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get the amount of a specific Multi Token (minted on the smart contract specified by the <code>contractAddress</code> path parameter in the request endpoint URL) that a blockchain address holds.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetBalance",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "KCS",
+                "KLAY",
+                "ONE",
+                "CELO",
+                "BSC"
+              ]
+            }
+          },
+          {
+            "description": "The blockchain address that you want to get the token balance of",
+            "in": "path",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          },
+          {
+            "description": "The address of the Multi Token smart contract",
+            "in": "path",
+            "name": "contractAddress",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326"
+            }
+          },
+          {
+            "description": "The ID of the Multi Token",
+            "in": "path",
+            "name": "tokenId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "100"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiTokenBalanceValue"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get the amount of a specific MultiToken that a blockchain address holds",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/balance/batch/{chain}/{contractAddress}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>For multiple blockchain addresses, get the amount of one or multiple Multi Tokens (minted on the smart contract specified by the <code>contractAddress</code> path parameter in the request endpoint URL) that those addresses hold.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetBalanceBatch",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "KCS",
+                "KLAY",
+                "ONE",
+                "CELO",
+                "BSC"
+              ]
+            }
+          },
+          {
+            "description": "The address of the Multi Token smart contract",
+            "in": "path",
+            "name": "contractAddress",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326"
+            }
+          },
+          {
+            "description": "Comma-separated IDs of the Multi Tokens to get the amounts for",
+            "in": "query",
+            "name": "tokenId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1,2,3"
+            }
+          },
+          {
+            "description": "Comma-separated blockchain addresses to get the token balance for",
+            "in": "query",
+            "name": "address",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B,0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B,0x3223AEB8404C7525FcAA6C512f91e287AE9FfE7B"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "example": [
+                    "10",
+                    "20"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "description": "Token ID."
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get the amount of one or multiple Multi Tokens for multiple blockchain addresses",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/metadata/{chain}/{contractAddress}/{token}": {
+      "get": {
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get Multi Token metadata.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n",
+        "operationId": "MultiTokenGetMetadata",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "KCS",
+                "KLAY",
+                "ONE",
+                "CELO",
+                "BSC"
+              ]
+            }
+          },
+          {
+            "description": "Token ID",
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1",
+              "maxLength": 32
+            }
+          },
+          {
+            "description": "Multi Token contract address",
+            "in": "path",
+            "name": "contractAddress",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0x94Ce79B9F001E25BBEbE7C01998A78F7B27D1326"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiTokenMetadata"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get Multi Token metadata",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
+    "/v3/multitoken/address/{chain}/{hash}": {
+      "get": {
+        "description": "<p><p>This endpoint is deprecated. Do not use it.<br/>\nInstead, use <a href=\"https://apidoc.tatum.io/tag/Blockchain-utils#operation/SCGetContractAddress\" target=\"_blank\">this API</a>.</b></p><br/>\n<p><b>1 credit per API call</b></p>\n<p>Get Multi Token contract address from deploy transaction.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>KuCoin Community Chain</li>\n<li>Polygon</li>\n</ul>\n",
+        "deprecated": true,
+        "operationId": "MultiTokenGetContractAddress",
+        "parameters": [
+          {
+            "description": "Blockchain to work with",
+            "in": "path",
+            "name": "chain",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH",
+                "MATIC",
+                "KCS",
+                "KLAY",
+                "ONE",
+                "CELO",
+                "BSC"
+              ]
+            }
+          },
+          {
+            "description": "Transaction hash",
+            "in": "path",
+            "name": "hash",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "0xe6e7340394958674cdf8606936d292f565e4ecc476aaa8b258ec8a141f7c75d7"
+            }
+          },
+          {
+            "description": "Type of testnet. Defaults to Sepolia. Valid only for ETH invocations.",
+            "in": "header",
+            "name": "x-testnet-type",
+            "required": false,
+            "schema": {
+              "default": "ethereum-sepolia",
+              "type": "string",
+              "enum": [
+                "ethereum-sepolia"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contractAddress": {
+                      "type": "string",
+                      "description": "Address of the Multi Token token.",
+                      "example": "0xc21C81ef03f98898Fb155E00C364e8a7b9D158b8"
+                    }
+                  }
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get the address of a Multi Token smart contract by its transaction hash",
+        "tags": [
+          "Multi Tokens (ERC-1155 or compatible)"
+        ]
+      }
+    },
     "/v3/bsc/wallet": {
       "get": {
         "description": "<p><b>1 credit per API call</b></p>\n<p>Tatum supports BIP44 HD wallets. It is very convenient and secure, since it can generate 2^31 addresses from 1 mnemonic phrase. Mnemonic phrase consists of 24 special words in defined order and can restore access to all generated addresses and private keys.<br/>Each address is identified by 3 main values:<ul><li>Private Key - your secret value, which should never be revealed</li><li>Public Key - public address to be published</li><li>Derivation index - index of generated address</li></ul></p><p>Tatum follows BIP44 specification and generates for BSC wallet with derivation path m'/44'/60'/0'/0. More about BIP44 HD wallets can be found here - <a target=\"_blank\" href=\"https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki\">https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki</a>.\nGenerate BIP44 compatible BSC wallet.</p>\n",
@@ -12027,6 +13214,2457 @@
           "feeCurrency",
           "signatureId",
           "amount"
+        ]
+      },
+      "MultiTokenMetadata": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "Metadata associated with token.",
+            "example": "https://my_token_data.com"
+          }
+        }
+      },
+      "MultiTokenBalanceValue": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "description": "The amount of the specified Multi Token",
+            "example": "10"
+          }
+        }
+      },
+      "MultiTokenAddressBalance": {
+        "type": "object",
+        "properties": {
+          "contractAddress": {
+            "type": "string",
+            "example": "0x771987a5add0ef1ce303aa069df82dd7f8fbb33b",
+            "description": "Contract address of the Multi Token"
+          },
+          "balances": {
+            "type": "array",
+            "required": [
+              "tokenId",
+              "amount"
+            ],
+            "items": {
+              "$ref": "#/components/schemas/MultiTokenBalance"
+            }
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MultiTokenBalanceMetadata"
+            }
+          }
+        }
+      },
+      "MultiTokenBalance": {
+        "type": "object",
+        "properties": {
+          "tokenId": {
+            "type": "string",
+            "description": "Token ID.",
+            "example": "10"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Number of tokens held by the address.",
+            "example": "17"
+          },
+          "blockNumber": {
+            "type": "number",
+            "description": "Block number when the token was received by the address.",
+            "example": 1087623
+          }
+        }
+      },
+      "MultiTokenBalanceMetadata": {
+        "type": "object",
+        "properties": {
+          "tokenId": {
+            "description": "The ID of the Multi Token owned by this address",
+            "example": "1",
+            "type": "string"
+          },
+          "url": {
+            "description": "The URL pointing to the Multi Token metadata; the URL may not be present, and if it is not returned, you can get it by calling the Multi Token Contract.uri() method",
+            "example": "ipfs://QmXFpaS3S7CkLZvihLFA9JbawKdqhjg8dJeDkPntmkD2Pc",
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "The metadata scheme obtained from the metadata URL; the scheme may not be present, and if it is not returned, you can get it using the <a href=\"#operation/MultiTokenGetMetadata\">Multi Token metadata API</a>",
+            "example": {
+              "name": "Example NFT name",
+              "description": "Example NFT description",
+              "image": "ipfs://QmP4R7ACZ7JRQ6sLdmnPHqjWEXxzdnPvhAV2f6RnQ8uxJ6"
+            }
+          }
+        }
+      },
+      "TransferMultiTokenCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "amount": {
+            "description": "Amount of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "contractAddress",
+          "tokenId",
+          "fromPrivateKey",
+          "amount",
+          "feeCurrency"
+        ]
+      },
+      "MultiTx": {
+        "type": "object",
+        "properties": {
+          "blockNumber": {
+            "type": "number",
+            "example": 6541235,
+            "description": "Block number"
+          },
+          "txId": {
+            "type": "string",
+            "example": "0x955c1037608c7aecb6d1a3f150ce7d0a80536bcabb0deb69d62f55292cc4c372",
+            "description": "Transaction ID"
+          },
+          "contractAddress": {
+            "type": "string",
+            "example": "0x4f54fAD27F7F46C102Cd49b8E75C5593397cd9c3",
+            "description": "Contract address"
+          },
+          "tokenId": {
+            "type": "string",
+            "example": "1",
+            "description": "ID of the token"
+          },
+          "amount": {
+            "type": "string",
+            "example": "1",
+            "description": "Amount of tokens transferred."
+          },
+          "from": {
+            "type": "string",
+            "example": "0x780c3de0aba1b51f04cfe8a5d9d277d4ad032b8d",
+            "description": "Sender"
+          },
+          "operator": {
+            "type": "string",
+            "example": "0x780c3de0aba1b51f04cfe8a5d9d277d4ad032b8d",
+            "description": "Operator"
+          },
+          "to": {
+            "type": "string",
+            "example": "0x8cb76aed9c5e336ef961265c6079c14e9cd3d2ea",
+            "description": "recipient"
+          }
+        },
+        "required": [
+          "blockNumber",
+          "txId",
+          "contractAddress",
+          "tokenId",
+          "from",
+          "to",
+          "amount",
+          "operator"
+        ]
+      },
+      "TransferMultiTokenBatchCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "amounts": {
+            "description": "Amount of token to be transferred",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "contractAddress",
+          "tokenId",
+          "amounts",
+          "fromPrivateKey"
+        ]
+      },
+      "DeployMultiTokenCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "uri": {
+            "description": "URI of the Multi Token contract",
+            "example": "example.com",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicMint": {
+            "description": "True if the contract is publicMint type",
+            "example": true,
+            "type": "boolean"
+          },
+          "fromPrivateKey": {
+            "description": "Private key of account address, from which gas for deployment of ERC1155 will be paid. Private key, or signature Id must be present.",
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "uri",
+          "feeCurrency",
+          "fromPrivateKey"
+        ]
+      },
+      "DeployMultiTokenCeloKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "uri": {
+            "description": "URI of the Multi Token contract",
+            "example": "example.com",
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "publicMint": {
+            "description": "True if the contract is publicMint type",
+            "example": true,
+            "type": "boolean"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "uri",
+          "feeCurrency",
+          "signatureId"
+        ]
+      },
+      "MintMultiTokenBatchKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "description": "The blockchain address to send the Multi Tokens to.",
+            "example": [
+              "0x687422eEA2cB73B5d3e242bA5456b782919AFc85"
+            ],
+            "items": {
+              "maxLength": 42,
+              "minLength": 42,
+              "type": "string"
+            }
+          },
+          "tokenId": {
+            "type": "array",
+            "description": "The IDs of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100000",
+                "100001"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "amounts": {
+            "type": "array",
+            "description": "The amounts of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100",
+                "100"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "contractAddress",
+          "feeCurrency",
+          "tokenId",
+          "amounts",
+          "signatureId"
+        ]
+      },
+      "BurnMultiTokenCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "amount": {
+            "description": "amount of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "contractAddress",
+          "feeCurrency",
+          "fromPrivateKey",
+          "tokenId",
+          "amount",
+          "account"
+        ]
+      },
+      "BurnMultiTokenBatchCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "The IDs of the Multi Tokens to be destroyed.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "amounts": {
+            "description": "The amounts of the Multi Tokens to be destroyed.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "contractAddress",
+          "feeCurrency",
+          "fromPrivateKey",
+          "tokenId",
+          "amounts",
+          "account"
+        ]
+      },
+      "BurnMultiTokenKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "amount": {
+            "description": "amount of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "feeCurrency",
+          "contractAddress",
+          "tokenId",
+          "amount",
+          "signatureId",
+          "account"
+        ]
+      },
+      "AddMultiTokenMinterKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "CELO",
+              "ONE",
+              "BSC"
+            ]
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of MultiToken token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "minter": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of MultiToken minter",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas, only valid for CELO chain.",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "url",
+          "contractAddress",
+          "minter",
+          "signatureId"
+        ]
+      },
+      "AddMultiTokenMinter": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "CELO",
+              "ONE",
+              "BSC"
+            ]
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of MultiToken token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "minter": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of MultiToken minter",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Ethereum transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas, only valid for CELO chain.",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "minter",
+          "chain",
+          "url",
+          "contractAddress",
+          "fromPrivateKey"
+        ]
+      },
+      "BurnMultiTokenBatchKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "The IDs of the Multi Tokens to be destroyed.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "amounts": {
+            "description": "The amounts of the Multi Tokens to be destroyed.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "feeCurrency",
+          "contractAddress",
+          "tokenId",
+          "amounts",
+          "account",
+          "signatureId"
+        ]
+      },
+      "TransferMultiTokenKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "amount": {
+            "description": "amount of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "contractAddress",
+          "feeCurrency",
+          "signatureId",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "TransferMultiTokenBatchKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "amounts": {
+            "description": "amounts of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "contractAddress",
+          "feeCurrency",
+          "signatureId",
+          "tokenId",
+          "amounts"
+        ]
+      },
+      "MintMultiTokenCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "tokenId": {
+            "description": "ID of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "amount": {
+            "description": "amount of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "tokenId",
+          "amount",
+          "feeCurrency",
+          "contractAddress",
+          "fromPrivateKey"
+        ]
+      },
+      "MintMultiTokenBatchCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "tokenId": {
+            "type": "array",
+            "description": "The IDs of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100000",
+                "100001"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "amounts": {
+            "type": "array",
+            "description": "The amounts of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100",
+                "100"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The blockchain address to send the Multi Tokens to",
+            "example": [
+              "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "tokenId",
+          "amounts",
+          "feeCurrency",
+          "contractAddress",
+          "fromPrivateKey"
+        ]
+      },
+      "MintMultiTokenKMSCelo": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "CELO",
+            "description": "Chain to work with.",
+            "enum": [
+              "CELO"
+            ]
+          },
+          "tokenId": {
+            "description": "ID of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "amount": {
+            "description": "amount of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to Celo transaction. If not present, last known nonce will be used."
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "Currency to pay for transaction gas",
+            "enum": [
+              "CELO",
+              "CUSD",
+              "CEUR"
+            ]
+          }
+        },
+        "required": [
+          "chain",
+          "to",
+          "tokenId",
+          "amount",
+          "feeCurrency",
+          "contractAddress",
+          "signatureId"
+        ]
+      },
+      "TransferMultiToken": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "amount": {
+            "description": "amount of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "contractAddress",
+          "tokenId",
+          "fromPrivateKey",
+          "amount"
+        ]
+      },
+      "TransferMultiTokenBatch": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 256
+            }
+          },
+          "amounts": {
+            "description": "amounts of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "maxLength": 256,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "contractAddress",
+          "tokenId",
+          "amounts",
+          "fromPrivateKey"
+        ]
+      },
+      "DeployMultiToken": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "uri": {
+            "description": "URI of the Multi Token token",
+            "example": "example.com",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "description": "Private key of account address, from which gas for deployment of ERC1155 will be paid. Private key, or signature Id must be present.",
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66
+          },
+          "publicMint": {
+            "description": "True if the contract is publicMint type",
+            "example": true,
+            "type": "boolean"
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "uri",
+          "chain",
+          "fromPrivateKey"
+        ]
+      },
+      "DeployMultiTokenKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "uri": {
+            "description": "URI of the Multi Token token",
+            "example": "example.com",
+            "type": "string"
+          },
+          "publicMint": {
+            "description": "True if the contract is publicMint type",
+            "example": true,
+            "type": "boolean"
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "uri",
+          "chain",
+          "signatureId"
+        ]
+      },
+      "TransferMultiTokenKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 256
+          },
+          "amount": {
+            "description": "amount of token.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "contractAddress",
+          "signatureId",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "TransferMultiTokenBatchKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 256
+            }
+          },
+          "amount": {
+            "description": "amount of token.",
+            "example": [
+              "100000"
+            ],
+            "type": "array",
+            "maxLength": 256,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "example": 1,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "contractAddress",
+          "signatureId",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "MintMultiToken": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "tokenId": {
+            "description": "ID of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "amount": {
+            "description": "amount of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "url",
+          "contractAddress",
+          "fromPrivateKey",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "MintMultiTokenKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "tokenId": {
+            "description": "ID of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "to": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Blockchain address to send Multi Token token to",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "amount": {
+            "description": "amount of token to be created.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "url",
+          "contractAddress",
+          "signatureId",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "MintMultiTokenBatch": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "description": "The blockchain address to send the Multi Tokens to.",
+            "example": [
+              "0x687422eEA2cB73B5d3e242bA5456b782919AFc85"
+            ],
+            "items": {
+              "maxLength": 42,
+              "minLength": 42,
+              "type": "string"
+            }
+          },
+          "tokenId": {
+            "type": "array",
+            "description": "The IDs of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100000",
+                "100001"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "amounts": {
+            "type": "array",
+            "description": "The amounts of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100",
+                "100"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "url",
+          "contractAddress",
+          "fromPrivateKey",
+          "tokenId",
+          "amounts"
+        ]
+      },
+      "MintMultiTokenBatchKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "description": "The blockchain address to send the Multi Tokens to.",
+            "example": [
+              "0x687422eEA2cB73B5d3e242bA5456b782919AFc85"
+            ],
+            "items": {
+              "maxLength": 42,
+              "minLength": 42,
+              "type": "string"
+            }
+          },
+          "tokenId": {
+            "type": "array",
+            "description": "The IDs of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100000",
+                "100001"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "amounts": {
+            "type": "array",
+            "description": "The amounts of the Multi Tokens to be created.",
+            "example": [
+              [
+                "100",
+                "100"
+              ]
+            ],
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 32
+              }
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "to",
+          "chain",
+          "contractAddress",
+          "tokenId",
+          "url",
+          "signatureId",
+          "amounts"
+        ]
+      },
+      "BurnMultiToken": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 103,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "amount": {
+            "description": "amount of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "account",
+          "chain",
+          "contractAddress",
+          "fromPrivateKey",
+          "tokenId",
+          "amount"
+        ]
+      },
+      "BurnMultiTokenBatch": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "The IDs of the Multi Tokens to be destroyed.",
+            "example": [
+              "1000",
+              "1001"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "amounts": {
+            "description": "The amounts of the Multi Tokens to be destroyed.",
+            "example": [
+              "10",
+              "10"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "fromPrivateKey": {
+            "type": "string",
+            "maxLength": 66,
+            "example": "0x05e150c73f1920ec14caa1e0b6aa09940899678051a78542840c2668ce5080c2",
+            "minLength": 66,
+            "description": "Private key of sender address. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "account",
+          "amounts",
+          "chain",
+          "url",
+          "contractAddress",
+          "fromPrivateKey",
+          "tokenId"
+        ]
+      },
+      "BurnMultiTokenKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "ID of token to be destroyed.",
+            "example": "100000",
+            "type": "string",
+            "maxLength": 32
+          },
+          "amount": {
+            "description": "amount of token to be destroyed.",
+            "example": "100",
+            "type": "string",
+            "maxLength": 32
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of Multi Token token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "account",
+          "chain",
+          "amount",
+          "contractAddress",
+          "tokenId",
+          "signatureId"
+        ]
+      },
+      "BurnMultiTokenBatchKMS": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ETH",
+            "description": "Chain to work with.",
+            "enum": [
+              "ETH",
+              "ONE",
+              "MATIC",
+              "KCS",
+              "KLAY",
+              "BSC"
+            ]
+          },
+          "account": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "Address of holder",
+            "example": "0x4b812a77b109A150C2Fc89eD133EaBC78bC9EC8f",
+            "type": "string"
+          },
+          "tokenId": {
+            "description": "The IDs of the Multi Tokens to be destroyed.",
+            "example": [
+              "100",
+              "101"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "amounts": {
+            "description": "The amounts of the Multi Tokens to be destroyed.",
+            "example": [
+              "10",
+              "10"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "data": {
+            "description": "Data in bytes",
+            "example": "0x1234",
+            "type": "string"
+          },
+          "contractAddress": {
+            "maxLength": 42,
+            "minLength": 42,
+            "description": "The address of the Multi Token smart contract",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "type": "string"
+          },
+          "index": {
+            "type": "number",
+            "minimum": 0,
+            "description": "If signatureId is mnemonic-based, this is the index to the specific address from that mnemonic."
+          },
+          "signatureId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "26d3883e-4e17-48b3-a0ee-09a3e484ac83",
+            "description": "Identifier of the private key associated in signing application. Private key, or signature Id must be present."
+          },
+          "nonce": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Nonce to be set to transaction. If not present, last known nonce will be used."
+          },
+          "fee": {
+            "$ref": "#/components/schemas/CustomFee"
+          }
+        },
+        "required": [
+          "account",
+          "chain",
+          "amounts",
+          "contractAddress",
+          "tokenId",
+          "signatureId"
         ]
       },
       "BscBalance": {

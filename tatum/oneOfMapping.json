@@ -46,6 +46,11 @@
     {
       "*": "NftGetBalanceSc",
       "ALGO": "NftGetBalanceScAlgo"
+    },
+    "MultiTokenGetTransaction":
+    {
+      "*": "EthTx",
+      "CELO": "CeloTx"
     }
   },
   "ChainSpecificOperations":
