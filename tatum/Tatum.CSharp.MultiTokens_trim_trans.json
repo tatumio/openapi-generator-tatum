@@ -1284,15 +1284,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "example": [
-                    "10",
-                    "20"
-                  ],
-                  "items": {
-                    "type": "string",
-                    "description": "Token ID."
-                  }
+                  "$ref": "#/components/schemas/MultiTokenBalanceBatch"
                 }
               }
             },
@@ -1649,6 +1641,22 @@
         "required": [
           "signatureId"
         ]
+      },
+      "MultiTokenBalanceBatch": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "example": [
+              "10",
+              "20"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Token ID."
+            }
+          }
+        }
       },
       "MultiTokenMetadata": {
         "type": "object",
