@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Include Multi Token operations in packages. Tatum.CSharp.MultiTokens package released. Debug Mode introduction."
+releaseNote: "Fix Debug Mode issues in release build."
