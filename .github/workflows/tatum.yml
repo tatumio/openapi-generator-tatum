@@ -69,6 +69,11 @@ jobs:
       with:
         package: BlockchainFees
         chains: ETH-BTC-MATIC-BSC-ONE
+    - name: Generate NodeRpc Core
+      uses: ./.github/actions/generate-client
+      with:
+        package: NodeRpc
+        chains: ADA-ALGO-ARB-AURORA-AVAX-BCH-BNB-BSC-BTC-CELO-CRO-DOGE-DOT-EGLD-EOS-ETH-FLOW-FTM-GNO-KCS-KSM-KLAY-LISK-LTC-NEAR-NEO-MATIC-OASIS-ONE-OPTIMISM-PALM-RSK-SOL-TEZOS-TRON-VET-XDC-XLM-XRP-ZCASH-ZIL
     - name: Generate Polygon Core
       uses: ./.github/actions/generate-client
       with:
