@@ -809,26 +809,25 @@ public class DefaultGenerator implements Generator {
             RequestBody requestBody = operation.getRequestBody();
 
             if(requestBody == null){
-                if(chainsToInclude.stream().count() != 1){
-                    continue;
-                }
 
                 List<Parameter> parameters = operation.getParameters();
+
                 if(parameters == null){
                     continue;
                 }
 
                 for (Parameter parameter : parameters) {
                     if(parameter.getName().equals("chain")){
-                        String chain = chainsToInclude.iterator().next();
-                        if(chainsPerTag.containsKey(tag)){
-                            if(!chainsPerTag.get(tag).contains(chain)){
-                                chainsPerTag.get(tag).add(chain);
+                        for(String chain : chainsToInclude){
+                            if(chainsPerTag.containsKey(tag)){
+                                if(!chainsPerTag.get(tag).contains(chain)){
+                                    chainsPerTag.get(tag).add(chain);
+                                }
+                            }else{
+                                List<String> chains = new ArrayList<>();
+                                chains.add(chain);
+                                chainsPerTag.put(tag, chains);
                             }
-                        }else{
-                            List<String> chains = new ArrayList<>();
-                            chains.add(chain);
-                            chainsPerTag.put(tag, chains);
                         }
                         break;
                     }
