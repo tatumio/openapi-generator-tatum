@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Include NodeRpc operations in packages. Tatum.CSharp.NodeRpc package released."
+releaseNote: "Include NodeRpc operations in packages. Tatum.CSharp.NodeRpc package released. Debug Mode improvements."
