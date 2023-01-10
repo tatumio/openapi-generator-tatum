@@ -27,6 +27,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
@@ -835,7 +836,7 @@ public class DefaultGenerator implements Generator {
                 continue;
             }
 
-            Schema requestSchema = requestBody.getContent().get("application/json").getSchema();
+            Schema requestSchema = getRequestMediaType(operation).getSchema();
 
             Set<Schema> requestSchemaList = new HashSet<>();
 
@@ -1412,7 +1413,7 @@ public class DefaultGenerator implements Generator {
             if(responseSchema instanceof ComposedSchema){
 
                 Schema targetResponseSchema = getTargetResponseSchema(operation, (ComposedSchema) responseSchema, oneOfSchema, requestSchemaList);
-                operation.getResponses().get("200").getContent().get("application/json").setSchema(targetResponseSchema);
+                get200ResponseMediaType(operation).setSchema(targetResponseSchema);
             }
 
             CodegenModel requestToCheckForChain = modelNameToCodegenModel.get(getNameFromRef(oneOfSchema));
@@ -1573,13 +1574,37 @@ public class DefaultGenerator implements Generator {
         return schema.get$ref().substring(schema.get$ref().lastIndexOf('/') + 1);
     }
 
+    private MediaType getRequestMediaType(Operation operation) {
+        MediaType mediaType = operation.getRequestBody().getContent().get("application/json");
+
+        if(mediaType == null){
+            mediaType = operation.getRequestBody().getContent().get("multipart/form-data");
+        }
+
+        return mediaType;
+    }
+
+    private MediaType get200ResponseMediaType(Operation operation) {
+        MediaType mediaType = operation.getResponses().get("200").getContent().get("application/json");
+
+        if(mediaType == null){
+            mediaType = operation.getResponses().get("200").getContent().get("*");
+        }
+
+        if(mediaType == null){
+            mediaType = operation.getResponses().get("200").getContent().get("application/octet-stream");
+        }
+
+        return mediaType;
+    }
+
     private boolean pathRequiresOneOfMapping(Operation operation){
 
         boolean isOneOfMapping = false;
 
         if(operation.getRequestBody() != null)
         {
-            Schema requestSchema = operation.getRequestBody().getContent().get("application/json").getSchema();
+            Schema requestSchema = getRequestMediaType(operation).getSchema();
 
             if(requestSchema instanceof ComposedSchema){
                 isOneOfMapping = true;
@@ -1588,7 +1613,7 @@ public class DefaultGenerator implements Generator {
 
         if(operation.getResponses() != null)
         {
-            Schema responseSchema = operation.getResponses().get("200").getContent().get("application/json").getSchema();
+            Schema responseSchema = get200ResponseMediaType(operation).getSchema();
 
             if(responseSchema instanceof ComposedSchema){
                 isOneOfMapping = true;

@@ -285,6 +285,93 @@
     }
   ],
   "paths": {
+    "/v3/ipfs/{id}": {
+      "get": {
+        "description": "<h4>1 credit per API call.</h4><br/><p>Gets data from the IPFS.</p>",
+        "operationId": "GetIPFSData",
+        "parameters": [
+          {
+            "description": "IPFS CID of the file",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "QmXJJ6UF5WkF4WTJvsdhiA1etGwBLfpva7Vr9AudGMe3pj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Get file from IPFS",
+        "tags": [
+          "IPFS"
+        ]
+      }
+    },
+    "/v3/ipfs": {
+      "post": {
+        "description": "<h4>2 credits per API call. Only files up to 50MB are available for storing.</h4><br/>\n<p>Stores file on the IPFS. We are leveraging <a href=\"https://nft.storage/\" target=\"_blank\">nft.storage</a> from <a href=\"https://protocol.ai/\" target=\"_blank\">Protocol Labs</a> for free storage on the IPFS.</p>\n",
+        "operationId": "StoreIPFS",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "example": 127654187631872620,
+                    "description": "Your file to store"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IpfsResponse"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Store data to IPFS",
+        "tags": [
+          "IPFS"
+        ]
+      }
+    },
     "/v3/blockchain/fee/{chain}": {
       "get": {
         "description": "<p><b>1 credit per API call</b></p>\n<p>Get recommended blockchain fee / gas price</p>\n",
@@ -4710,6 +4797,15 @@
   },
   "components": {
     "schemas": {
+      "IpfsResponse": {
+        "type": "object",
+        "properties": {
+          "ipfsHash": {
+            "type": "string",
+            "description": "IPFS CID identifier of the stored file."
+          }
+        }
+      },
       "BroadcastKMS": {
         "properties": {
           "txData": {

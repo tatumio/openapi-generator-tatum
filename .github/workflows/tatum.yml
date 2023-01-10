@@ -74,6 +74,11 @@ jobs:
       with:
         package: NodeRpc
         chains: ETH-BTC-MATIC-BSC-ONE
+    - name: Generate Ipfs Core
+      uses: ./.github/actions/generate-client
+      with:
+        package: Ipfs
+        chains: ETH-BTC-MATIC-BSC-ONE
     - name: Generate Polygon Core
       uses: ./.github/actions/generate-client
       with:
