@@ -7,8 +7,8 @@
   ],
   "info": {
     "title": "Tatum API Reference",
-    "version": "3.17.1",
-    "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n## About this API Reference\n\nThe Tatum API Reference is based on OpenAPI Specification v3.1.0 with a few\n[vendor extensions](https://github.com/Redocly/redoc/blob/master/docs/redoc-vendor-extensions.md) applied.\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
+    "version": "3.17.2",
+    "description": "# Welcome to the Tatum API Reference!\n\n## What is Tatum?\n\nTatum offers a flexible framework to build, run, and scale blockchain apps fast. To learn more about the\nTatum blockchain development framework, visit [our website](https://tatum.io/framework).\n\nThe Tatum API features powerful endpoints that simplify a complex blockchain into single API requests. Code for all\nsupported blockchains using unified API calls.\n\n## Supported blockchains\n\nTatum supports multiple blockchains and various blockchain features.\n\nBecause not all blockchains function identically, Tatum supports a different set of features on each blockchain.\n\nTo see all the blockchains that Tatum supports, please refer to [this article](https://docs.tatum.io/introduction/supported-blockchains).\n\n## Need help?\n\nTo chat with other developers, get help from the Support team, and engage with the thriving Tatum community, join \nour [Discord server](https://discord.com/invite/tatum). For more information about how to work with Tatum,\nreview the [online documentation](https://docs.tatum.io/).\n\n# Authentication\n\nWhen using the Tatum API, you authenticate yourself with an **API key**.\n<SecurityDefinitions />\n",
     "x-logo": {
       "url": "https://tatum.io/images/Light.svg",
       "altText": "Tatum"
@@ -552,7 +552,7 @@
     },
     "/v3/polygon/gas": {
       "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Polygon transaction. Gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.\n</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a Polygon transaction. The gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.</p>\n<p><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/Polygon#operation/PolygonBlockchainTransfer\" target=\"_blank\">making the transaction itself</a>, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
         "operationId": "PolygonEstimateGas",
         "requestBody": {
           "content": {
@@ -590,7 +590,7 @@
     },
     "/v3/bsc/gas": {
       "post": {
-        "description": "<h4>2 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the BSC transaction. Gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.\n</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a BNB Smart Chain transaction. The gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.</p>\n<p><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/BNB-Smart-Chain#operation/BscBlockchainTransfer\" target=\"_blank\">making the transaction itself</a>, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
         "operationId": "BscEstimateGas",
         "requestBody": {
           "content": {
@@ -1179,13 +1179,13 @@
         "properties": {
           "gasLimit": {
             "type": "string",
-            "description": "Gas limit for transaction in gas price.",
-            "example": "40000"
+            "description": "The number of the gas units needed to process the transaction at the estimated gas price",
+            "example": "21000"
           },
           "gasPrice": {
             "type": "string",
-            "description": "Gas price in wei.",
-            "example": "20"
+            "description": "The estimated price for one gas unit (in wei)",
+            "example": "10000000000"
           }
         }
       },
@@ -1198,13 +1198,13 @@
         "properties": {
           "gasLimit": {
             "type": "string",
-            "description": "Gas limit for transaction in gas price.",
-            "example": "40000"
+            "description": "The number of the gas units needed to process the transaction at the estimated gas price",
+            "example": "21000"
           },
           "gasPrice": {
             "type": "string",
-            "description": "Gas price in wei.",
-            "example": "20"
+            "description": "The estimated price for one gas unit (in wei)",
+            "example": "10000000000"
           }
         }
       },
@@ -1437,7 +1437,7 @@
         "type": "apiKey",
         "name": "x-api-key",
         "in": "header",
-        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api.tatum.io/v3/ledger/account?type=testnet`\n"
+        "description": "The **API key** represents your [pricing plan](https://tatum.io/pricing) and defines how many API calls \nyou can make per second and what the total number of API calls per month is available for you.\n\nOne API key must be used by only one person.\n\nChoose one of the following authentication methods:\n\n* **Provide the API key in each API call.**\n\n  To obtain the API key, [create a Tatum account](https://dashboard.tatum.io/sign-up). Once you are logged in,\n  you are automatically assigned the Free plan.\n\n  With the Free plan:\n  * You get two API keys, one tied to the testnet of a blockchain and the other to the mainnet.\n  * You can make up to five API calls per second.\n  * The number of API calls per month is not limited.\n\n  When making an API call, provide the appropriate API key (testnet or mainnet) as either an HTTP header\n  or a path parameter of the API call.\n\n  If you ever need your API keys, you can find them in [your Tatum account](https://dashboard.tatum.io/).\n\n  For more information about the Free plan and paid plans, refer to [this article](https://docs.tatum.io/payments/plans-and-pricing).\n\n* **Get an auto-generated API key attached to API calls.**\n\n  Make an API call without any API key provided. The API key will be generated and tied to your IP address.\n  This API key is stored within the Tatum platform and is automatically attached to all your API calls.\n\n  With the auto-generated API key:\n  * You can make up to five API calls per second.\n  * You get 10,000,000 credits to spend on API calls within a month.\n\n    The number of credits is reset on the first day of a month. The unused credits from the current month are not\n    rolled over to the next month.\n\n  These limits are applied to both the testnet and mainnet.\n\n  By default, API calls with the auto-generated API key are executed against the mainnet.\n  To make an API call to the testnet, add the `type` query parameter set to `testnet` to the endpoint URL,\n  for example:\n\n  `https://api.tatum.io/v3/ledger/account?type=testnet`\n"
       }
     }
   }
