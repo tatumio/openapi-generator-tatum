@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Include Ipfs operations in packages. Tatum.CSharp.Ipfs package released."
+releaseNote: "Tatum API version update. Debug Mode fix for ALGO secrets obfuscation."
