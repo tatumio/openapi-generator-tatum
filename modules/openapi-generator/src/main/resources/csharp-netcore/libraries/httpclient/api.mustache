@@ -171,7 +171,7 @@ namespace {{packageName}}.{{apiPackage}}
 
             Configuration = {{packageName}}.Client.Configuration.MergeConfigurations(
                 GlobalConfiguration.Instance,
-                new Configuration { BasePath = basePath }
+                new {{packageName}}.Client.Configuration { BasePath = basePath }
             );
             ApiClient = new ApiClient(client, Configuration.BasePath, handler);
             Client =  ApiClient;
