@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Tatum API version update. Debug Mode fix for ALGO secrets obfuscation."
+releaseNote: "Fixed issue with Configuration namespace resolution on some runtimes (Unity)."
