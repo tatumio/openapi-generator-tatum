@@ -65,7 +65,7 @@
       "name": "Blockchain addresses"
     },
     {
-      "description": "<p>An endpoint to handle operations between Tatum Private Ledger and the blockchain, e.g. to create blockchain transactions from ledger accounts,\ncreate custom Ethereum ERC20 tokens, Stellar XLM, or Ripple XRP custom assets and register them as regular currency into the Tatum Private Ledger.</p>\n",
+      "description": "<p>An endpoint to handle operations between a virtual account and the blockchain, e.g. to create blockchain transactions from virtual accounts, create custom fungible tokens and custom assets, and register them as a regular currency into the virtual account.</p>\n",
       "name": "Blockchain operations"
     },
     {
@@ -109,7 +109,7 @@
       "name": "Flow"
     },
     {
-      "description": "<p>XRP Blockchain enables access to the most commonly used XRP methods. These methods bring a small level of abstraction\n and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside Tatum Private Ledger\n to connect the blockchain and the private ledger, like wallet generation or getting information about transactions.<br/>\n Tatum supports 2 chains:\n<ul><li>Mainnet - a regular live chain</li>\n<li>Testnet - a chain used for testing purposes. Coins on the test chain have no value and can be obtained from a faucet, e.g. <a href=\"https://developers.ripple.com/xrp-test-net-faucet.html\" target=\"_blank\">https://developers.ripple.com/xrp-test-net-faucet.html</a>.</li></ul></p>\n<p><br/>In order to start using the XRP blockchain, we first need to create an XRP account. In XRP, the same account is used for the Mainnet and the Test chain. In order to have the account activated, it must be credited with 20 XRP. Because of this requirement, it is common to use one account for all customers and differentiate them via Destination tags, i.e. a number included in every transaction as an account distinguisher.<br/>\nWhen an off-chain deposit address is created for the ledger account, a Destination tag is generated, e.g. 12345 for that account. When a transaction to the blockchain is performed, it should contain the address of the recipient and the Destination tag as an account distinguisher.</p>\n",
+      "description": "<p><a href=\"https://xrpl.org/\" target=\"_blank\">XRPL</a> is a decentralized public blockchain. With Tatum, you can access the most commonly used XRPL methods. These methods bring a certain level of abstraction and are used for applications that communicate with the blockchain directly. Some of the methods are used alongside virtual accounts to connect the blockchain and a virtual account, like generating a wallet or getting information about transactions.</p>\n<p>Tatum supports the following XRPL networks:</p>\n<ul>\n<li><b>Mainnet</b>, the primary public production blockchain</li>\n<li><b>Testnet</b>, a mainnet-like network for testing applications on XRPL. The testnet cryptocurrency has no value, and you can obtain it from a faucet (for example, <a target=\"_blank\" href=\"https://xrpl.org/xrp-testnet-faucet.html\">XRP Faucets</a>).</li>\n</ul>\n<p>To start using the XRPL blockchain, create an XRPL account. On XRPL, the same account is used for the mainnet and the testnet. To activate the account, credit it with 20 XRP.</p>\n<p>Because of the activation requirement, it is common to use one account for all customers and differentiate them via <code>Destination</code> tags. A <code>Destination</code> tag is a number included in every transaction as an account distinguisher.</p>\n<p>When an off-chain deposit address is created for a virtual account, a <code>Destination</code> tag is generated for that account (for example, <code>12345</code>). When you make a transaction to the blockchain, be sure to include the address of the recipient and the <code>Destination</code> tag as an account distinguisher.</p>\n",
       "name": "XRP"
     },
     {
@@ -287,7 +287,7 @@
   "paths": {
     "/v3/blockchain/fee/{chain}": {
       "get": {
-        "description": "<p><b>1 credit per API call</b></p>\n<p>Get recommended blockchain fee / gas price</p>\n",
+        "description": "<p><b>1 credit per API call</b></p>\n<p>Get the recommended fee/gas price for a blockchain.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Bitcoin</li>\n<li>Dogecoin</li>\n<li>Ethereum</li>\n<li>Litecoin</li>\n</ul>\n",
         "operationId": "GetBlockchainFee",
         "parameters": [
           {
@@ -325,7 +325,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Get recommended blockchain fee / gas price",
+        "summary": "Get the recommended fee/gas price for a blockchain",
         "tags": [
           "Blockchain fees"
         ]
@@ -333,7 +333,7 @@
     },
     "/v3/blockchain/estimate": {
       "post": {
-        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Estimate current transaction fee for different operations.<br/>\nSupported blockchains:\n<ul>\n<li>Bitcoin</li>\n<li>Litecoin</li>\n<li>Harmony.ONE</li>\n<li>The XDC Network</li>\n<li>Ethereum</li>\n<li>Celo</li>\n<li>Klaytn</li>\n<li>Binance Smart Chain</li>\n<li>Polygon</li>\n</ul>\n</p>\n",
+        "description": "<p><b>10 credits per API call</b></p>\n<p>Estimate the current fee for different types of transactions.</p>\n<p>This API is supported for the following blockchains:</p>\n<ul>\n<li>Bitcoin</li>\n<li>BNB Smart Chain</li>\n<li>Celo</li>\n<li>Ethereum</li>\n<li>Harmony</li>\n<li>Klaytn</li>\n<li>Litecoin</li>\n<li>Polygon</li>\n<li>XinFin</li>\n</ul>\n",
         "operationId": "EstimateFeeBlockchain",
         "requestBody": {
           "content": {
@@ -406,7 +406,45 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Estimate the fee for a transaction",
+        "summary": "Estimate the fee for a transaction on a blockchain",
+        "tags": [
+          "Blockchain fees"
+        ]
+      }
+    },
+    "/v3/bsc/gas": {
+      "post": {
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a BNB Smart Chain transaction. The gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.</p>\n<p style=\"border:4px solid DeepSkyBlue;\"><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/BNB-Smart-Chain#operation/BscBlockchainTransfer\" target=\"_blank\">making the transaction itself</a> and providing the custom fee, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
+        "operationId": "BscEstimateGas",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BscEstimateGas"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GasEstimated"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "x-codeSamples": [],
+        "summary": "Estimate the fee for a BNB Smart Chain transaction",
         "tags": [
           "Blockchain fees"
         ]
@@ -414,7 +452,7 @@
     },
     "/v3/ethereum/gas": {
       "post": {
-        "description": "<h4>10 credits per API call.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state. The <b>fast</b> one is used by default.\n</p>\n",
+        "description": "<p><b>10 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for an Ethereum transaction. The gas price is obtained from multiple sources and calculated based on the latest N blocks and the current mempool state.</p>\n<p>The <code>fast</code> gas price is used by default.</p>\n<p style=\"border:4px solid DeepSkyBlue;\"><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/Ethereum#operation/EthBlockchainTransfer\" target=\"_blank\">making the transaction itself</a> and providing the custom fee, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
         "operationId": "EthEstimateGas",
         "parameters": [
           {
@@ -475,7 +513,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Estimate Ethereum transaction fees",
+        "summary": "Estimate the fee for an Ethereum transaction",
         "tags": [
           "Blockchain fees"
         ]
@@ -483,7 +521,7 @@
     },
     "/v3/ethereum/gas/batch": {
       "post": {
-        "description": "<h4>10 credits per API call + 10 credits per each gas estimation.</h4><br/>\n<p>Estimate gasLimit and gasPrice of the Ethereum transaction. Gas price is obtained from multiple sources + calculated based on the latest N blocks and the current mempool state.\nThe <b>fast</b> one is used by default.<br/>\nResult is calculated  in the order of the request array items.\n</p>\n",
+        "description": "<p><b>10 credits per API call + 10 credits per each gas estimation</b></p>\n<p>Get an estimated gas price and the number of gas units needed for multiple Ethereum transactions. The gas price is obtained from multiple sources and calculated based on the latest N blocks and the current mempool state.</p>\n<p>The estimations are returned in the same order as the transactions were submitted in the request.</p>\n<p>The <code>fast</code> gas price is used by default.</p>\n<p style=\"border:4px solid DeepSkyBlue;\"><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/Ethereum#operation/EthBlockchainTransfer\" target=\"_blank\">making a transaction itself</a> and providing the custom fee, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n</p>\n",
         "operationId": "EthEstimateGasBatch",
         "parameters": [
           {
@@ -544,7 +582,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Estimate multiple Ethereum transaction fees",
+        "summary": "Estimate the fee for multiple Ethereum transactions",
         "tags": [
           "Blockchain fees"
         ]
@@ -552,7 +590,7 @@
     },
     "/v3/polygon/gas": {
       "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a Polygon transaction. The gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.</p>\n<p><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/Polygon#operation/PolygonBlockchainTransfer\" target=\"_blank\">making the transaction itself</a>, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
+        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a Polygon transaction. The gas price is obtained from <a href=\"https://gasstation-mainnet.matic.network/\" target=\"_blank\">https://gasstation-mainnet.matic.network/</a>.</p>\n<p style=\"border:4px solid DeepSkyBlue;\"><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/Polygon#operation/PolygonBlockchainTransfer\" target=\"_blank\">making the transaction itself</a> and providing the custom fee, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
         "operationId": "PolygonEstimateGas",
         "requestBody": {
           "content": {
@@ -569,7 +607,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PolygonGasEstimation"
+                  "$ref": "#/components/schemas/GasEstimated"
                 }
               }
             },
@@ -582,45 +620,7 @@
           }
         ],
         "x-codeSamples": [],
-        "summary": "Estimate Polygon transaction fees",
-        "tags": [
-          "Blockchain fees"
-        ]
-      }
-    },
-    "/v3/bsc/gas": {
-      "post": {
-        "description": "<p><b>2 credits per API call</b></p>\n<p>Get an estimated gas price and the number of gas units needed for a BNB Smart Chain transaction. The gas price is obtained from <a href=\"https://explorer.bitquery.io/bsc/gas\" target=\"_blank\">https://explorer.bitquery.io/bsc/gas</a>.</p>\n<p><b>NOTE:</b> The estimated gas price is returned in <b>wei</b>. However, when <a href=\"https://apidoc.tatum.io/tag/BNB-Smart-Chain#operation/BscBlockchainTransfer\" target=\"_blank\">making the transaction itself</a>, you have to provide the gas price in <b>Gwei</b>. Make sure to convert the estimated gas price from wei to Gwei before submitting your transaction.</p>\n",
-        "operationId": "BscEstimateGas",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BscEstimateGas"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BscGasEstimation"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ],
-        "x-codeSamples": [],
-        "summary": "Estimate BNB Smart Chain transaction fees",
+        "summary": "Estimate the fee for a Polygon transaction",
         "tags": [
           "Blockchain fees"
         ]
@@ -682,7 +682,7 @@
         "properties": {
           "chain": {
             "type": "string",
-            "description": "Blockchain to estimate fee for.",
+            "description": "The blockchain to estimate the fee for",
             "enum": [
               "CELO",
               "ETH",
@@ -695,7 +695,7 @@
           },
           "type": {
             "type": "string",
-            "description": "Type of transaction",
+            "description": "The type of the transaction",
             "enum": [
               "DEPLOY_ERC20",
               "DEPLOY_NFT",
@@ -712,24 +712,24 @@
             "maxLength": 42,
             "minLength": 42,
             "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
-            "description": "Sender address, if type is TRANSFER_ERC20"
+            "description": "(Only if <code>type=TRANSFER_ERC20</code>) The blockchain address of the sender address"
           },
           "recipient": {
-            "description": "Blockchain address to send assets, if type is TRANSFER_ERC20",
+            "description": "(Only if <code>type=TRANSFER_ERC20</code>) The blockchain address of the recipient address",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "maxLength": 42,
             "minLength": 42,
             "type": "string"
           },
           "contractAddress": {
-            "description": "Contract address of ERC20 token, if type is TRANSFER_ERC20",
+            "description": "(Only if <code>type=TRANSFER_ERC20</code>) The blockchain address of the smart address of the fungible token",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "maxLength": 42,
             "minLength": 42,
             "type": "string"
           },
           "amount": {
-            "description": "Amount to be sent in ERC20, if type is TRANSFER_ERC20",
+            "description": "(Only if <code>type=TRANSFER_ERC20</code>) The amount of the fungible token to be sent",
             "example": "100000",
             "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
             "type": "string"
@@ -856,7 +856,6 @@
           "type",
           "sender",
           "recipient",
-          "contractAddress",
           "custodialAddress",
           "amount",
           "tokenType"
@@ -864,7 +863,7 @@
         "properties": {
           "chain": {
             "type": "string",
-            "description": "Blockchain to estimate fee for.",
+            "description": "The blockchain to estimate the fee for",
             "enum": [
               "CELO",
               "ETH",
@@ -877,7 +876,7 @@
           },
           "type": {
             "type": "string",
-            "description": "Type of transaction",
+            "description": "The type of the transaction",
             "enum": [
               "TRANSFER_CUSTODIAL"
             ]
@@ -887,41 +886,45 @@
             "maxLength": 42,
             "example": "0xfb99f8ae9b70a0c8cd96ae665bbaf85a7e01a2ef",
             "minLength": 42,
-            "description": "Sender address"
+            "description": "The blockchain address of the sender"
           },
           "recipient": {
-            "description": "Blockchain address to send assets",
-            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
-            "maxLength": 42,
-            "minLength": 42,
-            "type": "string"
-          },
-          "contractAddress": {
-            "description": "Contract address of the token",
+            "description": "The blockchain address of the recipient",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "maxLength": 42,
             "minLength": 42,
             "type": "string"
           },
           "custodialAddress": {
-            "description": "Contract address of custodial wallet contract",
+            "description": "The blockchain address of the custodial wallet contract",
             "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
             "maxLength": 42,
             "minLength": 42,
             "type": "string"
           },
+          "tokenType": {
+            "description": "The type of the asset to transfer. Set <code>0</code> for fungible tokens (ERC-20 or equivalent), <code>1</code> for NFTs (ERC-721 or equivalent), <code>2</code> for Multi Tokens (ERC-1155 or equivalent), or <code>3</code> for native blockchain currencies.",
+            "example": 0,
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
           "amount": {
-            "description": "Amount to be sent in native asset, ERC20 or ERC1155",
+            "description": "<ul><li>If the asset to transfer is a fungible token, Multi Token, or a native blockchain currency, set this parameter to the amount to transfer.</li>\n<li>If the asset to transfer is an NFT, set this parameter to <code>1</code>.</li></ul>\n",
             "example": "100000",
             "pattern": "^[+]?((\\d+(\\.\\d*)?)|(\\.\\d+))$",
             "type": "string"
           },
-          "tokenType": {
-            "description": "Type of the token to transfer from gas pump wallet. 0 - ERC20, 1 - ERC721, 2 - ERC1155, 3 - native asset",
-            "example": 0,
-            "type": "number",
-            "minimum": 0,
-            "maximum": 3
+          "contractAddress": {
+            "description": "(Only if the asset to transfer is a fungible token) The address of the smart contract of the token",
+            "example": "0x687422eEA2cB73B5d3e242bA5456b782919AFc85",
+            "maxLength": 42,
+            "minLength": 42,
+            "type": "string"
           }
         }
       },
@@ -1170,44 +1173,6 @@
           }
         }
       },
-      "PolygonGasEstimation": {
-        "type": "object",
-        "required": [
-          "gasLimit",
-          "gasPrice"
-        ],
-        "properties": {
-          "gasLimit": {
-            "type": "string",
-            "description": "The number of the gas units needed to process the transaction at the estimated gas price",
-            "example": "21000"
-          },
-          "gasPrice": {
-            "type": "string",
-            "description": "The estimated price for one gas unit (in wei)",
-            "example": "10000000000"
-          }
-        }
-      },
-      "BscGasEstimation": {
-        "type": "object",
-        "required": [
-          "gasLimit",
-          "gasPrice"
-        ],
-        "properties": {
-          "gasLimit": {
-            "type": "string",
-            "description": "The number of the gas units needed to process the transaction at the estimated gas price",
-            "example": "21000"
-          },
-          "gasPrice": {
-            "type": "string",
-            "description": "The estimated price for one gas unit (in wei)",
-            "example": "10000000000"
-          }
-        }
-      },
       "EthGasEstimation": {
         "type": "object",
         "required": [
@@ -1354,6 +1319,25 @@
           },
           "estimations": {
             "$ref": "#/components/schemas/EthGasEstimationDetails"
+          }
+        }
+      },
+      "GasEstimated": {
+        "type": "object",
+        "required": [
+          "gasLimit",
+          "gasPrice"
+        ],
+        "properties": {
+          "gasPrice": {
+            "type": "string",
+            "description": "The estimated price for one gas unit (in wei)",
+            "example": "10000000000"
+          },
+          "gasLimit": {
+            "type": "number",
+            "description": "The number of the gas units needed to process the transaction at the estimated gas price",
+            "example": "21000"
           }
         }
       },
