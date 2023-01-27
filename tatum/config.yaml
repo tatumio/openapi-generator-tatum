@@ -10,4 +10,4 @@ globalProperties:
 additionalProperties: 
   licenseId: MIT
   sourceFolder: ""
-releaseNote: "Fixed issue with Configuration namespace resolution on some runtimes (Unity)."
+releaseNote: "Updated to new OAS, User-Agent header schema change."
